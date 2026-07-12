@@ -8,6 +8,9 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+  resolve: {
+    dedupe: ['react', 'react-dom']
+  },
   server: {
     port: 8080,
     host: 'localhost',
