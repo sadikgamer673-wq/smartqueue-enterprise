@@ -39,7 +39,14 @@ app.set('trust proxy', 1);
 // Security middleware
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors({
-  origin: [env.CLIENT_URL, env.ADMIN_URL, env.EXPO_WEB_URL, env.WORKER_URL],
+  origin: [
+    env.CLIENT_URL,
+    env.ADMIN_URL,
+    env.EXPO_WEB_URL,
+    env.WORKER_URL,
+    'http://localhost:8080',
+    'http://localhost:3000'
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
 }));
