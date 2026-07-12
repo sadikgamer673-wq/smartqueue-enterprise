@@ -10,8 +10,8 @@ services:
     name: smartqueue-backend
     env: node
     plan: free
-    buildCommand: npx pnpm install && npx pnpm --filter smartqueue-backend build
-    startCommand: npx pnpm --filter smartqueue-backend start
+    buildCommand: npx -y pnpm install && npx -y pnpm --filter smartqueue-backend build
+    startCommand: npx -y pnpm --filter smartqueue-backend start
     envVars:
       - key: PORT
         value: 5000
@@ -29,7 +29,7 @@ services:
   - type: web
     name: smartqueue-portal
     env: static
-    buildCommand: npx pnpm install && npx pnpm --filter portal-web build
+    buildCommand: npx -y pnpm install && npx -y pnpm --filter portal-web build
     staticPublishPath: portal-web/dist
     routes:
       - type: rewrite
