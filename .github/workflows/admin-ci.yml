@@ -1,0 +1,27 @@
+name: Admin Dashboard CI
+
+on:
+  push:
+    branches: [main, develop]
+    paths: ['admin-dashboard/**']
+  pull_request:
+    branches: [main, develop]
+    paths: ['admin-dashboard/**']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: admin-dashboard
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          cache-dependency-path: admin-dashboard/pnpm-lock.yaml
+      - run: npm install -g pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm build

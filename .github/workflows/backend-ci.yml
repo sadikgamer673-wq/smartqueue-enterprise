@@ -1,0 +1,42 @@
+name: Backend CI
+
+on:
+  push:
+    branches: [main, develop]
+    paths: ['backend/**']
+  pull_request:
+    branches: [main, develop]
+    paths: ['backend/**']
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          cache-dependency-path: backend/pnpm-lock.yaml
+      - run: npm install -g pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm build
+      - run: pnpm test
+        env:
+          NODE_ENV: test
+          MONGODB_URI: ${{ secrets.MONGODB_TEST_URI }}
+          JWT_SECRET: test-secret-min-32-characters-long
+          JWT_REFRESH_SECRET: test-refresh-secret-min-32-chars
+          ENCRYPTION_KEY: 12345678901234567890123456789012
+          ENCRYPTION_IV: 1234567890123456
+          RAZORPAY_KEY_ID: test_key
+          RAZORPAY_KEY_SECRET: test_secret
+          CLOUDINARY_CLOUD_NAME: test
+          CLOUDINARY_API_KEY: test
+          CLOUDINARY_API_SECRET: test
+          SMTP_USER: test@test.com
+          SMTP_PASS: test

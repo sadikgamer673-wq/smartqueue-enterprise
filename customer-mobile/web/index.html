@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="SmartQueue — AI-powered self-checkout for customers" />
+    <title>SmartQueue Customer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: linear-gradient(135deg, #f0f4ff 0%, #e8f5e9 50%, #fce4ec 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        overflow-x: hidden;
+      }
+
+      /* ─── Top Brand Bar ─── */
+      .brand-bar {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        height: 56px;
+        background: #ffffff;
+        border-bottom: 1px solid #e8eaf6;
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        gap: 12px;
+        z-index: 1000;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      }
+      .brand-logo {
+        width: 32px; height: 32px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 16px;
+      }
+      .brand-name {
+        font-size: 16px; font-weight: 700;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .brand-tag {
+        margin-left: auto;
+        font-size: 11px; font-weight: 500;
+        color: #9c27b0;
+        background: #f3e5f5;
+        padding: 3px 10px;
+        border-radius: 20px;
+        letter-spacing: 0.5px;
+      }
+
+      /* ─── Scene Layout ─── */
+      .scene {
+        margin-top: 72px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 48px;
+        flex-wrap: wrap;
+      }
+
+      /* ─── Phone Shell ─── */
+      .phone-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+      }
+      .phone-label {
+        font-size: 12px; font-weight: 600;
+        color: #7c4dff;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        background: rgba(124,77,255,0.08);
+        padding: 4px 16px;
+        border-radius: 20px;
+      }
+      .phone {
+        width: 375px;
+        height: 812px;
+        background: #ffffff;
+        border-radius: 54px;
+        box-shadow:
+          0 0 0 2px #e0e0e0,
+          0 0 0 10px #f5f5f5,
+          0 0 0 12px #d0d0d0,
+          0 40px 80px rgba(0,0,0,0.18),
+          0 20px 40px rgba(0,0,0,0.12);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Notch */
+      .phone::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 50%;
+        transform: translateX(-50%);
+        width: 150px; height: 30px;
+        background: #111;
+        border-radius: 0 0 22px 22px;
+        z-index: 10;
+      }
+      /* Dynamic island dot */
+      .phone::after {
+        content: '';
+        position: absolute;
+        top: 10px; left: 50%;
+        transform: translateX(-50%);
+        width: 12px; height: 12px;
+        background: #222;
+        border-radius: 50%;
+        z-index: 11;
+        box-shadow: 44px 0 0 #222, -44px 0 0 #222;
+      }
+
+      /* Side buttons */
+      .phone-btn-left {
+        position: absolute;
+        left: -14px;
+        top: 120px;
+        width: 4px; height: 32px;
+        background: #d0d0d0;
+        border-radius: 2px 0 0 2px;
+        box-shadow: 0 44px 0 #d0d0d0, 0 88px 0 #d0d0d0;
+      }
+      .phone-btn-right {
+        position: absolute;
+        right: -14px;
+        top: 160px;
+        width: 4px; height: 64px;
+        background: #d0d0d0;
+        border-radius: 0 2px 2px 0;
+      }
+
+      /* Status bar */
+      .status-bar {
+        height: 44px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        padding: 0 28px 4px;
+        font-size: 11px;
+        font-weight: 600;
+        color: #111;
+        flex-shrink: 0;
+        position: relative;
+        z-index: 5;
+      }
+      .status-time { font-size: 14px; font-weight: 700; }
+      .status-icons { display: flex; align-items: center; gap: 5px; font-size: 12px; }
+
+      /* App iframe */
+      .app-frame {
+        flex: 1;
+        border: none;
+        width: 100%;
+        height: 100%;
+        display: block;
+        background: #f8f9fa;
+      }
+
+      /* Bottom bar */
+      .home-bar {
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .home-pill {
+        width: 130px; height: 5px;
+        background: #333;
+        border-radius: 3px;
+        opacity: 0.25;
+      }
+
+      /* ─── Info Panel ─── */
+      .info-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 280px;
+        padding-top: 40px;
+      }
+      .info-card {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        border: 1px solid rgba(0,0,0,0.04);
+      }
+      .info-card h3 {
+        font-size: 12px; font-weight: 700;
+        color: #9e9e9e;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+      .info-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 0;
+        border-bottom: 1px solid #f5f5f5;
+        font-size: 13px;
+      }
+      .info-row:last-child { border-bottom: none; }
+      .info-dot {
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .dot-green { background: #4caf50; }
+      .dot-blue { background: #2196f3; }
+      .dot-purple { background: #9c27b0; }
+      .dot-orange { background: #ff9800; }
+      .info-label { color: #616161; flex: 1; }
+      .info-value { font-weight: 600; color: #212121; font-size: 12px; }
+
+      .feature-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        margin: 4px 4px 0 0;
+      }
+      .chip-purple { background: #f3e5f5; color: #7b1fa2; }
+      .chip-blue { background: #e3f2fd; color: #1565c0; }
+      .chip-green { background: #e8f5e9; color: #2e7d32; }
+      .chip-orange { background: #fff3e0; color: #e65100; }
+
+      /* ─── Footer ─── */
+      .footer {
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        padding: 12px 24px;
+        text-align: center;
+        font-size: 11px;
+        color: #9e9e9e;
+        background: rgba(255,255,255,0.8);
+        backdrop-filter: blur(8px);
+        border-top: 1px solid rgba(0,0,0,0.05);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Brand Bar -->
+    <div class="brand-bar">
+      <div class="brand-logo">🛒</div>
+      <span class="brand-name">SmartQueue</span>
+      <span class="brand-tag">Customer Preview</span>
+    </div>
+
+    <!-- Main Scene -->
+    <div class="scene">
+
+      <!-- Phone Mockup -->
+      <div class="phone-wrapper">
+        <div class="phone-label">📱 Customer App</div>
+        <div class="phone">
+          <div class="phone-btn-left"></div>
+          <div class="phone-btn-right"></div>
+
+          <!-- Status Bar -->
+          <div class="status-bar">
+            <span class="status-time">9:41</span>
+            <div class="status-icons">
+              <span>●●●</span>
+              <span>WiFi</span>
+              <span>🔋</span>
+            </div>
+          </div>
+
+          <!-- App Content -->
+          <iframe
+            id="app"
+            class="app-frame"
+            src="http://localhost:19006"
+            title="SmartQueue Customer App"
+            allow="camera; microphone"
+          ></iframe>
+
+          <!-- Home Bar -->
+          <div class="home-bar"><div class="home-pill"></div></div>
+        </div>
+      </div>
+
+      <!-- Info Panel -->
+      <div class="info-panel">
+        <div class="info-card">
+          <h3>🚦 Services</h3>
+          <div class="info-row">
+            <div class="info-dot dot-green"></div>
+            <span class="info-label">Backend API</span>
+            <span class="info-value">:5000</span>
+          </div>
+          <div class="info-row">
+            <div class="info-dot dot-blue"></div>
+            <span class="info-label">Customer App</span>
+            <span class="info-value">:19006</span>
+          </div>
+          <div class="info-row">
+            <div class="info-dot dot-purple"></div>
+            <span class="info-label">Worker App</span>
+            <span class="info-value">:19007</span>
+          </div>
+          <div class="info-row">
+            <div class="info-dot dot-orange"></div>
+            <span class="info-label">Admin Dashboard</span>
+            <span class="info-value">:3001</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3>⚡ Features</h3>
+          <div>
+            <span class="feature-chip chip-purple">🔐 JWT Auth</span>
+            <span class="feature-chip chip-blue">🛒 Smart Cart</span>
+            <span class="feature-chip chip-green">📷 Barcode Scan</span>
+            <span class="feature-chip chip-orange">📦 Orders</span>
+            <span class="feature-chip chip-purple">💳 Payments</span>
+            <span class="feature-chip chip-blue">🔔 Notifications</span>
+            <span class="feature-chip chip-green">🎟️ Coupons</span>
+            <span class="feature-chip chip-orange">📊 Analytics</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h3>🔗 Quick Links</h3>
+          <div class="info-row">
+            <span>📱</span>
+            <a href="http://localhost:19006" target="_blank" class="info-label" style="color:#7c4dff;text-decoration:none;">Customer App</a>
+          </div>
+          <div class="info-row">
+            <span>👷</span>
+            <a href="http://localhost:19007" target="_blank" class="info-label" style="color:#7c4dff;text-decoration:none;">Worker App</a>
+          </div>
+          <div class="info-row">
+            <span>📊</span>
+            <a href="http://localhost:3001" target="_blank" class="info-label" style="color:#7c4dff;text-decoration:none;">Admin Dashboard</a>
+          </div>
+          <div class="info-row">
+            <span>📚</span>
+            <a href="http://localhost:5000/api/v1/docs" target="_blank" class="info-label" style="color:#7c4dff;text-decoration:none;">API Docs (Swagger)</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      SmartQueue Enterprise &nbsp;·&nbsp; AI-Powered Self-Checkout Ecosystem &nbsp;·&nbsp; v1.0.0
+    </div>
+
+    <script>
+      // Auto-update clock
+      function tick() {
+        const now = new Date();
+        const h = now.getHours().toString().padStart(2,'0');
+        const m = now.getMinutes().toString().padStart(2,'0');
+        document.querySelector('.status-time').textContent = h + ':' + m;
+      }
+      tick();
+      setInterval(tick, 10000);
+    </script>
+  </body>
+</html>

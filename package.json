@@ -1,0 +1,33 @@
+{
+  "name": "smartqueue-enterprise",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI-powered mobile self-checkout ecosystem",
+  "scripts": {
+    "backend": "cd backend && pnpm dev",
+    "admin": "cd admin-dashboard && pnpm dev",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "install:all": "pnpm install && cd backend && pnpm install && cd ../admin-dashboard && pnpm install && cd ../customer-mobile && pnpm install && cd ../worker-mobile && pnpm install",
+    "patch": "node scripts/postinstall.js"
+  },
+  "workspaces": [
+    "backend",
+    "admin-dashboard",
+    "customer-mobile",
+    "worker-mobile",
+    "shared"
+  ],
+  "overrides": {
+    "webpack": "^5.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@scarf/scarf",
+      "esbuild",
+      "esbuild-wasm",
+      "@swc/core"
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+packages:
+  - 'backend'
+  - 'admin-dashboard'
+  - 'customer-mobile'
+  - 'worker-mobile'
+  - 'shared'
+  - 'portal-web'
+allowBuilds:
+  '@scarf/scarf': true
+  esbuild: true
+  esbuild-wasm: true
+  '@swc/core': true

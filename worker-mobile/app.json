@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "SmartQueue Worker",
+    "slug": "smartqueue-worker",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "android": { "package": "com.smartqueue.worker", "permissions": ["CAMERA"] },
+    "ios": { "bundleIdentifier": "com.smartqueue.worker" },
+    "plugins": [
+      ["expo-camera", { "cameraPermission": "Allow SmartQueue Worker to scan customer QR codes." }]
+    ],
+    "web": {
+      "bundler": "webpack"
+    }
+  }
+}

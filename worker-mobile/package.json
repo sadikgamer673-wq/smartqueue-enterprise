@@ -1,0 +1,52 @@
+{
+  "name": "smartqueue-worker",
+  "version": "1.0.0",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "~3.1.3",
+    "@expo/vector-icons": "^15.1.1",
+    "@expo/webpack-config": "~19.0.1",
+    "@react-native-async-storage/async-storage": "1.21.0",
+    "@react-native/normalize-colors": "^0.86.0",
+    "@react-navigation/bottom-tabs": "^6.5.11",
+    "@react-navigation/native": "^6.1.9",
+    "@react-navigation/native-stack": "^6.9.17",
+    "@reduxjs/toolkit": "^2.0.1",
+    "axios": "^1.6.5",
+    "css-in-js-utils": "^3.1.0",
+    "expo": "~50.0.0",
+    "expo-camera": "~14.0.5",
+    "expo-modules-core": "^1.11.14",
+    "expo-status-bar": "~1.11.1",
+    "fbjs": "^3.0.5",
+    "hyphenate-style-name": "^1.1.0",
+    "inline-style-prefixer": "^6.0.1",
+    "invariant": "^2.2.4",
+    "memoize-one": "^6.0.0",
+    "nullthrows": "^1.1.1",
+    "postcss-value-parser": "^4.2.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-native": "0.73.4",
+    "react-native-paper": "^5.12.3",
+    "react-native-safe-area-context": "4.8.2",
+    "react-native-screens": "~3.29.0",
+    "react-native-web": "~0.19.13",
+    "react-redux": "^9.1.0",
+    "reselect": "^5.0.1",
+    "scheduler": "^0.27.0",
+    "socket.io-client": "^4.6.1",
+    "styleq": "^0.1.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@babel/runtime": "^7.29.7",
+    "@types/react": "~18.2.45",
+    "typescript": "^5.3.3"
+  }
+}

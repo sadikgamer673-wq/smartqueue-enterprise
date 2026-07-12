@@ -1,0 +1,21 @@
+{
+  "expo": {
+    "name": "SmartQueue",
+    "slug": "smartqueue-customer",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "assetBundlePatterns": ["**/*"],
+    "ios": { "supportsTablet": true, "bundleIdentifier": "com.smartqueue.customer" },
+    "android": {
+      "package": "com.smartqueue.customer",
+      "permissions": ["CAMERA"]
+    },
+    "plugins": [
+      ["expo-camera", { "cameraPermission": "Allow SmartQueue to scan product barcodes." }]
+    ],
+    "web": {
+      "bundler": "webpack"
+    }
+  }
+}
