@@ -83,10 +83,21 @@ export class PaymentService {
 
     if (!payment) throw new AppError('Payment record not found', 404);
 
-    await Order.findByIdAndUpdate(orderId, {
+    const order = await Order.findByIdAndUpdate(orderId, {
       status: 'paid',
       paymentId: payment._id,
-    });
+    }, { new: true });
+
+    if (order) {
+      const { inventoryRepository } = await import('../repositories/inventory.repository');
+      for (const item of order.items) {
+        await inventoryRepository.deductStock(
+          item.productId.toString(),
+          order.storeId.toString(),
+          item.quantity
+        );
+      }
+    }
 
     return true;
   }

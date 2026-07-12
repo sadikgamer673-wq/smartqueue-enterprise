@@ -6,7 +6,7 @@ import { productService } from '../services/product.service';
 export const getProducts = catchAsync(async (req: Request, res: Response) => {
   const { storeId, page = '1', limit = '20', categoryId, search } = req.query;
   if (!storeId) {
-    const result = await productService.getAllAdmin(+page, +limit, search as string);
+    const result = await productService.getAllAdmin(+page, +limit, search as string, undefined, categoryId as string);
     return sendSuccess(res, result, 'Products fetched');
   }
   const result = await productService.getProducts(storeId as string, +page, +limit, categoryId as string, search as string);

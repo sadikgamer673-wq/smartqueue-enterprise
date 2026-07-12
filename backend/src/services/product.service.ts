@@ -11,8 +11,8 @@ export class ProductService {
     return productRepository.findByStore(storeId, page, limit, categoryId, search);
   }
 
-  async getAllAdmin(page: number, limit: number, search?: string, storeId?: string) {
-    return productRepository.findAllAdmin(page, limit, search, storeId);
+  async getAllAdmin(page: number, limit: number, search?: string, storeId?: string, categoryId?: string) {
+    return productRepository.findAllAdmin(page, limit, search, storeId, categoryId);
   }
 
   async getById(id: string): Promise<any> {
@@ -24,11 +24,12 @@ export class ProductService {
     return product;
   }
 
-  async getByBarcode(barcode: string, storeId: string): Promise<any> {
+  async getByBarcode(barcode: string, storeId?: string): Promise<any> {
     const product = await productRepository.findByBarcode(barcode, storeId);
     if (!product) throw new AppError('Product not found for this barcode', 404);
 
-    const inventory = await inventoryRepository.findByProduct(product.id, storeId);
+    const targetStoreId = storeId || product.storeId.toString();
+    const inventory = await inventoryRepository.findByProduct(product.id, targetStoreId);
     return {
       ...product.toObject(),
       availableQuantity: (inventory?.quantity ?? 0) - (inventory?.reservedQuantity ?? 0),

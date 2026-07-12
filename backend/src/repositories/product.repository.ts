@@ -6,8 +6,10 @@ class ProductRepository extends BaseRepository<IProduct> {
     super(Product);
   }
 
-  async findByBarcode(barcode: string, storeId: string): Promise<IProduct | null> {
-    return Product.findOne({ barcode, storeId, isActive: true })
+  async findByBarcode(barcode: string, storeId?: string): Promise<IProduct | null> {
+    const filter: any = { barcode, isActive: true };
+    if (storeId) filter.storeId = storeId;
+    return Product.findOne(filter)
       .populate('categoryId', 'name slug')
       .exec();
   }
@@ -30,10 +32,11 @@ class ProductRepository extends BaseRepository<IProduct> {
     return { products, total, page, limit, pages: Math.ceil(total / limit) };
   }
 
-  async findAllAdmin(page = 1, limit = 20, search?: string, storeId?: string) {
+  async findAllAdmin(page = 1, limit = 20, search?: string, storeId?: string, categoryId?: string) {
     const skip = (page - 1) * limit;
     const filter: any = {};
     if (storeId) filter.storeId = storeId;
+    if (categoryId) filter.categoryId = categoryId;
     if (search) {
       filter.$or = [
         { name: { $regex: search, $options: 'i' } },

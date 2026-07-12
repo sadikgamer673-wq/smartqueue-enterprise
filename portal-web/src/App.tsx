@@ -945,26 +945,39 @@ function CustomerPayment() {
 
   const handlePay = () => {
     setLoading(true);
-    setTimeout(() => {
-      const cart = getLocalStorage<any[]>('cart_items', []);
-      const orderNum = '#' + Math.floor(2000 + Math.random() * 9000);
-      const newOrder = { orderNumber: orderNum, total, items: cart, date: new Date().toLocaleDateString(), status: 'Completed' };
-      
-      // Store in orders database
-      const orders = getLocalStorage<any[]>('customer_orders', []);
-      orders.unshift(newOrder);
-      setLocalStorage('customer_orders', orders);
-      
-      // Save as latest exit pass order
-      setLocalStorage('pass_order', newOrder);
-      setLocalStorage('cart_items', []);
-      
-      const user = getLocalStorage('customer_user', { name: 'Shopper' });
-      addActivityLog('PAYMENT_COMPLETED', `Payment of ₹${total.toFixed(2)} successful for Order ${orderNum} by ${user.name}. Awaiting gate verification.`);
-      
-      setLoading(false);
-      navigate('/customer/pass');
-    }, 1200);
+    const cart = getLocalStorage<any[]>('cart_items', []);
+    const token = localStorage.getItem('accessToken');
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    fetch(`${API_URL}/inventory/deduct-mock`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ items: cart })
+    })
+      .then(() => console.log('Backend stock deducted successfully'))
+      .catch((err) => console.error('Failed to deduct backend stock:', err))
+      .finally(() => {
+        setTimeout(() => {
+          const orderNum = '#' + Math.floor(2000 + Math.random() * 9000);
+          const newOrder = { orderNumber: orderNum, total, items: cart, date: new Date().toLocaleDateString(), status: 'Completed' };
+          
+          // Store in orders database
+          const orders = getLocalStorage<any[]>('customer_orders', []);
+          orders.unshift(newOrder);
+          setLocalStorage('customer_orders', orders);
+          
+          // Save as latest exit pass order
+          setLocalStorage('pass_order', newOrder);
+          setLocalStorage('cart_items', []);
+          
+          const user = getLocalStorage('customer_user', { name: 'Shopper' });
+          addActivityLog('PAYMENT_COMPLETED', `Payment of ₹${total.toFixed(2)} successful for Order ${orderNum} by ${user.name}. Awaiting gate verification.`);
+          
+          setLoading(false);
+          navigate('/customer/pass');
+        }, 800);
+      });
   };
 
   return (

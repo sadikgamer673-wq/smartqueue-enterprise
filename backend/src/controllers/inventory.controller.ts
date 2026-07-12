@@ -36,3 +36,22 @@ export const updateStock = catchAsync(async (req: Request, res: Response) => {
   }
   sendSuccess(res, inventory, 'Stock updated');
 });
+
+export const deductMockStock = catchAsync(async (req: Request, res: Response) => {
+  const { items, storeId } = req.body;
+  if (!items || !Array.isArray(items)) {
+    throw new AppError('items array is required', 400);
+  }
+
+  // Find the first store as a fallback if storeId is not provided
+  const targetStore = await require('../models/Store.model').Store.findOne();
+  const realStoreId = targetStore ? targetStore._id.toString() : storeId;
+
+  for (const item of items) {
+    const productId = item.productId || item._id;
+    if (productId && !productId.startsWith('prod_')) { // Avoid local mock product strings
+      await inventoryRepository.deductStock(productId.toString(), realStoreId, item.quantity || 1);
+    }
+  }
+  sendSuccess(res, null, 'Stock deducted successfully');
+});

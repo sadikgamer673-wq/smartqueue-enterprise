@@ -25,6 +25,10 @@ const DRAWER_WIDTH = 260;
 const navItems = [
   { label: 'Dashboard', icon: <DashboardIcon />, path: '/' },
   { label: 'Orders', icon: <ReceiptIcon />, path: '/orders' },
+  { label: 'Products', icon: <InventoryIcon />, path: '/products' },
+  { label: 'Categories', icon: <CategoryIcon />, path: '/categories' },
+  { label: 'Workers', icon: <BadgeIcon />, path: '/workers' },
+  { label: 'Coupons', icon: <LocalOfferIcon />, path: '/coupons' },
   { label: 'Customers', icon: <PeopleIcon />, path: '/customers' },
   { label: 'Inventory', icon: <WarehouseIcon />, path: '/inventory' },
   { label: 'Analytics', icon: <BarChartIcon />, path: '/analytics' },
