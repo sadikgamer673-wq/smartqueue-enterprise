@@ -34,5 +34,5 @@ services:
     staticPublishPath: portal-web/dist
     routes:
       - type: rewrite
-        from: /*
-        to: /index.html
+        source: /*
+        destination: /index.html
