@@ -29,7 +29,6 @@ services:
   - type: web
     name: smartqueue-portal
     env: static
-    plan: free
     buildCommand: npm install -g pnpm && pnpm install && pnpm --filter portal-web build
     staticPublishPath: portal-web/dist
     routes:
