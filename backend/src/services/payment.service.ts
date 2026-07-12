@@ -57,7 +57,13 @@ export class PaymentService {
       .update(`${razorpayOrderId}|${razorpayPaymentId}`)
       .digest('hex');
 
-    if (expectedSignature !== razorpaySignature) {
+    const expectedBuffer = Buffer.from(expectedSignature, 'utf8');
+    const signatureBuffer = Buffer.from(razorpaySignature, 'utf8');
+
+    if (
+      expectedBuffer.length !== signatureBuffer.length ||
+      !crypto.timingSafeEqual(expectedBuffer, signatureBuffer)
+    ) {
       await Payment.findOneAndUpdate(
         { razorpayOrderId },
         { status: 'failed', failureReason: 'Signature mismatch' }
