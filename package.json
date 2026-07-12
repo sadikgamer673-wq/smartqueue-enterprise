@@ -4,12 +4,14 @@
   "private": true,
   "description": "AI-powered mobile self-checkout ecosystem",
   "scripts": {
-    "backend": "cd backend && pnpm dev",
-    "admin": "cd admin-dashboard && pnpm dev",
+    "dev": "pnpm --parallel --filter smartqueue-backend --filter portal-web --filter smartqueue-admin dev",
+    "backend": "pnpm --filter smartqueue-backend dev",
+    "admin": "pnpm --filter smartqueue-admin dev",
+    "portal": "pnpm --filter portal-web dev",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "docker:logs": "docker-compose logs -f",
-    "install:all": "pnpm install && cd backend && pnpm install && cd ../admin-dashboard && pnpm install && cd ../customer-mobile && pnpm install && cd ../worker-mobile && pnpm install",
+    "install:all": "pnpm install",
     "patch": "node scripts/postinstall.js"
   },
   "workspaces": [
@@ -17,7 +19,8 @@
     "admin-dashboard",
     "customer-mobile",
     "worker-mobile",
-    "shared"
+    "shared",
+    "portal-web"
   ],
   "overrides": {
     "webpack": "^5.0.0"
