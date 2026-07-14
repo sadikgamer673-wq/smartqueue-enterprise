@@ -2281,6 +2281,7 @@ function WorkerDashboard() {
   const navigate = useNavigate();
   const worker = getLocalStorage('worker_user', { name: 'Arjun', employeeId: 'EMP001' });
   const [tab, setTab] = useState<'dashboard' | 'profile'>('dashboard');
+  const [subTab, setSubTab] = useState<'details' | 'addresses' | 'support' | 'security' | 'history'>('details');
 
   const [logs, setLogs] = useState<any[]>([]);
   useEffect(() => {
@@ -2427,32 +2428,28 @@ function WorkerDashboard() {
             </div>
 
             {/* Horizontal Sub-Navigation Tab Panel */}
-            {(() => {
-              const [subTab, setSubTab] = useState<'details' | 'addresses' | 'support' | 'security' | 'history'>('details');
-
-              return (
-                <div className="flex flex-col gap-5">
-                  <div className="flex border-b border-slate-200 overflow-x-auto gap-2 pb-px scrollbar-none">
-                    {[
-                      { id: 'details', label: '👤 Profile Details' },
-                      { id: 'addresses', label: '📍 Store Locations' },
-                      { id: 'security', label: '🛡️ Security' },
-                      { id: 'support', label: '📞 Help & Support' },
-                      { id: 'history', label: '📋 Shift Log' }
-                    ].map((tabInfo) => (
-                      <button
-                        key={tabInfo.id}
-                        onClick={() => setSubTab(tabInfo.id as any)}
-                        className={`px-4 py-2 text-xs font-bold whitespace-nowrap rounded-t-lg transition-all border-b-2 -mb-px ${
-                          subTab === tabInfo.id
-                            ? 'border-green-600 text-green-700 bg-green-50/50'
-                            : 'border-transparent text-slate-500 hover:text-slate-800'
-                        }`}
-                      >
-                        {tabInfo.label}
-                      </button>
-                    ))}
-                  </div>
+            <div className="flex flex-col gap-5">
+              <div className="flex border-b border-slate-200 overflow-x-auto gap-2 pb-px scrollbar-none">
+                {[
+                  { id: 'details', label: '👤 Profile Details' },
+                  { id: 'addresses', label: '📍 Store Locations' },
+                  { id: 'security', label: '🛡️ Security' },
+                  { id: 'support', label: '📞 Help & Support' },
+                  { id: 'history', label: '📋 Shift Log' }
+                ].map((tabInfo) => (
+                  <button
+                    key={tabInfo.id}
+                    onClick={() => setSubTab(tabInfo.id as any)}
+                    className={`px-4 py-2 text-xs font-bold whitespace-nowrap rounded-t-lg transition-all border-b-2 -mb-px ${
+                      subTab === tabInfo.id
+                        ? 'border-green-600 text-green-700 bg-green-50/50'
+                        : 'border-transparent text-slate-500 hover:text-slate-800'
+                    }`}
+                  >
+                    {tabInfo.label}
+                  </button>
+                ))}
+              </div>
 
                   {/* Tab Contents */}
                   {subTab === 'details' && (
@@ -2575,8 +2572,6 @@ function WorkerDashboard() {
                     </div>
                   )}
                 </div>
-              );
-            })()}
 
             {/* Logout Panel */}
             <div className="bg-red-50/50 border border-red-200/60 rounded-2xl p-5 flex flex-col sm:flex-row justify-between items-center gap-4">
