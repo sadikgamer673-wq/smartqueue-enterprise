@@ -2279,9 +2279,13 @@ function WorkerLogin() {
 // --- WORKER DASHBOARD SCREEN (Storyboard 3) ---
 function WorkerDashboard() {
   const navigate = useNavigate();
-  const worker = getLocalStorage('worker_user', { name: 'Arjun', employeeId: 'EMP001' });
+  const [worker, setWorker] = useState(() => getLocalStorage('worker_user', { name: 'Arjun', employeeId: 'EMP001', role: 'Gate Operations Specialist' }));
   const [tab, setTab] = useState<'dashboard' | 'profile'>('dashboard');
   const [subTab, setSubTab] = useState<'details' | 'addresses' | 'support' | 'security' | 'history'>('details');
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editName, setEditName] = useState(worker.name);
+  const [editRole, setEditRole] = useState(worker.role || 'Gate Operations Specialist');
 
   const [logs, setLogs] = useState<any[]>([]);
   useEffect(() => {
@@ -2297,6 +2301,13 @@ function WorkerDashboard() {
     };
   }, []);
 
+  const saveProfile = () => {
+    const updated = { ...worker, name: editName, role: editRole };
+    setWorker(updated);
+    setLocalStorage('worker_user', updated);
+    setIsEditing(false);
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col justify-between">
       {/* Header */}
@@ -2308,7 +2319,7 @@ function WorkerDashboard() {
             </div>
             <div>
               <h4 className="font-extrabold text-slate-800 text-base">Hello, {worker.name} 👋</h4>
-              <p className="text-xs text-slate-400 mt-0.5">Good Morning</p>
+              <p className="text-xs text-slate-400 mt-0.5">{worker.role || 'Gate Operations Specialist'}</p>
             </div>
           </div>
           <button onClick={() => { localStorage.clear(); navigate('/worker/login'); }} className="text-xs font-bold text-slate-500 hover:text-red-500 transition">
@@ -2415,15 +2426,43 @@ function WorkerDashboard() {
                 <div className="w-20 h-20 rounded-full bg-white text-green-800 border-4 border-green-500/30 flex items-center justify-center text-3xl font-black shadow-md shrink-0">
                   {worker.name.charAt(0)}
                 </div>
-                <div className="text-center sm:text-left flex-grow">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-500/20 border border-green-400/30 rounded-full text-xs font-bold text-green-300">
-                    <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                    ACTIVE STAFF · ON DUTY
+                {isEditing ? (
+                  <div className="flex-grow flex flex-col gap-2 w-full text-slate-800">
+                    <input
+                      type="text"
+                      value={editName}
+                      onChange={e => setEditName(e.target.value)}
+                      placeholder="Name"
+                      className="px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-bold w-full bg-white focus:outline-none focus:border-green-600"
+                    />
+                    <input
+                      type="text"
+                      value={editRole}
+                      onChange={e => setEditRole(e.target.value)}
+                      placeholder="Role"
+                      className="px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-bold w-full bg-white focus:outline-none focus:border-green-600"
+                    />
+                    <div className="flex gap-2 mt-1">
+                      <button onClick={saveProfile} className="px-4 py-1.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg text-[10px] uppercase tracking-wider transition">Save</button>
+                      <button onClick={() => { setIsEditing(false); setEditName(worker.name); setEditRole(worker.role || 'Gate Operations Specialist'); }} className="px-4 py-1.5 bg-slate-600 hover:bg-slate-700 text-white font-bold rounded-lg text-[10px] uppercase tracking-wider transition">Cancel</button>
+                    </div>
                   </div>
-                  <h3 className="text-2xl font-black mt-2 tracking-tight">{worker.name}</h3>
-                  <p className="text-xs text-green-200 font-semibold mt-0.5">Gate Operations Specialist</p>
-                  <p className="text-xs text-slate-400 mt-2 font-mono">ID: {worker.employeeId || 'EMP001'}</p>
-                </div>
+                ) : (
+                  <div className="text-center sm:text-left flex-grow">
+                    <div className="flex justify-between items-start">
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-500/20 border border-green-400/30 rounded-full text-xs font-bold text-green-300">
+                        <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                        ACTIVE STAFF · ON DUTY
+                      </div>
+                      <button onClick={() => { setEditName(worker.name); setEditRole(worker.role || 'Gate Operations Specialist'); setIsEditing(true); }} className="text-[10px] font-bold text-slate-300 border border-slate-500 hover:border-white px-2 py-0.5 rounded transition">
+                        EDIT PROFILE
+                      </button>
+                    </div>
+                    <h3 className="text-2xl font-black mt-2 tracking-tight">{worker.name}</h3>
+                    <p className="text-xs text-green-200 font-semibold mt-0.5">{worker.role || 'Gate Operations Specialist'}</p>
+                    <p className="text-xs text-slate-400 mt-2 font-mono">ID: {worker.employeeId || 'EMP001'}</p>
+                  </div>
+                )}
               </div>
             </div>
 
