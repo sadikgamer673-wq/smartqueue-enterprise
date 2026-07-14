@@ -1213,7 +1213,6 @@ function CustomerScan() {
       .then(async (res) => {
         if (!res.ok) throw new Error('API lookup fail');
         const data = await res.json();
-        // Backend typically returns product inside payload block
         const prod = data.data || data;
         setScannedProduct({
           productId: prod._id || prod.productId,
@@ -1225,19 +1224,34 @@ function CustomerScan() {
         setSuccessMsg('Product matched on server!');
       })
       .catch(() => {
-        // Fallback Database query
-        const localProd = FALLBACK_PRODUCTS[code];
-        if (localProd) {
+        // Fallback: Check local inventory items added in Admin panel
+        const localItems = getLocalStorage<any[]>('inventory_items', []);
+        const foundItem = localItems.find(x => x.barcode === code);
+
+        if (foundItem) {
           setScannedProduct({
-            productId: 'prod_' + code,
-            name: localProd.name,
-            price: localProd.price,
-            brand: localProd.brand
+            productId: foundItem.id,
+            name: foundItem.name,
+            price: foundItem.price,
+            brand: 'Store Inventory'
           });
           setQty(1);
-          setSuccessMsg('Product found in offline database.');
+          setSuccessMsg('Product matched in store inventory!');
         } else {
-          setErrorMsg(`Barcode ${code} not found. Try: 8901764100078 (Milk) or 8901063007277 (Cookies).`);
+          // Fallback to initial static seed list
+          const localProd = FALLBACK_PRODUCTS[code];
+          if (localProd) {
+            setScannedProduct({
+              productId: 'prod_' + code,
+              name: localProd.name,
+              price: localProd.price,
+              brand: localProd.brand
+            });
+            setQty(1);
+            setSuccessMsg('Product matched in seed database!');
+          } else {
+            setErrorMsg(`Barcode ${code} not found. Use Admin panel to add this item.`);
+          }
         }
       })
       .finally(() => {
@@ -3018,21 +3032,127 @@ function AdminCustomersView() {
 }
 
 function AdminInventoryView() {
+  const [items, setItems] = useState<any[]>(() => {
+    const local = localStorage.getItem('inventory_items');
+    if (local) return JSON.parse(local);
+    // Default initial mock items matching the seed dataset
+    const defaults = [
+      { id: '1', barcode: '123', name: 'Amul Milk 1L', price: 56, qty: 85, emoji: '🥛' },
+      { id: '2', barcode: '456', name: 'Britannia Bread', price: 38, qty: 15, emoji: '🍞' },
+      { id: '3', barcode: '789', name: 'Rice 1kg', price: 66, qty: 120, emoji: '🍚' },
+      { id: '4', barcode: '101', name: 'Aashirvaad Atta 1kg', price: 75, qty: 10, emoji: '🌾' },
+      { id: '5', barcode: '202', name: 'Amul Curd 400g', price: 41, qty: 45, emoji: '🍶' }
+    ];
+    localStorage.setItem('inventory_items', JSON.stringify(defaults));
+    return defaults;
+  });
+
+  const [name, setName] = useState('');
+  const [barcode, setBarcode] = useState('');
+  const [price, setPrice] = useState('');
+  const [qty, setQty] = useState('');
+  const [emoji, setEmoji] = useState('📦');
+
+  const addItem = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !barcode || !price) {
+      alert('Please fill out Name, Barcode, and Price fields');
+      return;
+    }
+    const newItem = {
+      id: 'prod_' + Date.now(),
+      barcode: barcode.trim(),
+      name: name.trim(),
+      price: parseFloat(price) || 0,
+      qty: parseInt(qty) || 50,
+      emoji: emoji.trim()
+    };
+    const updated = [newItem, ...items];
+    setItems(updated);
+    localStorage.setItem('inventory_items', JSON.stringify(updated));
+    
+    // Reset form
+    setName('');
+    setBarcode('');
+    setPrice('');
+    setQty('');
+    setEmoji('📦');
+  };
+
+  const deleteItem = (id: string) => {
+    const updated = items.filter(x => x.id !== id);
+    setItems(updated);
+    localStorage.setItem('inventory_items', JSON.stringify(updated));
+  };
+
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-      <h3 className="font-extrabold text-slate-800 text-lg mb-6">Inventory Stock Listing</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {inventoryAlerts.map(item => (
-          <div key={item.name} className="p-4 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-center">
+    <div className="flex flex-col gap-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-xl font-black text-slate-800">Inventory Stock Listing</h2>
+        <span className="px-3 py-1 bg-green-50 border border-green-200 text-green-700 text-xs font-bold rounded-full">{items.length} Products</span>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Item Addition Form */}
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm h-fit">
+          <h3 className="font-extrabold text-slate-800 text-sm mb-4">Add New Product</h3>
+          <form onSubmit={addItem} className="flex flex-col gap-4">
             <div>
-              <h4 className="font-bold text-slate-800 text-sm">{item.name}</h4>
-              <p className="text-xs text-slate-500 mt-1">Status: {item.qty}</p>
+              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Item Name</label>
+              <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="e.g. Britannia Brown Bread" className="w-full h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 focus:outline-none focus:border-green-600 text-xs font-semibold" />
             </div>
-            <span className={`px-2.5 py-0.5 rounded text-[10px] font-bold`} style={{ backgroundColor: `${item.color}15`, color: item.color }}>
-              {item.status}
-            </span>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Barcode (Numeric)</label>
+                <input type="text" value={barcode} onChange={e => setBarcode(e.target.value)} placeholder="e.g. 890106" className="w-full h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 focus:outline-none focus:border-green-600 text-xs font-semibold" />
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Emoji Icon</label>
+                <input type="text" value={emoji} onChange={e => setEmoji(e.target.value)} placeholder="🍞" className="w-full h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 focus:outline-none focus:border-green-600 text-xs font-semibold text-center" />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Price (₹)</label>
+                <input type="number" value={price} onChange={e => setPrice(e.target.value)} placeholder="₹45" className="w-full h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 focus:outline-none focus:border-green-600 text-xs font-semibold" />
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Initial Stock</label>
+                <input type="number" value={qty} onChange={e => setQty(e.target.value)} placeholder="100" className="w-full h-10 px-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 focus:outline-none focus:border-green-600 text-xs font-semibold" />
+              </div>
+            </div>
+
+            <button type="submit" className="w-full h-11 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl shadow-md transition text-xs uppercase tracking-wider mt-2">
+              Add To Store Inventory
+            </button>
+          </form>
+        </div>
+
+        {/* Stock List Grid */}
+        <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+          <h3 className="font-extrabold text-slate-800 text-sm mb-4">Current Catalog List</h3>
+          <div className="flex flex-col gap-3 max-h-[460px] overflow-y-auto pr-1">
+            {items.map(item => (
+              <div key={item.id} className="p-4 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-center">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl bg-white w-10 h-10 rounded-lg flex items-center justify-center border border-slate-100 shadow-sm shrink-0">{item.emoji || '📦'}</span>
+                  <div>
+                    <h4 className="font-bold text-slate-800 text-xs">{item.name}</h4>
+                    <p className="text-[10px] text-slate-400 mt-1 font-mono">Barcode: {item.barcode} · ₹{item.price}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span className={`px-2.5 py-0.5 rounded text-[9px] font-black uppercase`} style={{ backgroundColor: item.qty <= 0 ? '#FEE2E2' : item.qty <= 15 ? '#FFEDD5' : '#D1FAE5', color: item.qty <= 0 ? '#DC2626' : item.qty <= 15 ? '#D97706' : '#059669' }}>
+                    {item.qty <= 0 ? 'Out of Stock' : item.qty <= 15 ? `Low Stock (${item.qty})` : `In Stock (${item.qty})`}
+                  </span>
+                  <button onClick={() => deleteItem(item.id)} className="text-slate-400 hover:text-red-500 font-bold transition text-xs px-2 py-1">Delete</button>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );
