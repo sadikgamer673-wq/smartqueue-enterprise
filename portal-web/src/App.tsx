@@ -455,14 +455,28 @@ function Homepage() {
             <p className="text-xs text-slate-500 leading-relaxed max-w-[200px]">
               Open the app and scan product barcodes using your device camera.
             </p>
-            <div className="w-full h-36 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 relative overflow-hidden">
-              <div className="w-18 h-28 bg-slate-900 border-2 border-slate-800 rounded-xl p-1 shadow-md flex flex-col items-center justify-between">
-                <div className="w-12 h-12 bg-white rounded-md mt-1 flex flex-col items-center justify-center text-[7px] text-slate-900 font-extrabold p-1">
-                  <QrCode size={14} className="text-[#16C45B]" />
-                  <span>BARCODE</span>
+            <div className="w-full h-44 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 relative overflow-hidden">
+              {/* Realistic Scanner Phone */}
+              <div className="w-[110px] h-[160px] bg-slate-900 border-[3px] border-slate-800 rounded-2xl p-1 shadow-md flex flex-col justify-between relative overflow-hidden select-none">
+                <div className="h-full bg-slate-950 rounded-xl p-1 flex flex-col justify-between text-white text-[7px] relative">
+                  {/* Camera scan window mockup */}
+                  <div className="w-full h-24 bg-slate-900 rounded-lg relative overflow-hidden flex items-center justify-center border border-slate-800">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 border-2 border-dashed border-green-500/50 rounded flex items-center justify-center">
+                      <QrCode size={16} className="text-green-500/40" />
+                    </div>
+                    {/* Sweeping scan laser */}
+                    <div className="absolute left-0 w-full h-0.5 bg-[#16C45B] top-1/3 animate-bounce"></div>
+                    <span className="absolute bottom-1 right-1 text-[5px] bg-[#16C45B] text-slate-950 font-black px-1 rounded">CAM ON</span>
+                  </div>
+                  {/* Product popup indicator */}
+                  <div className="bg-white text-slate-950 p-1 rounded-md text-[6px] flex justify-between items-center shadow-md">
+                    <div>
+                      <p className="font-black">Maggi Noodles</p>
+                      <p className="text-[5px] text-slate-400">₹14.00</p>
+                    </div>
+                    <span className="text-[#16C45B] font-bold">✓ Added</span>
+                  </div>
                 </div>
-                <div className="w-full h-1 bg-[#16C45B] animate-bounce"></div>
-                <span className="text-[6px] text-slate-500 pb-1">SCANNING...</span>
               </div>
             </div>
           </div>
@@ -474,13 +488,37 @@ function Homepage() {
             <p className="text-xs text-slate-500 leading-relaxed max-w-[200px]">
               Review your cart and make secure payment using UPI, cards or wallets.
             </p>
-            <div className="w-full h-36 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 relative overflow-hidden">
-              <div className="w-18 h-28 bg-slate-900 border-2 border-slate-800 rounded-xl p-1.5 shadow-md flex flex-col justify-between text-white text-[7px]">
-                <div>
-                  <p className="font-bold border-b border-slate-700 pb-1 text-center">Checkout</p>
-                  <p className="mt-2 text-green-400 font-extrabold text-center text-[8px]">₹148.00</p>
+            <div className="w-full h-44 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 relative overflow-hidden">
+              {/* Realistic Checkout Payment Phone */}
+              <div className="w-[110px] h-[160px] bg-slate-900 border-[3px] border-slate-800 rounded-2xl p-1 shadow-md flex flex-col justify-between relative overflow-hidden select-none">
+                <div className="h-full bg-white rounded-xl p-1.5 flex flex-col justify-between text-slate-800 text-[6px] text-left">
+                  <div>
+                    <h6 className="font-black text-slate-950 border-b pb-1 text-[7px]">Order Checkout</h6>
+                    <div className="mt-1 space-y-1">
+                      <div className="flex justify-between text-slate-400">
+                        <span>Cart Total</span>
+                        <span>₹148.00</span>
+                      </div>
+                      <div className="flex justify-between text-[#16C45B] font-bold">
+                        <span>Discount</span>
+                        <span>-₹10.00</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Credit Card Graphic mockup */}
+                  <div className="w-full h-10 rounded-md bg-gradient-to-r from-blue-600 to-indigo-600 p-1 flex flex-col justify-between text-white">
+                    <div className="flex justify-between items-center">
+                      <span className="text-[5px] font-bold uppercase">SmartPay</span>
+                      <span className="text-[4px]">•••• 4820</span>
+                    </div>
+                    <span className="text-[5px] font-mono tracking-wider">₹138.00 PAY</span>
+                  </div>
+
+                  <button className="w-full py-1.5 bg-[#16C45B] text-white font-black rounded-md text-center text-[5px] uppercase tracking-wide">
+                    ✓ Pay Securely
+                  </button>
                 </div>
-                <button className="w-full py-1 bg-[#16C45B] rounded text-slate-950 font-bold text-[6px] text-center">PAY SECURELY</button>
               </div>
             </div>
           </div>
@@ -492,10 +530,26 @@ function Homepage() {
             <p className="text-xs text-slate-500 leading-relaxed max-w-[200px]">
               Receive instant QR code after successful payment confirmation.
             </p>
-            <div className="w-full h-36 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 relative overflow-hidden">
-              <div className="w-18 h-28 bg-slate-900 border-2 border-slate-800 rounded-xl p-2 flex flex-col items-center justify-center shadow-md">
-                <QrCode size={20} className="text-[#16C45B] animate-pulse" />
-                <span className="text-[6px] text-white mt-2 font-mono">PASS VALID</span>
+            <div className="w-full h-44 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 relative overflow-hidden">
+              {/* Realistic QR pass Phone */}
+              <div className="w-[110px] h-[160px] bg-slate-900 border-[3px] border-slate-800 rounded-2xl p-1 shadow-md flex flex-col justify-between relative overflow-hidden select-none">
+                <div className="h-full bg-white rounded-xl p-1.5 flex flex-col items-center justify-between text-slate-800 text-[6px]">
+                  <div className="text-center">
+                    <span className="font-black text-[#16C45B] text-[7px]">Order Verified</span>
+                    <p className="text-[5px] text-slate-400">Exit Ticket Generated</p>
+                  </div>
+                  
+                  {/* Detailed mini QR Ticket */}
+                  <div className="w-16 h-16 bg-slate-100 rounded-md p-1 flex flex-col items-center justify-center border border-slate-200">
+                    <QrCode size={16} className="text-slate-900" />
+                    <span className="text-[4px] mt-1 font-mono tracking-tight font-black">PASS#123</span>
+                  </div>
+
+                  <div className="w-full border-t pt-1 flex justify-between items-center text-[5px] text-slate-400">
+                    <span>Valid For</span>
+                    <span className="text-green-600 font-extrabold">1 Gate Exit</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -507,11 +561,25 @@ function Homepage() {
             <p className="text-xs text-slate-500 leading-relaxed max-w-[200px]">
               Show QR code at the exit gate for instant verification and you're good to go!
             </p>
-            <div className="w-full h-36 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 relative overflow-hidden">
-              <div className="w-24 h-20 bg-slate-850 rounded border border-slate-700 flex items-center justify-between p-2 shadow-md">
-                <span className="text-lg">🚪</span>
-                <span className="text-[7px] text-green-400 font-extrabold uppercase animate-pulse">GATE APPROVED</span>
-                <span className="text-lg">🚶</span>
+            <div className="w-full h-44 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 relative overflow-hidden">
+              {/* Exit Gate Mockup Graphic */}
+              <div className="w-[130px] h-[120px] bg-slate-800 rounded-xl border-2 border-slate-700 p-2 shadow-md flex flex-col justify-between">
+                <div className="flex justify-between items-center border-b border-slate-700 pb-1 text-[7px] font-black text-slate-300">
+                  <span>Exit Kiosk #01</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-ping"></span>
+                </div>
+                
+                {/* Gate sensor display panel */}
+                <div className="bg-slate-950 rounded p-1 text-[6px] text-center text-green-400 font-mono flex flex-col items-center gap-0.5">
+                  <span>✓ PASS VERIFIED</span>
+                  <span className="text-white text-[8px] font-bold">GATE OPENING</span>
+                </div>
+
+                <div className="flex justify-around items-center text-lg mt-1">
+                  <span>🚪</span>
+                  <span className="text-[10px] text-green-400 font-bold">➔</span>
+                  <span>🚶</span>
+                </div>
               </div>
             </div>
           </div>
@@ -528,7 +596,7 @@ function Homepage() {
           
           {/* Customer Portal */}
           <div className="bg-[#F8FAFC] border border-slate-150 rounded-2xl p-8 flex justify-between hover:shadow-md hover:bg-white hover:border-[#16C45B]/30 transition-all duration-300 text-left relative overflow-hidden group">
-            <div className="flex-1 flex flex-col justify-between z-10">
+            <div className="flex-grow flex flex-col justify-between z-10">
               <div>
                 <div className="w-12 h-12 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl mb-6 font-bold shadow-xs">🛒</div>
                 <h3 className="text-lg font-black text-slate-900">Customer Portal</h3>
@@ -542,7 +610,7 @@ function Homepage() {
             </div>
             {/* Mock phone graphic inside card */}
             <div className="w-[100px] h-[180px] bg-slate-900 border-[4px] border-slate-800 rounded-2xl p-1.5 shadow-md flex flex-col justify-between shrink-0 select-none ml-2 relative z-10 self-center">
-              <div className="h-full bg-slate-50 rounded-xl p-1 flex flex-col justify-between text-[6px] text-slate-800">
+              <div className="h-full bg-slate-50 rounded-xl p-1.5 flex flex-col justify-between text-[6px] text-slate-800">
                 <span className="font-extrabold text-[7px] text-slate-900">Cart</span>
                 <div className="bg-white p-1 rounded border border-slate-100 mb-0.5">Soda 1x</div>
                 <div className="bg-white p-1 rounded border border-slate-100 mb-0.5">Chips 1x</div>
@@ -553,7 +621,7 @@ function Homepage() {
 
           {/* Worker Portal */}
           <div className="bg-[#F8FAFC] border border-slate-150 rounded-2xl p-8 flex justify-between hover:shadow-md hover:bg-white hover:border-[#16C45B]/30 transition-all duration-300 text-left relative overflow-hidden group">
-            <div className="flex-1 flex flex-col justify-between z-10">
+            <div className="flex-grow flex flex-col justify-between z-10">
               <div>
                 <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl mb-6 font-bold shadow-xs">🕵️</div>
                 <h3 className="text-lg font-black text-slate-900">Worker Portal</h3>
@@ -576,7 +644,7 @@ function Homepage() {
 
           {/* Admin Dashboard */}
           <div className="bg-[#F8FAFC] border border-slate-150 rounded-2xl p-8 flex justify-between hover:shadow-md hover:bg-white hover:border-[#16C45B]/30 transition-all duration-300 text-left relative overflow-hidden group">
-            <div className="flex-1 flex flex-col justify-between z-10">
+            <div className="flex-grow flex flex-col justify-between z-10">
               <div>
                 <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl mb-6 font-bold shadow-xs">📊</div>
                 <h3 className="text-lg font-black text-slate-900">Admin Dashboard</h3>
