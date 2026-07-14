@@ -667,10 +667,6 @@ function Homepage() {
           </div>
         </div>
       </footer>
-    </div>" className="hover:text-white">Terms of Service</a>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
