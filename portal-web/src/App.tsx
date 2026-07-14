@@ -144,31 +144,31 @@ function Homepage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 font-sans overflow-x-hidden selection:bg-green-500 selection:text-white">
+    <div className="min-h-screen bg-slate-50/50 text-slate-900 font-sans overflow-x-hidden selection:bg-green-500 selection:text-white">
       {/* Styled Inline Keyframes for Premium Floating Effect */}
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes float-slow {
           0%, 100% { transform: translateY(0px) rotate(0.5deg); }
-          50% { transform: translateY(-12px) rotate(-0.5deg); }
+          50% { transform: translateY(-15px) rotate(-0.5deg); }
         }
         @keyframes float-slower {
           0%, 100% { transform: translateY(0px) rotate(-0.5deg); }
-          50% { transform: translateY(-16px) rotate(0.5deg); }
+          50% { transform: translateY(-20px) rotate(0.5deg); }
         }
-        .animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
-        .animate-float-slower { animation: float-slower 8s ease-in-out infinite; }
+        .animate-float-slow { animation: float-slow 7s ease-in-out infinite; }
+        .animate-float-slower { animation: float-slower 9s ease-in-out infinite; }
       `}} />
 
-      {/* Navigation Header - White Background */}
-      <nav className="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-sm">
+      {/* Navigation Header */}
+      <nav className="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20 items-center">
             {/* Logo */}
-            <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
               <div className="w-10 h-10 rounded-xl bg-green-600 flex items-center justify-center text-white text-xl font-bold shadow-md">🛒</div>
               <div>
-                <span className="text-lg font-black text-slate-900 tracking-tight">SmartQueue</span>
-                <p className="text-[9px] text-green-600 font-extrabold -mt-1 tracking-wider uppercase">Enterprise Ecosystem</p>
+                <span className="text-xl font-black text-slate-900 tracking-tight">SmartQueue</span>
+                <p className="text-[9px] text-green-600 font-black -mt-1.5 tracking-wider uppercase">Enterprise Ecosystem</p>
               </div>
             </div>
 
@@ -179,23 +179,23 @@ function Homepage() {
               <a href="#how-it-works" className="hover:text-green-600 transition-colors">How It Works</a>
               <a href="#portals" className="hover:text-green-600 transition-colors">Solutions</a>
               <a href="#why-choose-us" className="hover:text-green-600 transition-colors">About Us</a>
-              <a href="#" className="hover:text-green-600 transition-colors flex items-center gap-0.5">Resources ▾</a>
+              <a href="#" className="hover:text-green-600 transition-colors flex items-center gap-1">Resources <span className="text-[10px]">▼</span></a>
               <a href="#" className="hover:text-green-600 transition-colors">Contact</a>
             </div>
             
             {/* Access Portals button */}
             <div className="flex items-center gap-4">
-              <a href="#portals" className="px-5 py-2.5 text-xs font-bold text-white bg-green-600 hover:bg-green-700 rounded-lg shadow-sm flex items-center gap-1.5 transition-all">
-                Access Portals <span className="text-base font-normal">☰</span>
+              <a href="#portals" className="px-5 py-2.5 text-xs font-bold text-white bg-green-600 hover:bg-green-700 rounded-lg shadow-sm flex items-center gap-2 transition-all">
+                Access Portals <span className="text-sm">▦</span>
               </a>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section - Dark Gradient Background */}
+      {/* Hero Section */}
       <header id="home" className="relative bg-slate-950 text-white pt-20 pb-28 border-b border-slate-900 overflow-hidden">
-        {/* Neon Glow Highlights */}
+        {/* Glow Highlights */}
         <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-green-500/10 rounded-full blur-[100px] pointer-events-none animate-pulse"></div>
         <div className="absolute bottom-12 right-1/4 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[130px] pointer-events-none"></div>
 
@@ -204,21 +204,21 @@ function Homepage() {
             
             {/* Left Description */}
             <div className="lg:col-span-6 flex flex-col items-start text-left">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black bg-green-500/10 text-green-400 border border-green-500/20 mb-6 uppercase tracking-wider">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black bg-green-500/15 text-green-400 border border-green-500/20 mb-6 uppercase tracking-wider">
                 🟢 AI-Powered Self-Checkout Platform
               </div>
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.08] text-white">
                 The Future of Shopping is <span className="text-green-500">Queue-Free</span>
               </h1>
-              <p className="mt-6 text-base text-slate-400 leading-relaxed max-w-lg">
+              <p className="mt-6 text-sm md:text-base text-slate-400 leading-relaxed max-w-lg">
                 SmartQueue Enterprise empowers retailers with a smart self-checkout ecosystem. Shoppers scan, pay, and exit seamlessly with instant verification.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-4 items-center">
-                <a href="#portals" className="px-7 py-3.5 text-sm font-bold text-white bg-green-600 hover:bg-green-700 rounded-lg shadow-md transition-all">
+                <a href="#portals" className="px-7 py-3.5 text-xs font-extrabold text-white bg-green-600 hover:bg-green-700 rounded-lg shadow-md transition-all">
                   Explore Platform →
                 </a>
-                <a href="http://localhost:5000/api/v1/docs" target="_blank" rel="noreferrer" className="px-6 py-3.5 text-sm font-bold text-white bg-transparent border border-slate-700 hover:border-slate-500 rounded-lg flex items-center gap-2 transition-all">
+                <a href="http://localhost:5000/api/v1/docs" target="_blank" rel="noreferrer" className="px-6 py-3.5 text-xs font-bold text-white bg-transparent border border-slate-700 hover:border-slate-500 rounded-lg flex items-center gap-2 transition-all">
                   <span>▶</span> Watch Demo
                 </a>
               </div>
@@ -232,7 +232,7 @@ function Homepage() {
                 </div>
                 <div className="text-xs">
                   <div className="flex text-amber-400 font-bold">⭐⭐⭐⭐⭐</div>
-                  <p className="text-slate-400 font-semibold">Trusted by 500+ Retail Stores</p>
+                  <p className="text-slate-400 font-semibold mt-0.5">Trusted by 500+ Retail Stores</p>
                 </div>
               </div>
             </div>
@@ -245,7 +245,7 @@ function Homepage() {
                 <div className="absolute top-0 inset-x-0 h-4 bg-slate-950 rounded-b-xl flex justify-center items-center z-20">
                   <div className="w-14 h-1.5 bg-slate-800 rounded-full"></div>
                 </div>
-                <div className="h-full bg-slate-50 rounded-[34px] p-4 flex flex-col justify-between text-xs text-slate-800 text-left relative z-10">
+                <div className="h-full bg-white rounded-[34px] p-4 flex flex-col justify-between text-xs text-slate-800 text-left relative z-10">
                   <div>
                     <div className="flex justify-between items-center mb-4 mt-2">
                       <span className="font-black text-sm text-slate-900">My Cart</span>
@@ -253,7 +253,7 @@ function Homepage() {
                     </div>
 
                     <div className="space-y-2">
-                      <div className="flex justify-between items-center bg-white p-2.5 rounded-xl border border-slate-100 shadow-sm">
+                      <div className="flex justify-between items-center bg-slate-50 p-2 rounded-xl border border-slate-100 shadow-xs">
                         <div className="flex items-center gap-2">
                           <span className="text-lg">🥤</span>
                           <div>
@@ -263,7 +263,7 @@ function Homepage() {
                         </div>
                         <span className="bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded text-[10px]">2 ▾</span>
                       </div>
-                      <div className="flex justify-between items-center bg-white p-2.5 rounded-xl border border-slate-100 shadow-sm">
+                      <div className="flex justify-between items-center bg-slate-50 p-2 rounded-xl border border-slate-100 shadow-xs">
                         <div className="flex items-center gap-2">
                           <span className="text-lg">🥔</span>
                           <div>
@@ -273,7 +273,7 @@ function Homepage() {
                         </div>
                         <span className="bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded text-[10px]">1 ▾</span>
                       </div>
-                      <div className="flex justify-between items-center bg-white p-2.5 rounded-xl border border-slate-100 shadow-sm">
+                      <div className="flex justify-between items-center bg-slate-50 p-2 rounded-xl border border-slate-100 shadow-xs">
                         <div className="flex items-center gap-2">
                           <span className="text-lg">🥛</span>
                           <div>
@@ -294,7 +294,13 @@ function Homepage() {
                     <button className="w-full py-2.5 bg-green-600 hover:bg-green-700 text-white font-extrabold rounded-xl text-center shadow-md text-[10px] transition-all">
                       Proceed to Pay
                     </button>
-                    <p className="text-[8px] text-slate-400 text-center mt-1.5">🛡️ Secure Payment</p>
+                    {/* Mock Payment Badges */}
+                    <div className="flex justify-center items-center gap-2 mt-2 opacity-65 grayscale text-[8px] font-bold text-slate-500">
+                      <span>UPI</span>
+                      <span>VISA</span>
+                      <span>MC</span>
+                      <span>RuPay</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -304,7 +310,7 @@ function Homepage() {
                 <div className="absolute top-0 inset-x-0 h-4 bg-slate-950 rounded-b-xl flex justify-center items-center z-20">
                   <div className="w-14 h-1.5 bg-slate-800 rounded-full"></div>
                 </div>
-                <div className="h-full bg-slate-50 rounded-[34px] p-4 flex flex-col items-center justify-between text-xs text-slate-800 text-center relative z-10">
+                <div className="h-full bg-white rounded-[34px] p-4 flex flex-col items-center justify-between text-xs text-slate-800 text-center relative z-10">
                   <div className="mt-4">
                     <div className="w-9 h-9 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-lg font-bold mb-2 mx-auto">✓</div>
                     <h5 className="font-extrabold text-[11px] text-slate-900">Payment Successful</h5>
@@ -314,7 +320,7 @@ function Homepage() {
                   {/* Detailed QR Graphic */}
                   <div className="w-32 h-32 bg-white rounded-2xl p-3 flex items-center justify-center border border-slate-100 shadow-sm">
                     <div className="w-full h-full bg-slate-900 rounded-lg flex flex-col items-center justify-center text-white font-extrabold text-[9px] gap-1">
-                      <QrCode size={24} className="text-green-500" />
+                      <QrCode size={24} className="text-green-500 animate-pulse" />
                       <span>EXIT PASS</span>
                     </div>
                   </div>
@@ -332,12 +338,12 @@ function Homepage() {
         </div>
       </header>
 
-      {/* Features Row - White Background with Cards */}
-      <section id="features" className="bg-slate-50/50 py-16 border-b border-slate-100">
+      {/* Features Row */}
+      <section id="features" className="bg-white py-16 border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
             
-            <div className="bg-white border border-slate-100 p-6 rounded-2xl text-left shadow-sm flex flex-col items-start gap-3">
+            <div className="bg-slate-50/50 border border-slate-100 p-6 rounded-2xl text-left shadow-xs flex flex-col items-start gap-3">
               <span className="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl font-bold">⚡</span>
               <div>
                 <h4 className="font-extrabold text-sm text-slate-900">Instant Verification</h4>
@@ -345,7 +351,7 @@ function Homepage() {
               </div>
             </div>
 
-            <div className="bg-white border border-slate-100 p-6 rounded-2xl text-left shadow-sm flex flex-col items-start gap-3">
+            <div className="bg-slate-50/50 border border-slate-100 p-6 rounded-2xl text-left shadow-xs flex flex-col items-start gap-3">
               <span className="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl font-bold">🛡️</span>
               <div>
                 <h4 className="font-extrabold text-sm text-slate-900">Secure Payments</h4>
@@ -353,7 +359,7 @@ function Homepage() {
               </div>
             </div>
 
-            <div className="bg-white border border-slate-100 p-6 rounded-2xl text-left shadow-sm flex flex-col items-start gap-3">
+            <div className="bg-slate-50/50 border border-slate-100 p-6 rounded-2xl text-left shadow-xs flex flex-col items-start gap-3">
               <span className="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl font-bold">🔳</span>
               <div>
                 <h4 className="font-extrabold text-sm text-slate-900">QR Exit Gate</h4>
@@ -361,7 +367,7 @@ function Homepage() {
               </div>
             </div>
 
-            <div className="bg-white border border-slate-100 p-6 rounded-2xl text-left shadow-sm flex flex-col items-start gap-3">
+            <div className="bg-slate-50/50 border border-slate-100 p-6 rounded-2xl text-left shadow-xs flex flex-col items-start gap-3">
               <span className="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl font-bold">🔄</span>
               <div>
                 <h4 className="font-extrabold text-sm text-slate-900">Real-time Sync</h4>
@@ -369,7 +375,7 @@ function Homepage() {
               </div>
             </div>
 
-            <div className="bg-white border border-slate-100 p-6 rounded-2xl text-left shadow-sm flex flex-col items-start gap-3 sm:col-span-2 lg:col-span-1">
+            <div className="bg-slate-50/50 border border-slate-100 p-6 rounded-2xl text-left shadow-xs flex flex-col items-start gap-3 sm:col-span-2 lg:col-span-1">
               <span className="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl font-bold">⚙️</span>
               <div>
                 <h4 className="font-extrabold text-sm text-slate-900">Enterprise Grade</h4>
@@ -381,117 +387,166 @@ function Homepage() {
         </div>
       </section>
 
-      {/* How SmartQueue Works - White Background */}
-      <section id="how-it-works" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center border-b border-slate-100">
+      {/* How SmartQueue Works */}
+      <section id="how-it-works" className="bg-white py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center border-b border-slate-100">
         <h2 className="text-3xl font-black text-slate-950">How <span className="text-green-600">SmartQueue</span> Works</h2>
         <p className="text-slate-500 text-sm mt-2 mb-16">A simple 4-step process for a smarter shopping experience</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative">
           
           {/* Step 1 */}
-          <div className="bg-white border border-slate-100 p-6 rounded-2xl flex flex-col items-center gap-4 text-center shadow-sm relative group">
+          <div className="bg-white border border-slate-100 p-6 rounded-2xl flex flex-col items-center gap-4 text-center shadow-xs relative group">
             <span className="w-8 h-8 rounded-full bg-green-600 text-white font-extrabold flex items-center justify-center text-xs shadow-md">1</span>
             <h4 className="font-extrabold text-slate-900 text-sm">Scan Products</h4>
             <p className="text-xs text-slate-500 leading-relaxed max-w-[200px]">
               Open the app and scan product barcodes using your device camera.
             </p>
-            <div className="w-full h-32 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 group-hover:bg-green-50/50 transition-colors">
-              <span className="text-4xl">📷</span>
+            <div className="w-full h-32 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 group-hover:bg-green-50/50 transition-colors relative overflow-hidden">
+              {/* Phone scanning graphic */}
+              <div className="w-20 h-28 bg-slate-800 rounded-xl border-4 border-slate-700 flex flex-col justify-between p-2">
+                <div className="w-full h-1 bg-green-500 animate-bounce"></div>
+                <div className="w-full h-6 bg-slate-900 rounded flex items-center justify-center text-[7px] text-white">SCAN</div>
+              </div>
             </div>
           </div>
 
           {/* Step 2 */}
-          <div className="bg-white border border-slate-100 p-6 rounded-2xl flex flex-col items-center gap-4 text-center shadow-sm relative group">
+          <div className="bg-white border border-slate-100 p-6 rounded-2xl flex flex-col items-center gap-4 text-center shadow-xs relative group">
             <span className="w-8 h-8 rounded-full bg-green-600 text-white font-extrabold flex items-center justify-center text-xs shadow-md">2</span>
             <h4 className="font-extrabold text-slate-900 text-sm">Make Payment</h4>
             <p className="text-xs text-slate-500 leading-relaxed max-w-[200px]">
               Review your cart and make secure payment using UPI, cards or wallets.
             </p>
-            <div className="w-full h-32 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 group-hover:bg-green-50/50 transition-colors">
-              <span className="text-4xl">💳</span>
+            <div className="w-full h-32 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 group-hover:bg-green-50/50 transition-colors relative overflow-hidden">
+              {/* Card billing payment mockup graphic */}
+              <div className="w-20 h-28 bg-slate-800 rounded-xl border-4 border-slate-700 p-2 flex flex-col justify-between text-white text-[7px]">
+                <div>
+                  <p className="font-bold border-b border-slate-700 pb-1">Checkout</p>
+                  <p className="mt-2 text-green-400 font-bold">₹115.00</p>
+                </div>
+                <button className="w-full py-1 bg-green-500 rounded text-slate-950 font-bold">PAY NOW</button>
+              </div>
             </div>
           </div>
 
           {/* Step 3 */}
-          <div className="bg-white border border-slate-100 p-6 rounded-2xl flex flex-col items-center gap-4 text-center shadow-sm relative group">
+          <div className="bg-white border border-slate-100 p-6 rounded-2xl flex flex-col items-center gap-4 text-center shadow-xs relative group">
             <span className="w-8 h-8 rounded-full bg-green-600 text-white font-extrabold flex items-center justify-center text-xs shadow-md">3</span>
             <h4 className="font-extrabold text-slate-900 text-sm">Get QR Code</h4>
             <p className="text-xs text-slate-500 leading-relaxed max-w-[200px]">
               Receive instant QR code after successful payment confirmation.
             </p>
-            <div className="w-full h-32 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 group-hover:bg-green-50/50 transition-colors">
-              <span className="text-4xl">🎟️</span>
+            <div className="w-full h-32 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 group-hover:bg-green-50/50 transition-colors relative overflow-hidden">
+              {/* QR Mockup inside phone */}
+              <div className="w-20 h-28 bg-slate-800 rounded-xl border-4 border-slate-700 p-2 flex flex-col items-center justify-center">
+                <QrCode size={24} className="text-green-400" />
+                <span className="text-[6px] text-slate-400 mt-2 font-mono">SQ123456</span>
+              </div>
             </div>
           </div>
 
           {/* Step 4 */}
-          <div className="bg-white border border-slate-100 p-6 rounded-2xl flex flex-col items-center gap-4 text-center shadow-sm relative group">
+          <div className="bg-white border border-slate-100 p-6 rounded-2xl flex flex-col items-center gap-4 text-center shadow-xs relative group">
             <span className="w-8 h-8 rounded-full bg-green-600 text-white font-extrabold flex items-center justify-center text-xs shadow-md">4</span>
             <h4 className="font-extrabold text-slate-900 text-sm">Exit Seamlessly</h4>
             <p className="text-xs text-slate-500 leading-relaxed max-w-[200px]">
               Show QR code at the exit gate for instant verification and you're good to go!
             </p>
-            <div className="w-full h-32 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 group-hover:bg-green-50/50 transition-colors">
-              <span className="text-4xl">🚪</span>
+            <div className="w-full h-32 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 group-hover:bg-green-50/50 transition-colors relative overflow-hidden">
+              {/* Exit Gate Illustration mockup */}
+              <div className="w-24 h-20 bg-slate-800 rounded border-2 border-slate-700 flex items-center justify-between p-2">
+                <span className="text-xl">🚪</span>
+                <span className="text-[8px] text-green-400 font-bold animate-pulse">GATE OPEN</span>
+                <span className="text-xl">🚶</span>
+              </div>
             </div>
           </div>
 
         </div>
       </section>
 
-      {/* Access SmartQueue Portals - White Background */}
-      <section id="portals" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center border-b border-slate-100">
+      {/* Access SmartQueue Portals */}
+      <section id="portals" className="bg-white py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center border-b border-slate-100">
         <h2 className="text-3xl font-black text-slate-950">Access <span className="text-green-600">SmartQueue</span> Portals</h2>
         <p className="text-slate-500 text-sm mt-2 mb-16">Choose the portal that matches your role and access the right tools instantly</p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           
           {/* Customer Portal */}
-          <div className="bg-slate-50 border border-slate-100 rounded-2xl p-8 flex flex-col justify-between hover:border-green-500/20 hover:bg-white hover:shadow-md transition-all text-left relative overflow-hidden group">
-            <div>
-              <div className="w-12 h-12 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl mb-6 font-bold shadow-sm">📱</div>
-              <h3 className="text-lg font-black text-slate-900">Customer Portal</h3>
-              <p className="text-slate-500 text-xs mt-2.5 leading-relaxed">
-                Scan products, add to cart, make payments and get QR code for exit.
-              </p>
+          <div className="bg-slate-50 border border-slate-100 rounded-3xl p-8 flex justify-between hover:border-green-500/20 hover:bg-white hover:shadow-md transition-all text-left relative overflow-hidden group">
+            <div className="flex-1 flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl mb-6 font-bold shadow-sm">📱</div>
+                <h3 className="text-lg font-black text-slate-900">Customer Portal</h3>
+                <p className="text-slate-500 text-xs mt-2.5 leading-relaxed max-w-[180px]">
+                  Scan products, add to cart, make payments and get QR code for exit.
+                </p>
+              </div>
+              <button onClick={() => navigate('/customer/login')} className="w-36 mt-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl text-center text-xs transition-all shadow-xs">
+                Enter Customer Portal →
+              </button>
             </div>
-            <button onClick={() => navigate('/customer/login')} className="w-full mt-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl text-center text-xs transition-all shadow-sm">
-              Enter Customer Portal →
-            </button>
+            {/* Right Graphic: Phone mockup inside card */}
+            <div className="w-24 h-40 bg-slate-900 border-[3px] border-slate-800 rounded-3xl p-1.5 shadow-md flex flex-col justify-between shrink-0 select-none ml-2">
+              <div className="h-full bg-slate-50 rounded-2xl p-1.5 flex flex-col justify-between text-[7px] text-slate-800">
+                <span className="font-extrabold text-[8px]">My Cart</span>
+                <div className="bg-white p-1 rounded-md border border-slate-100 shadow-xs mb-1">Amul Milk x1</div>
+                <div className="py-1 bg-green-600 text-white text-center font-bold rounded-md text-[6px]">PAY</div>
+              </div>
+            </div>
           </div>
 
           {/* Worker Portal */}
-          <div className="bg-slate-50 border border-slate-100 rounded-2xl p-8 flex flex-col justify-between hover:border-blue-500/20 hover:bg-white hover:shadow-md transition-all text-left relative overflow-hidden group">
-            <div>
-              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl mb-6 font-bold shadow-sm">👷</div>
-              <h3 className="text-lg font-black text-slate-900">Worker Portal</h3>
-              <p className="text-slate-500 text-xs mt-2.5 leading-relaxed">
-                Verify customer QR codes, check orders and manage exit gates.
-              </p>
+          <div className="bg-slate-50 border border-slate-100 rounded-3xl p-8 flex justify-between hover:border-blue-500/20 hover:bg-white hover:shadow-md transition-all text-left relative overflow-hidden group">
+            <div className="flex-1 flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl mb-6 font-bold shadow-sm">👷</div>
+                <h3 className="text-lg font-black text-slate-900">Worker Portal</h3>
+                <p className="text-slate-500 text-xs mt-2.5 leading-relaxed max-w-[180px]">
+                  Verify customer QR codes, check orders and manage exit gates.
+                </p>
+              </div>
+              <button onClick={() => navigate('/worker/login')} className="w-36 mt-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-center text-xs transition-all shadow-xs">
+                Enter Worker Portal →
+              </button>
             </div>
-            <button onClick={() => navigate('/worker/login')} className="w-full mt-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-center text-xs transition-all shadow-sm">
-              Enter Worker Portal →
-            </button>
+            {/* Right Graphic: Scan phone mockup inside card */}
+            <div className="w-24 h-40 bg-slate-900 border-[3px] border-slate-800 rounded-3xl p-1.5 shadow-md flex flex-col items-center justify-center shrink-0 select-none ml-2">
+              <QrCode size={32} className="text-blue-400" />
+              <span className="text-[6px] text-slate-500 mt-2 font-mono">SCAN PASS</span>
+            </div>
           </div>
 
           {/* Admin Dashboard */}
-          <div className="bg-slate-50 border border-slate-100 rounded-2xl p-8 flex flex-col justify-between hover:border-indigo-500/20 hover:bg-white hover:shadow-md transition-all text-left relative overflow-hidden group">
-            <div>
-              <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl mb-6 font-bold shadow-sm">📊</div>
-              <h3 className="text-lg font-black text-slate-900">Admin Dashboard</h3>
-              <p className="text-slate-500 text-xs mt-2.5 leading-relaxed">
-                Manage products, users, orders, analytics and system operations.
-              </p>
+          <div className="bg-slate-50 border border-slate-100 rounded-3xl p-8 flex justify-between hover:border-indigo-500/20 hover:bg-white hover:shadow-md transition-all text-left relative overflow-hidden group">
+            <div className="flex-1 flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl mb-6 font-bold shadow-sm">📊</div>
+                <h3 className="text-lg font-black text-slate-900">Admin Dashboard</h3>
+                <p className="text-slate-500 text-xs mt-2.5 leading-relaxed max-w-[180px]">
+                  Manage products, users, orders, analytics and system operations.
+                </p>
+              </div>
+              <button onClick={() => navigate('/admin')} className="w-36 mt-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-center text-xs transition-all shadow-xs">
+                Enter Admin Dashboard →
+              </button>
             </div>
-            <button onClick={() => navigate('/admin')} className="w-full mt-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-center text-xs transition-all shadow-sm">
-              Enter Admin Dashboard →
-            </button>
+            {/* Right Graphic: Laptop mockup screen */}
+            <div className="w-28 h-20 bg-slate-900 rounded-lg p-1 shadow-md border-2 border-slate-800 flex flex-col justify-between shrink-0 select-none ml-1 mt-4">
+              <div className="h-full bg-slate-950 rounded flex flex-col justify-between p-1.5 text-[6px] text-white">
+                <span className="font-extrabold text-green-400">Total Sales</span>
+                <span className="font-black text-[8px]">₹12,450</span>
+                <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
+                  <div className="w-3/4 h-full bg-green-500"></div>
+                </div>
+              </div>
+            </div>
           </div>
 
         </div>
       </section>
 
-      {/* KPI Numerical Stats Row - Dark Background */}
+      {/* KPI Numerical Stats Row */}
       <section className="bg-slate-950 text-white py-16 border-y border-slate-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-6 gap-8 text-center">
           <div className="flex flex-col items-center gap-1.5">
@@ -528,7 +583,7 @@ function Homepage() {
       </section>
 
       {/* Why Choose us & Testimonials */}
-      <section id="why-choose-us" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-slate-100">
+      <section id="why-choose-us" className="bg-white py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-slate-100">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           
           {/* Left Values */}
@@ -559,7 +614,7 @@ function Homepage() {
 
             {/* Video Placeholder */}
             <div className="w-full h-48 bg-slate-100 rounded-2xl border border-slate-200 mt-8 flex flex-col items-center justify-center text-slate-400 relative overflow-hidden group cursor-pointer">
-              <img className="absolute inset-0 w-full h-full object-cover opacity-60 filter blur-xs group-hover:scale-105 transition-transform" src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&auto=format&fit=crop&q=80" alt="Supermarket Aisle" />
+              <img className="absolute inset-0 w-full h-full object-cover opacity-60 filter blur-xs group-hover:scale-105 transition-transform animate-pulse" src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&auto=format&fit=crop&q=80" alt="Supermarket Aisle" />
               <div className="w-12 h-12 rounded-full bg-white/90 shadow-md flex items-center justify-center text-green-600 text-xl font-bold relative z-10 hover:scale-110 transition-transform">▶</div>
               <span className="text-slate-900 font-extrabold text-xs mt-3 relative z-10">See SmartQueue in Action</span>
               <span className="text-[10px] text-slate-700 font-bold mt-0.5 relative z-10">01 / 03</span>
@@ -601,7 +656,7 @@ function Homepage() {
       </section>
 
       {/* Brands Logos */}
-      <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="bg-white py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <p className="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest mb-8">Trusted by Leading Retailers</p>
         <div className="flex flex-wrap justify-center items-center gap-10 opacity-50 grayscale hover:grayscale-0 hover:opacity-85 transition-all text-xs font-black text-slate-500">
           <span>🍏 FreshMart</span>
@@ -615,7 +670,7 @@ function Homepage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-950 border-t border-slate-900 py-16 text-slate-400 text-xs">
+      <footer className="bg-slate-950 border-t border-slate-900 py-16 text-slate-400 text-xs relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12 text-left mb-12">
           
           <div className="flex flex-col gap-3">
@@ -626,6 +681,14 @@ function Homepage() {
             <p className="text-slate-500 mt-2 leading-relaxed">
               AI-powered self-checkout ecosystem that makes retail smarter, faster and queue-free.
             </p>
+            {/* Social media icons rows */}
+            <div className="flex items-center gap-3 mt-4 text-slate-500">
+              <span className="w-7 h-7 rounded-full bg-slate-900 border border-slate-800 hover:border-slate-700 hover:text-white flex items-center justify-center text-[10px] font-bold cursor-pointer">FB</span>
+              <span className="w-7 h-7 rounded-full bg-slate-900 border border-slate-800 hover:border-slate-700 hover:text-white flex items-center justify-center text-[10px] font-bold cursor-pointer">TW</span>
+              <span className="w-7 h-7 rounded-full bg-slate-900 border border-slate-800 hover:border-slate-700 hover:text-white flex items-center justify-center text-[10px] font-bold cursor-pointer">LN</span>
+              <span className="w-7 h-7 rounded-full bg-slate-900 border border-slate-800 hover:border-slate-700 hover:text-white flex items-center justify-center text-[10px] font-bold cursor-pointer">YT</span>
+              <span className="w-7 h-7 rounded-full bg-slate-900 border border-slate-800 hover:border-slate-700 hover:text-white flex items-center justify-center text-[10px] font-bold cursor-pointer">IG</span>
+            </div>
           </div>
 
           <div>
@@ -659,12 +722,16 @@ function Homepage() {
 
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-900 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-900 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 relative">
           <p>© 2026 SmartQueue Enterprise. All rights reserved.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-white">Privacy Policy</a>
             <a href="#" className="hover:text-white">Terms of Service</a>
           </div>
+          {/* Back to top circular button */}
+          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="absolute right-8 -top-8 w-10 h-10 rounded-full bg-green-500 hover:bg-green-400 text-slate-950 flex items-center justify-center text-sm font-bold shadow-md cursor-pointer transition-transform hover:scale-105 active:scale-95">
+            ▲
+          </button>
         </div>
       </footer>
     </div>
