@@ -114,20 +114,6 @@ function Homepage() {
       .catch(() => setSysStatus({ backend: 'offline', db: 'offline' }));
   }, []);
 
-function Homepage() {
-  const navigate = useNavigate();
-  const [sysStatus, setSysStatus] = useState({ backend: 'checking', db: 'checking' });
-  const [activeTestimonial, setActiveTestimonial] = useState(0);
-
-  useEffect(() => {
-    fetch(`${API_URL}/products?limit=1`)
-      .then((res) => {
-        if (res.ok) setSysStatus({ backend: 'online', db: 'online' });
-        else setSysStatus({ backend: 'online', db: 'error' });
-      })
-      .catch(() => setSysStatus({ backend: 'offline', db: 'offline' }));
-  }, []);
-
   const testimonials = [
     {
       text: "SmartQueue has completely transformed the way we handle checkout. Our queues are gone, and customers love the seamless experience!",
