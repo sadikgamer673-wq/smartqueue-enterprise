@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
+import LandingPage from './LandingPage';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import { 
   Clock, Trash2, ArrowRight, LogOut, FileText, LayoutDashboard, Database,
@@ -75,7 +76,7 @@ export default function App() {
     <Router>
       <Routes>
         {/* Public Homepage */}
-        <Route path="/" element={<Homepage />} />
+        <Route path="/" element={<LandingPage />} />
 
         {/* Customer Portal */}
         <Route path="/customer/login" element={<CustomerLogin />} />
