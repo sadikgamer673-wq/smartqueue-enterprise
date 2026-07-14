@@ -114,6 +114,20 @@ function Homepage() {
       .catch(() => setSysStatus({ backend: 'offline', db: 'offline' }));
   }, []);
 
+function Homepage() {
+  const navigate = useNavigate();
+  const [sysStatus, setSysStatus] = useState({ backend: 'checking', db: 'checking' });
+  const [activeTestimonial, setActiveTestimonial] = useState(0);
+
+  useEffect(() => {
+    fetch(`${API_URL}/products?limit=1`)
+      .then((res) => {
+        if (res.ok) setSysStatus({ backend: 'online', db: 'online' });
+        else setSysStatus({ backend: 'online', db: 'error' });
+      })
+      .catch(() => setSysStatus({ backend: 'offline', db: 'offline' }));
+  }, []);
+
   const testimonials = [
     {
       text: "SmartQueue has completely transformed the way we handle checkout. Our queues are gone, and customers love the seamless experience!",
@@ -130,163 +144,184 @@ function Homepage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white font-sans overflow-x-hidden selection:bg-green-500 selection:text-white">
-      {/* Dynamic Glow Orbs in Background */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-green-500/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
-      <div className="absolute top-[800px] right-1/4 w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-[150px] pointer-events-none"></div>
-
+    <div className="min-h-screen bg-white text-slate-900 font-sans overflow-x-hidden selection:bg-green-500 selection:text-white">
       {/* Styled Inline Keyframes for Premium Floating Effect */}
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes float-slow {
-          0%, 100% { transform: translateY(0px) rotate(1deg); }
-          50% { transform: translateY(-15px) rotate(-1deg); }
+          0%, 100% { transform: translateY(0px) rotate(0.5deg); }
+          50% { transform: translateY(-12px) rotate(-0.5deg); }
         }
         @keyframes float-slower {
-          0%, 100% { transform: translateY(0px) rotate(-1deg); }
-          50% { transform: translateY(-20px) rotate(1deg); }
+          0%, 100% { transform: translateY(0px) rotate(-0.5deg); }
+          50% { transform: translateY(-16px) rotate(0.5deg); }
         }
-        @keyframes pulse-slow {
-          0%, 100% { opacity: 0.6; }
-          50% { opacity: 0.9; }
-        }
-        .animate-float-slow { animation: float-slow 7s ease-in-out infinite; }
-        .animate-float-slower { animation: float-slower 9s ease-in-out infinite; }
-        .animate-pulse-slow { animation: pulse-slow 8s ease-in-out infinite; }
+        .animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
+        .animate-float-slower { animation: float-slower 8s ease-in-out infinite; }
       `}} />
 
-      {/* Navigation Header */}
-      <nav className="bg-slate-900/80 backdrop-blur-md border-b border-slate-800/80 sticky top-0 z-50 transition-all duration-300">
+      {/* Navigation Header - White Background */}
+      <nav className="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20 items-center">
+            {/* Logo */}
             <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              <div className="w-11 h-11 rounded-xl bg-green-500 flex items-center justify-center text-slate-950 text-xl font-bold shadow-[0_0_20px_rgba(34,197,94,0.3)]">🛒</div>
+              <div className="w-10 h-10 rounded-xl bg-green-600 flex items-center justify-center text-white text-xl font-bold shadow-md">🛒</div>
               <div>
-                <span className="text-xl font-black text-white tracking-tight">SmartQueue</span>
-                <p className="text-[10px] text-green-400 font-extrabold -mt-1 tracking-wider uppercase">Enterprise Ecosystem</p>
+                <span className="text-lg font-black text-slate-900 tracking-tight">SmartQueue</span>
+                <p className="text-[9px] text-green-600 font-extrabold -mt-1 tracking-wider uppercase">Enterprise Ecosystem</p>
               </div>
             </div>
 
-            <div className="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-300">
-              <a href="#features" className="hover:text-green-400 transition-colors">Features</a>
-              <a href="#how-it-works" className="hover:text-green-400 transition-colors">How It Works</a>
-              <a href="#portals" className="hover:text-green-400 transition-colors">Solutions</a>
-              <a href="#why-choose-us" className="hover:text-green-400 transition-colors">About Us</a>
-              <a href="#testimonials" className="hover:text-green-400 transition-colors">Testimonials</a>
+            {/* Menu Links */}
+            <div className="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-600">
+              <a href="#home" className="text-green-600">Home</a>
+              <a href="#features" className="hover:text-green-600 transition-colors">Features</a>
+              <a href="#how-it-works" className="hover:text-green-600 transition-colors">How It Works</a>
+              <a href="#portals" className="hover:text-green-600 transition-colors">Solutions</a>
+              <a href="#why-choose-us" className="hover:text-green-600 transition-colors">About Us</a>
+              <a href="#" className="hover:text-green-600 transition-colors flex items-center gap-0.5">Resources ▾</a>
+              <a href="#" className="hover:text-green-600 transition-colors">Contact</a>
             </div>
             
+            {/* Access Portals button */}
             <div className="flex items-center gap-4">
-              <span className={`hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border ${sysStatus.backend === 'online' ? 'bg-green-500/10 text-green-400 border-green-500/30' : 'bg-red-500/10 text-red-400 border-red-500/30'}`}>
-                <span className={`w-2 h-2 rounded-full ${sysStatus.backend === 'online' ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`}></span>
-                {sysStatus.backend === 'online' ? 'Systems Online' : 'Check Server'}
-              </span>
-              <a href="#portals" className="px-5 py-2.5 text-sm font-extrabold text-slate-950 bg-green-500 hover:bg-green-400 hover:scale-[1.03] active:scale-[0.98] rounded-xl shadow-[0_4px_20px_rgba(34,197,94,0.25)] transition-all">
-                Access Portals 🚀
+              <a href="#portals" className="px-5 py-2.5 text-xs font-bold text-white bg-green-600 hover:bg-green-700 rounded-lg shadow-sm flex items-center gap-1.5 transition-all">
+                Access Portals <span className="text-base font-normal">☰</span>
               </a>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <header className="relative pt-12 pb-24 md:pt-20 md:pb-32 border-b border-slate-900 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Hero Section - Dark Gradient Background */}
+      <header id="home" className="relative bg-slate-950 text-white pt-20 pb-28 border-b border-slate-900 overflow-hidden">
+        {/* Neon Glow Highlights */}
+        <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-green-500/10 rounded-full blur-[100px] pointer-events-none animate-pulse"></div>
+        <div className="absolute bottom-12 right-1/4 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[130px] pointer-events-none"></div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
-            {/* Left Hero Description */}
+            {/* Left Description */}
             <div className="lg:col-span-6 flex flex-col items-start text-left">
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-black bg-green-500/10 text-green-400 border border-green-500/20 mb-6 tracking-wide uppercase">
-                🚀 AI-Powered Self-Checkout Platform
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black bg-green-500/10 text-green-400 border border-green-500/20 mb-6 uppercase tracking-wider">
+                🟢 AI-Powered Self-Checkout Platform
               </div>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.1] text-white">
-                The Future of Shopping is <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-emerald-400 to-green-500 shadow-sm">Queue-Free</span>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.08] text-white">
+                The Future of Shopping is <span className="text-green-500">Queue-Free</span>
               </h1>
-              <p className="mt-6 text-base md:text-lg text-slate-400 leading-relaxed max-w-xl">
-                SmartQueue Enterprise empowers retailers with an intelligent self-checkout ecosystem. Shoppers scan, pay, and exit seamlessly with instant digital verification.
+              <p className="mt-6 text-base text-slate-400 leading-relaxed max-w-lg">
+                SmartQueue Enterprise empowers retailers with a smart self-checkout ecosystem. Shoppers scan, pay, and exit seamlessly with instant verification.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-4 items-center">
-                <a href="#portals" className="px-8 py-4 text-sm font-extrabold text-slate-950 bg-green-500 hover:bg-green-400 rounded-xl shadow-lg transition-all hover:translate-y-[-2px]">
+                <a href="#portals" className="px-7 py-3.5 text-sm font-bold text-white bg-green-600 hover:bg-green-700 rounded-lg shadow-md transition-all">
                   Explore Platform →
                 </a>
-                <a href="http://localhost:5000/api/v1/docs" target="_blank" rel="noreferrer" className="px-6 py-4 text-sm font-bold text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-xl transition-all">
-                  Watch Demo Video
+                <a href="http://localhost:5000/api/v1/docs" target="_blank" rel="noreferrer" className="px-6 py-3.5 text-sm font-bold text-white bg-transparent border border-slate-700 hover:border-slate-500 rounded-lg flex items-center gap-2 transition-all">
+                  <span>▶</span> Watch Demo
                 </a>
               </div>
 
-              {/* Trusted metrics */}
-              <div className="mt-10 flex items-center gap-3">
-                <div className="flex -space-x-3">
-                  <img className="w-9 h-9 rounded-full border-2 border-slate-950" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&auto=format&fit=crop&q=80" alt="Avatar" />
-                  <img className="w-9 h-9 rounded-full border-2 border-slate-950" src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=80&auto=format&fit=crop&q=80" alt="Avatar" />
-                  <img className="w-9 h-9 rounded-full border-2 border-slate-950" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80" alt="Avatar" />
+              {/* Trusted Retailers */}
+              <div className="mt-12 flex items-center gap-3">
+                <div className="flex -space-x-2.5">
+                  <img className="w-8 h-8 rounded-full border-2 border-slate-950" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&auto=format&fit=crop&q=80" alt="Avatar" />
+                  <img className="w-8 h-8 rounded-full border-2 border-slate-950" src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=80&auto=format&fit=crop&q=80" alt="Avatar" />
+                  <img className="w-8 h-8 rounded-full border-2 border-slate-950" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80" alt="Avatar" />
                 </div>
                 <div className="text-xs">
-                  <div className="flex text-amber-400 font-black">⭐⭐⭐⭐⭐</div>
-                  <p className="text-slate-400 font-medium">Trusted by 500+ Supermarket Chains</p>
+                  <div className="flex text-amber-400 font-bold">⭐⭐⭐⭐⭐</div>
+                  <p className="text-slate-400 font-semibold">Trusted by 500+ Retail Stores</p>
                 </div>
               </div>
             </div>
 
-            {/* Right Hero Phone Mockups with floating CSS animation */}
-            <div className="lg:col-span-6 flex justify-center items-center gap-6 relative mt-10 lg:mt-0">
+            {/* Right Phone Mockups - Light Interface */}
+            <div className="lg:col-span-6 flex justify-center items-center gap-8 relative mt-10 lg:mt-0">
               
               {/* Phone 1: Shopping Cart */}
-              <div className="w-[230px] h-[460px] bg-slate-900 rounded-[40px] border-[6px] border-slate-800 shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden relative p-3 animate-float-slow shrink-0 select-none">
+              <div className="w-[230px] h-[450px] bg-slate-900 rounded-[44px] border-[6px] border-slate-800 shadow-[0_20px_50px_rgba(0,0,0,0.6)] overflow-hidden relative p-3 animate-float-slow shrink-0 select-none">
                 <div className="absolute top-0 inset-x-0 h-4 bg-slate-950 rounded-b-xl flex justify-center items-center z-20">
-                  <div className="w-16 h-2 bg-slate-800 rounded-full"></div>
+                  <div className="w-14 h-1.5 bg-slate-800 rounded-full"></div>
                 </div>
-                <div className="h-full bg-slate-950 rounded-[30px] p-4 flex flex-col justify-between text-xs text-left">
+                <div className="h-full bg-slate-50 rounded-[34px] p-4 flex flex-col justify-between text-xs text-slate-800 text-left relative z-10">
                   <div>
-                    <h5 className="font-extrabold text-sm text-white mb-3 mt-2">My Cart 🛒</h5>
-                    <div className="flex justify-between items-center bg-slate-900 p-2.5 rounded-xl border border-slate-800 mb-2">
-                      <div>
-                        <p className="font-bold text-white">Amul Cream Milk 1L</p>
-                        <p className="text-[10px] text-green-400 font-extrabold">₹62.00</p>
-                      </div>
-                      <span className="bg-green-500/20 text-green-400 font-bold px-2 py-0.5 rounded-lg">1</span>
+                    <div className="flex justify-between items-center mb-4 mt-2">
+                      <span className="font-black text-sm text-slate-900">My Cart</span>
+                      <span className="text-green-600 font-bold">+ Add</span>
                     </div>
-                    <div className="flex justify-between items-center bg-slate-900 p-2.5 rounded-xl border border-slate-800 mb-2">
-                      <div>
-                        <p className="font-bold text-white">Pepsi Cola 500ml</p>
-                        <p className="text-[10px] text-green-400 font-extrabold">₹30.00</p>
+
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center bg-white p-2.5 rounded-xl border border-slate-100 shadow-sm">
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg">🥤</span>
+                          <div>
+                            <p className="font-bold text-slate-900 text-[10px]">Coca-Cola</p>
+                            <p className="text-[9px] text-slate-400">₹30.00</p>
+                          </div>
+                        </div>
+                        <span className="bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded text-[10px]">2 ▾</span>
                       </div>
-                      <span className="bg-green-500/20 text-green-400 font-bold px-2 py-0.5 rounded-lg">2</span>
+                      <div className="flex justify-between items-center bg-white p-2.5 rounded-xl border border-slate-100 shadow-sm">
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg">🥔</span>
+                          <div>
+                            <p className="font-bold text-slate-900 text-[10px]">Lays Classic</p>
+                            <p className="text-[9px] text-slate-400">₹20.00</p>
+                          </div>
+                        </div>
+                        <span className="bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded text-[10px]">1 ▾</span>
+                      </div>
+                      <div className="flex justify-between items-center bg-white p-2.5 rounded-xl border border-slate-100 shadow-sm">
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg">🥛</span>
+                          <div>
+                            <p className="font-bold text-slate-900 text-[10px]">Amul Milk</p>
+                            <p className="text-[9px] text-slate-400">₹35.00</p>
+                          </div>
+                        </div>
+                        <span className="bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded text-[10px]">1 ▾</span>
+                      </div>
                     </div>
                   </div>
+
                   <div>
-                    <div className="flex justify-between font-bold text-white mb-2 pt-2 border-t border-slate-800">
+                    <div className="flex justify-between font-bold text-slate-800 mb-2.5 pt-2 border-t border-slate-200">
                       <span>Total Amount:</span>
-                      <span className="text-green-400">₹122.00</span>
+                      <span className="text-slate-900 font-extrabold">₹115.00</span>
                     </div>
-                    <button className="w-full py-2.5 bg-green-500 text-slate-950 font-black rounded-xl text-center shadow-md">
+                    <button className="w-full py-2.5 bg-green-600 hover:bg-green-700 text-white font-extrabold rounded-xl text-center shadow-md text-[10px] transition-all">
                       Proceed to Pay
                     </button>
+                    <p className="text-[8px] text-slate-400 text-center mt-1.5">🛡️ Secure Payment</p>
                   </div>
                 </div>
               </div>
 
               {/* Phone 2: Payment Receipt & QR */}
-              <div className="w-[230px] h-[460px] bg-slate-900 rounded-[40px] border-[6px] border-slate-800 shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden relative p-3 animate-float-slower hidden sm:block shrink-0 select-none">
+              <div className="w-[230px] h-[450px] bg-slate-900 rounded-[44px] border-[6px] border-slate-800 shadow-[0_20px_50px_rgba(0,0,0,0.6)] overflow-hidden relative p-3 animate-float-slower hidden sm:block shrink-0 select-none">
                 <div className="absolute top-0 inset-x-0 h-4 bg-slate-950 rounded-b-xl flex justify-center items-center z-20">
-                  <div className="w-16 h-2 bg-slate-800 rounded-full"></div>
+                  <div className="w-14 h-1.5 bg-slate-800 rounded-full"></div>
                 </div>
-                <div className="h-full bg-slate-950 rounded-[30px] p-4 flex flex-col items-center justify-between text-xs text-center">
+                <div className="h-full bg-slate-50 rounded-[34px] p-4 flex flex-col items-center justify-between text-xs text-slate-800 text-center relative z-10">
                   <div className="mt-4">
-                    <div className="w-10 h-10 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center text-green-400 text-xl font-bold mb-2 mx-auto">✓</div>
-                    <h5 className="font-extrabold text-sm text-white">Payment Success</h5>
-                    <p className="text-[10px] text-slate-400 mt-1">Show this QR code at exit gate</p>
+                    <div className="w-9 h-9 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-lg font-bold mb-2 mx-auto">✓</div>
+                    <h5 className="font-extrabold text-[11px] text-slate-900">Payment Successful</h5>
+                    <p className="text-[8px] text-slate-400 mt-0.5">Show this QR code at each gate</p>
                   </div>
                   
-                  {/* Real QR Mockup */}
-                  <div className="w-32 h-32 bg-white rounded-2xl p-2.5 flex items-center justify-center shadow-inner">
-                    <div className="w-full h-full bg-slate-950 rounded-xl flex items-center justify-center text-white font-extrabold text-xs">
-                      QR CODE
+                  {/* Detailed QR Graphic */}
+                  <div className="w-32 h-32 bg-white rounded-2xl p-3 flex items-center justify-center border border-slate-100 shadow-sm">
+                    <div className="w-full h-full bg-slate-900 rounded-lg flex flex-col items-center justify-center text-white font-extrabold text-[9px] gap-1">
+                      <QrCode size={24} className="text-green-500" />
+                      <span>EXIT PASS</span>
                     </div>
                   </div>
 
-                  <div className="w-full text-slate-400 text-[10px] leading-relaxed">
-                    <p className="font-bold text-white border-b border-slate-900 pb-2">Order ID: SQ9482810</p>
-                    <p className="mt-2 text-green-400 font-extrabold">Thanks for shopping!</p>
+                  <div className="w-full text-slate-500 text-[9px] leading-relaxed">
+                    <p className="font-extrabold text-slate-900 border-b border-slate-200 pb-2">Order ID: SQ123456789</p>
+                    <p className="mt-2 text-green-600 font-extrabold uppercase tracking-wide">Thank you for shopping!</p>
                   </div>
                 </div>
               </div>
@@ -297,135 +332,158 @@ function Homepage() {
         </div>
       </header>
 
-      {/* Instant Features Stats row */}
-      <section id="features" className="bg-slate-900/40 border-y border-slate-900 py-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-5 gap-6 text-center">
-          <div className="p-4 flex flex-col items-center gap-2">
-            <span className="text-2xl">⚡</span>
-            <h4 className="font-bold text-sm text-white">Instant Verification</h4>
-            <p className="text-xs text-slate-500">Real-time gate sync</p>
-          </div>
-          <div className="p-4 flex flex-col items-center gap-2">
-            <span className="text-2xl">🛡️</span>
-            <h4 className="font-bold text-sm text-white">Secure Payments</h4>
-            <p className="text-xs text-slate-500">Enterprise security</p>
-          </div>
-          <div className="p-4 flex flex-col items-center gap-2">
-            <span className="text-2xl">🚪</span>
-            <h4 className="font-bold text-sm text-white">QR Exit Gate</h4>
-            <p className="text-xs text-slate-500">Automatic validation</p>
-          </div>
-          <div className="p-4 flex flex-col items-center gap-2">
-            <span className="text-2xl">🔄</span>
-            <h4 className="font-bold text-sm text-white">Real-Time Sync</h4>
-            <p className="text-xs text-slate-500">Across all devices</p>
-          </div>
-          <div className="p-4 flex flex-col items-center gap-2 col-span-2 md:col-span-1">
-            <span className="text-2xl">🏢</span>
-            <h4 className="font-bold text-sm text-white">Enterprise Grade</h4>
-            <p className="text-xs text-slate-500">Scalable & reliable</p>
+      {/* Features Row - White Background with Cards */}
+      <section id="features" className="bg-slate-50/50 py-16 border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+            
+            <div className="bg-white border border-slate-100 p-6 rounded-2xl text-left shadow-sm flex flex-col items-start gap-3">
+              <span className="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl font-bold">⚡</span>
+              <div>
+                <h4 className="font-extrabold text-sm text-slate-900">Instant Verification</h4>
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">Real-time socket.io updates for exit gates.</p>
+              </div>
+            </div>
+
+            <div className="bg-white border border-slate-100 p-6 rounded-2xl text-left shadow-sm flex flex-col items-start gap-3">
+              <span className="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl font-bold">🛡️</span>
+              <div>
+                <h4 className="font-extrabold text-sm text-slate-900">Secure Payments</h4>
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">Multiple payment options with enterprise security.</p>
+              </div>
+            </div>
+
+            <div className="bg-white border border-slate-100 p-6 rounded-2xl text-left shadow-sm flex flex-col items-start gap-3">
+              <span className="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl font-bold">🔳</span>
+              <div>
+                <h4 className="font-extrabold text-sm text-slate-900">QR Exit Gate</h4>
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">Instant QR code generation and verification.</p>
+              </div>
+            </div>
+
+            <div className="bg-white border border-slate-100 p-6 rounded-2xl text-left shadow-sm flex flex-col items-start gap-3">
+              <span className="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl font-bold">🔄</span>
+              <div>
+                <h4 className="font-extrabold text-sm text-slate-900">Real-time Sync</h4>
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">Live updates across all devices and dashboards.</p>
+              </div>
+            </div>
+
+            <div className="bg-white border border-slate-100 p-6 rounded-2xl text-left shadow-sm flex flex-col items-start gap-3 sm:col-span-2 lg:col-span-1">
+              <span className="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl font-bold">⚙️</span>
+              <div>
+                <h4 className="font-extrabold text-sm text-slate-900">Enterprise Grade</h4>
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">Scalable, reliable & production ready.</p>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* How it Works Flow */}
-      <section id="how-it-works" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
-        <h2 className="text-3xl font-black text-white">How <span className="text-green-400">SmartQueue</span> Works</h2>
-        <p className="text-slate-400 text-sm mt-2 mb-16">A simple 4-step process for a smarter shopping experience</p>
+      {/* How SmartQueue Works - White Background */}
+      <section id="how-it-works" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center border-b border-slate-100">
+        <h2 className="text-3xl font-black text-slate-950">How <span className="text-green-600">SmartQueue</span> Works</h2>
+        <p className="text-slate-500 text-sm mt-2 mb-16">A simple 4-step process for a smarter shopping experience</p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative">
           
           {/* Step 1 */}
-          <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-2xl flex flex-col items-center gap-4 text-center hover:border-green-500/30 transition-all group">
-            <span className="w-10 h-10 rounded-full bg-green-500 text-slate-950 font-black flex items-center justify-center text-sm shadow-[0_0_15px_rgba(34,197,94,0.3)]">1</span>
-            <h4 className="font-extrabold text-white text-base">Scan Products</h4>
-            <p className="text-xs text-slate-400 leading-relaxed">
+          <div className="bg-white border border-slate-100 p-6 rounded-2xl flex flex-col items-center gap-4 text-center shadow-sm relative group">
+            <span className="w-8 h-8 rounded-full bg-green-600 text-white font-extrabold flex items-center justify-center text-xs shadow-md">1</span>
+            <h4 className="font-extrabold text-slate-900 text-sm">Scan Products</h4>
+            <p className="text-xs text-slate-500 leading-relaxed max-w-[200px]">
               Open the app and scan product barcodes using your device camera.
             </p>
-            <span className="text-3xl mt-2 group-hover:scale-110 transition-transform">📷</span>
+            <div className="w-full h-32 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 group-hover:bg-green-50/50 transition-colors">
+              <span className="text-4xl">📷</span>
+            </div>
           </div>
 
           {/* Step 2 */}
-          <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-2xl flex flex-col items-center gap-4 text-center hover:border-green-500/30 transition-all group">
-            <span className="w-10 h-10 rounded-full bg-green-500 text-slate-950 font-black flex items-center justify-center text-sm shadow-[0_0_15px_rgba(34,197,94,0.3)]">2</span>
-            <h4 className="font-extrabold text-white text-base">Make Payment</h4>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Review your cart and make secure payment using UPI, cards, or wallets.
+          <div className="bg-white border border-slate-100 p-6 rounded-2xl flex flex-col items-center gap-4 text-center shadow-sm relative group">
+            <span className="w-8 h-8 rounded-full bg-green-600 text-white font-extrabold flex items-center justify-center text-xs shadow-md">2</span>
+            <h4 className="font-extrabold text-slate-900 text-sm">Make Payment</h4>
+            <p className="text-xs text-slate-500 leading-relaxed max-w-[200px]">
+              Review your cart and make secure payment using UPI, cards or wallets.
             </p>
-            <span className="text-3xl mt-2 group-hover:scale-110 transition-transform">💳</span>
+            <div className="w-full h-32 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 group-hover:bg-green-50/50 transition-colors">
+              <span className="text-4xl">💳</span>
+            </div>
           </div>
 
           {/* Step 3 */}
-          <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-2xl flex flex-col items-center gap-4 text-center hover:border-green-500/30 transition-all group">
-            <span className="w-10 h-10 rounded-full bg-green-500 text-slate-950 font-black flex items-center justify-center text-sm shadow-[0_0_15px_rgba(34,197,94,0.3)]">3</span>
-            <h4 className="font-extrabold text-white text-base">Get QR Code</h4>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Receive your instant QR code after successful payment confirmation.
+          <div className="bg-white border border-slate-100 p-6 rounded-2xl flex flex-col items-center gap-4 text-center shadow-sm relative group">
+            <span className="w-8 h-8 rounded-full bg-green-600 text-white font-extrabold flex items-center justify-center text-xs shadow-md">3</span>
+            <h4 className="font-extrabold text-slate-900 text-sm">Get QR Code</h4>
+            <p className="text-xs text-slate-500 leading-relaxed max-w-[200px]">
+              Receive instant QR code after successful payment confirmation.
             </p>
-            <span className="text-3xl mt-2 group-hover:scale-110 transition-transform">🎟️</span>
+            <div className="w-full h-32 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 group-hover:bg-green-50/50 transition-colors">
+              <span className="text-4xl">🎟️</span>
+            </div>
           </div>
 
           {/* Step 4 */}
-          <div className="bg-slate-900/60 border border-slate-800/80 p-6 rounded-2xl flex flex-col items-center gap-4 text-center hover:border-green-500/30 transition-all group">
-            <span className="w-10 h-10 rounded-full bg-green-500 text-slate-950 font-black flex items-center justify-center text-sm shadow-[0_0_15px_rgba(34,197,94,0.3)]">4</span>
-            <h4 className="font-extrabold text-white text-base">Exit Seamlessly</h4>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Show the QR code at the exit verification gate and you are good to go!
+          <div className="bg-white border border-slate-100 p-6 rounded-2xl flex flex-col items-center gap-4 text-center shadow-sm relative group">
+            <span className="w-8 h-8 rounded-full bg-green-600 text-white font-extrabold flex items-center justify-center text-xs shadow-md">4</span>
+            <h4 className="font-extrabold text-slate-900 text-sm">Exit Seamlessly</h4>
+            <p className="text-xs text-slate-500 leading-relaxed max-w-[200px]">
+              Show QR code at the exit gate for instant verification and you're good to go!
             </p>
-            <span className="text-3xl mt-2 group-hover:scale-110 transition-transform">🚪</span>
+            <div className="w-full h-32 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 group-hover:bg-green-50/50 transition-colors">
+              <span className="text-4xl">🚪</span>
+            </div>
           </div>
 
         </div>
       </section>
 
-      {/* Portals Cards Access Grid */}
-      <section id="portals" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center border-t border-slate-900">
-        <h2 className="text-3xl font-black text-white">Access <span className="text-green-400">SmartQueue</span> Portals</h2>
-        <p className="text-slate-400 text-sm mt-2 mb-16">Choose the portal that matches your role and access the right tools instantly</p>
+      {/* Access SmartQueue Portals - White Background */}
+      <section id="portals" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center border-b border-slate-100">
+        <h2 className="text-3xl font-black text-slate-950">Access <span className="text-green-600">SmartQueue</span> Portals</h2>
+        <p className="text-slate-500 text-sm mt-2 mb-16">Choose the portal that matches your role and access the right tools instantly</p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           
           {/* Customer Portal */}
-          <div className="bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-8 flex flex-col justify-between hover:border-green-500/30 hover:scale-[1.02] transition-all relative group overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-green-500/5 rounded-full blur-2xl group-hover:bg-green-500/10 transition-all"></div>
+          <div className="bg-slate-50 border border-slate-100 rounded-2xl p-8 flex flex-col justify-between hover:border-green-500/20 hover:bg-white hover:shadow-md transition-all text-left relative overflow-hidden group">
             <div>
-              <div className="w-14 h-14 rounded-2xl bg-green-500/10 border border-green-500/20 text-green-400 flex items-center justify-center text-2xl mb-6 shadow-[0_4px_15px_rgba(34,197,94,0.1)]">📱</div>
-              <h3 className="text-xl font-extrabold text-white text-left">Customer Portal</h3>
-              <p className="text-slate-400 text-sm mt-3 text-left leading-relaxed">
-                Scan products, add to cart, apply coupons, and get exit pass QR codes directly from your browser.
+              <div className="w-12 h-12 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl mb-6 font-bold shadow-sm">📱</div>
+              <h3 className="text-lg font-black text-slate-900">Customer Portal</h3>
+              <p className="text-slate-500 text-xs mt-2.5 leading-relaxed">
+                Scan products, add to cart, make payments and get QR code for exit.
               </p>
             </div>
-            <button onClick={() => navigate('/customer/login')} className="w-full mt-8 py-3 bg-green-500 hover:bg-green-400 text-slate-950 font-extrabold rounded-xl transition-all">
+            <button onClick={() => navigate('/customer/login')} className="w-full mt-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl text-center text-xs transition-all shadow-sm">
               Enter Customer Portal →
             </button>
           </div>
 
           {/* Worker Portal */}
-          <div className="bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-8 flex flex-col justify-between hover:border-blue-500/30 hover:scale-[1.02] transition-all relative group overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl group-hover:bg-blue-500/10 transition-all"></div>
+          <div className="bg-slate-50 border border-slate-100 rounded-2xl p-8 flex flex-col justify-between hover:border-blue-500/20 hover:bg-white hover:shadow-md transition-all text-left relative overflow-hidden group">
             <div>
-              <div className="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center text-2xl mb-6 shadow-[0_4px_15px_rgba(59,130,246,0.1)]">👷</div>
-              <h3 className="text-xl font-extrabold text-white text-left">Worker Portal</h3>
-              <p className="text-slate-400 text-sm mt-3 text-left leading-relaxed">
-                Verify customer QR codes, perform visual audit gate checks, and manage store exit queues efficiently.
+              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl mb-6 font-bold shadow-sm">👷</div>
+              <h3 className="text-lg font-black text-slate-900">Worker Portal</h3>
+              <p className="text-slate-500 text-xs mt-2.5 leading-relaxed">
+                Verify customer QR codes, check orders and manage exit gates.
               </p>
             </div>
-            <button onClick={() => navigate('/worker/login')} className="w-full mt-8 py-3 bg-blue-500 hover:bg-blue-400 text-slate-950 font-extrabold rounded-xl transition-all">
+            <button onClick={() => navigate('/worker/login')} className="w-full mt-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-center text-xs transition-all shadow-sm">
               Enter Worker Portal →
             </button>
           </div>
 
           {/* Admin Dashboard */}
-          <div className="bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-8 flex flex-col justify-between hover:border-indigo-500/30 hover:scale-[1.02] transition-all relative group overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl group-hover:bg-indigo-500/10 transition-all"></div>
+          <div className="bg-slate-50 border border-slate-100 rounded-2xl p-8 flex flex-col justify-between hover:border-indigo-500/20 hover:bg-white hover:shadow-md transition-all text-left relative overflow-hidden group">
             <div>
-              <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center text-2xl mb-6 shadow-[0_4px_15px_rgba(99,102,241,0.1)]">📊</div>
-              <h3 className="text-xl font-extrabold text-white text-left">Admin Dashboard</h3>
-              <p className="text-slate-400 text-sm mt-3 text-left leading-relaxed">
-                Manage supermarket products, track active sales charts, check analytics, and administer low stock alerts.
+              <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl mb-6 font-bold shadow-sm">📊</div>
+              <h3 className="text-lg font-black text-slate-900">Admin Dashboard</h3>
+              <p className="text-slate-500 text-xs mt-2.5 leading-relaxed">
+                Manage products, users, orders, analytics and system operations.
               </p>
             </div>
-            <button onClick={() => navigate('/admin')} className="w-full mt-8 py-3 bg-indigo-500 hover:bg-indigo-400 text-slate-950 font-extrabold rounded-xl transition-all">
+            <button onClick={() => navigate('/admin')} className="w-full mt-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-center text-xs transition-all shadow-sm">
               Enter Admin Dashboard →
             </button>
           </div>
@@ -433,90 +491,106 @@ function Homepage() {
         </div>
       </section>
 
-      {/* KPI Numerical Stats Row */}
-      <section className="bg-slate-900/60 border-y border-slate-900 py-14">
+      {/* KPI Numerical Stats Row - Dark Background */}
+      <section className="bg-slate-950 text-white py-16 border-y border-slate-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-6 gap-8 text-center">
-          <div>
-            <h3 className="text-3xl font-black text-green-400">10,000+</h3>
-            <p className="text-xs text-slate-400 mt-1 uppercase font-bold tracking-wider">Orders Processed</p>
+          <div className="flex flex-col items-center gap-1.5">
+            <span className="text-xl">🛒</span>
+            <h3 className="text-2xl font-black text-white">10,000+</h3>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Orders Processed</p>
           </div>
-          <div>
-            <h3 className="text-3xl font-black text-green-400">500+</h3>
-            <p className="text-xs text-slate-400 mt-1 uppercase font-bold tracking-wider">Stores Connected</p>
+          <div className="flex flex-col items-center gap-1.5">
+            <span className="text-xl">🏪</span>
+            <h3 className="text-2xl font-black text-white">500+</h3>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Stores Connected</p>
           </div>
-          <div>
-            <h3 className="text-3xl font-black text-green-400">50,000+</h3>
-            <p className="text-xs text-slate-400 mt-1 uppercase font-bold tracking-wider">Happy Customers</p>
+          <div className="flex flex-col items-center gap-1.5">
+            <span className="text-xl">👥</span>
+            <h3 className="text-2xl font-black text-white">50,000+</h3>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Happy Customers</p>
           </div>
-          <div>
-            <h3 className="text-3xl font-black text-green-400">99.99%</h3>
-            <p className="text-xs text-slate-400 mt-1 uppercase font-bold tracking-wider">System Uptime</p>
+          <div className="flex flex-col items-center gap-1.5">
+            <span className="text-xl">🛡️</span>
+            <h3 className="text-2xl font-black text-white">99.99%</h3>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">System Uptime</p>
           </div>
-          <div>
-            <h3 className="text-3xl font-black text-green-400">&lt; 500ms</h3>
-            <p className="text-xs text-slate-400 mt-1 uppercase font-bold tracking-wider">Real-time Sync</p>
+          <div className="flex flex-col items-center gap-1.5">
+            <span className="text-xl">⚡</span>
+            <h3 className="text-2xl font-black text-white">&lt; 500ms</h3>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Real-time Sync</p>
           </div>
-          <div>
-            <h3 className="text-3xl font-black text-green-400">24/7</h3>
-            <p className="text-xs text-slate-400 mt-1 uppercase font-bold tracking-wider">Support Available</p>
+          <div className="flex flex-col items-center gap-1.5">
+            <span className="text-xl">🎧</span>
+            <h3 className="text-2xl font-black text-white">24/7</h3>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Support Available</p>
           </div>
         </div>
       </section>
 
       {/* Why Choose us & Testimonials */}
-      <section id="why-choose-us" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-slate-900">
+      <section id="why-choose-us" className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-slate-100">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           
-          {/* Left Values List */}
+          {/* Left Values */}
           <div className="lg:col-span-6 text-left">
-            <h2 className="text-3xl font-black text-white">Why Choose <span className="text-green-400">SmartQueue</span>?</h2>
+            <h2 className="text-3xl font-black text-slate-950">Why Choose <span className="text-green-600">SmartQueue</span>?</h2>
             <div className="mt-8 space-y-4">
               <div className="flex items-center gap-3">
-                <span className="w-5 h-5 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center font-bold text-xs">✓</span>
-                <span className="text-sm text-slate-300 font-medium">Reduce long customer billing queues instantly</span>
+                <span className="w-5 h-5 rounded-full bg-green-50 text-green-600 flex items-center justify-center font-bold text-[10px]">✓</span>
+                <span className="text-xs text-slate-600 font-medium">Reduce long billing queues instantly</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="w-5 h-5 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center font-bold text-xs">✓</span>
-                <span className="text-sm text-slate-300 font-medium">Improve overall shopper conversion satisfaction</span>
+                <span className="w-5 h-5 rounded-full bg-green-50 text-green-600 flex items-center justify-center font-bold text-[10px]">✓</span>
+                <span className="text-xs text-slate-600 font-medium">Improve customer check-out experience</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="w-5 h-5 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center font-bold text-xs">✓</span>
-                <span className="text-sm text-slate-300 font-medium">Highly secure and encrypted payment routing protocols</span>
+                <span className="w-5 h-5 rounded-full bg-green-50 text-green-600 flex items-center justify-center font-bold text-[10px]">✓</span>
+                <span className="text-xs text-slate-600 font-medium">Secure & contactless payment protocols</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="w-5 h-5 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center font-bold text-xs">✓</span>
-                <span className="text-sm text-slate-300 font-medium">Real-time socket-based exit gate synchronizations</span>
+                <span className="w-5 h-5 rounded-full bg-green-50 text-green-600 flex items-center justify-center font-bold text-[10px]">✓</span>
+                <span className="text-xs text-slate-600 font-medium">Real-time verification & sync triggers</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="w-5 h-5 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center font-bold text-xs">✓</span>
-                <span className="text-sm text-slate-300 font-medium">Easy-to-use browser interface with zero native downloads required</span>
+                <span className="w-5 h-5 rounded-full bg-green-50 text-green-600 flex items-center justify-center font-bold text-[10px]">✓</span>
+                <span className="text-xs text-slate-600 font-medium">Easy to use and integrate across any store layouts</span>
               </div>
+            </div>
+
+            {/* Video Placeholder */}
+            <div className="w-full h-48 bg-slate-100 rounded-2xl border border-slate-200 mt-8 flex flex-col items-center justify-center text-slate-400 relative overflow-hidden group cursor-pointer">
+              <img className="absolute inset-0 w-full h-full object-cover opacity-60 filter blur-xs group-hover:scale-105 transition-transform" src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&auto=format&fit=crop&q=80" alt="Supermarket Aisle" />
+              <div className="w-12 h-12 rounded-full bg-white/90 shadow-md flex items-center justify-center text-green-600 text-xl font-bold relative z-10 hover:scale-110 transition-transform">▶</div>
+              <span className="text-slate-900 font-extrabold text-xs mt-3 relative z-10">See SmartQueue in Action</span>
+              <span className="text-[10px] text-slate-700 font-bold mt-0.5 relative z-10">01 / 03</span>
             </div>
           </div>
 
-          {/* Right Video Mockup & Testimonials Slider */}
+          {/* Right Testimonials */}
           <div id="testimonials" className="lg:col-span-6 flex flex-col gap-8">
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 text-left relative overflow-hidden">
-              <span className="text-4xl text-green-500/20 absolute top-4 left-4 font-serif">“</span>
-              <p className="text-slate-300 text-sm leading-relaxed mt-4 italic relative z-10">
+            <h3 className="text-xl font-black text-slate-900 text-left">Loved by Retailers</h3>
+            
+            <div className="bg-slate-50 border border-slate-100 rounded-3xl p-8 text-left relative overflow-hidden">
+              <span className="text-4xl text-green-500/10 absolute top-4 left-4 font-serif">“</span>
+              <p className="text-slate-600 text-sm leading-relaxed mt-4 italic relative z-10">
                 {testimonials[activeTestimonial].text}
               </p>
               
               <div className="mt-6 flex items-center gap-3 relative z-10">
                 <img className="w-10 h-10 rounded-full object-cover" src={testimonials[activeTestimonial].avatar} alt={testimonials[activeTestimonial].author} />
                 <div>
-                  <h4 className="font-bold text-white text-sm">{testimonials[activeTestimonial].author}</h4>
-                  <p className="text-xs text-slate-500 font-semibold">{testimonials[activeTestimonial].role}</p>
+                  <h4 className="font-extrabold text-slate-900 text-xs">{testimonials[activeTestimonial].author}</h4>
+                  <p className="text-[10px] text-slate-400 font-bold">{testimonials[activeTestimonial].role}</p>
                 </div>
               </div>
 
-              {/* Slider dots */}
+              {/* Slider Dots */}
               <div className="mt-6 flex gap-1.5 justify-end">
                 {testimonials.map((_, idx) => (
                   <button 
                     key={idx} 
                     onClick={() => setActiveTestimonial(idx)}
-                    className={`w-2 h-2 rounded-full transition-all ${activeTestimonial === idx ? 'bg-green-500 w-4' : 'bg-slate-700'}`}
+                    className={`w-2 h-2 rounded-full transition-all ${activeTestimonial === idx ? 'bg-green-600 w-4' : 'bg-slate-300'}`}
                   />
                 ))}
               </div>
@@ -526,16 +600,17 @@ function Homepage() {
         </div>
       </section>
 
-      {/* Brands Logo Slider Row */}
+      {/* Brands Logos */}
       <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p className="text-xs text-slate-500 font-bold uppercase tracking-widest mb-8">Trusted by Leading Retailers</p>
-        <div className="flex flex-wrap justify-center items-center gap-10 opacity-40 grayscale hover:grayscale-0 hover:opacity-75 transition-all">
-          <span className="text-base font-extrabold text-slate-300 tracking-wider">🍏 FreshMart</span>
-          <span className="text-base font-extrabold text-slate-300 tracking-wider">🛒 DailyNeeds</span>
-          <span className="text-base font-extrabold text-slate-300 tracking-wider">💎 ValuePlus</span>
-          <span className="text-base font-extrabold text-slate-300 tracking-wider">🌾 GreenBasket</span>
-          <span className="text-base font-extrabold text-slate-300 tracking-wider">🏬 UrbanStore</span>
-          <span className="text-base font-extrabold text-slate-300 tracking-wider">⚡ QuickBuy</span>
+        <p className="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest mb-8">Trusted by Leading Retailers</p>
+        <div className="flex flex-wrap justify-center items-center gap-10 opacity-50 grayscale hover:grayscale-0 hover:opacity-85 transition-all text-xs font-black text-slate-500">
+          <span>🍏 FreshMart</span>
+          <span>🛒 DailyNeeds</span>
+          <span>💎 ValuePlus</span>
+          <span>🌾 GreenBasket</span>
+          <span>🏬 UrbanStore</span>
+          <span>⚡ QuickBuy</span>
+          <span>📦 MegaMart</span>
         </div>
       </section>
 
@@ -545,11 +620,11 @@ function Homepage() {
           
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2">
-              <div className="w-9 h-9 rounded-xl bg-green-500 flex items-center justify-center text-slate-950 text-lg font-bold">🛒</div>
+              <div className="w-8 h-8 rounded-xl bg-green-500 flex items-center justify-center text-slate-950 text-base font-bold">🛒</div>
               <span className="text-base font-black text-white tracking-tight">SmartQueue</span>
             </div>
             <p className="text-slate-500 mt-2 leading-relaxed">
-              An intelligent browser self-checkout ecosystem that reduces supermarket customer queues.
+              AI-powered self-checkout ecosystem that makes retail smarter, faster and queue-free.
             </p>
           </div>
 
@@ -558,25 +633,27 @@ function Homepage() {
             <div className="flex flex-col gap-2">
               <a href="#features" className="hover:text-green-400">Features</a>
               <a href="#how-it-works" className="hover:text-green-400">How It Works</a>
-              <a href="#portals" className="hover:text-green-400">Portal Entrypoints</a>
+              <a href="#portals" className="hover:text-green-400">Solutions</a>
+              <a href="#" className="hover:text-green-400">Security</a>
             </div>
           </div>
 
           <div>
             <h4 className="font-extrabold text-white text-xs mb-4 uppercase tracking-wider">Resources</h4>
             <div className="flex flex-col gap-2">
-              <a href="http://localhost:5000/api/v1/docs" target="_blank" rel="noreferrer" className="hover:text-green-400">Swagger Docs</a>
-              <a href="https://github.com/sadikgamer673-wq/smartqueue-enterprise" className="hover:text-green-400">GitHub Source</a>
-              <a href="https://vite.dev" className="hover:text-green-400">Vite Config</a>
+              <a href="#" className="hover:text-green-400">User Guide</a>
+              <a href="#" className="hover:text-green-400">FAQs</a>
+              <a href="#" className="hover:text-green-400">Blog</a>
+              <a href="#" className="hover:text-green-400">Help Center</a>
             </div>
           </div>
 
           <div>
             <h4 className="font-extrabold text-white text-xs mb-4 uppercase tracking-wider">Stay Updated</h4>
-            <p className="text-slate-500 mb-3">Subscribe to get the latest ecosystem changes.</p>
+            <p className="text-slate-500 mb-3">Subscribe to get the latest updates and product news.</p>
             <div className="flex gap-2">
               <input type="text" placeholder="Enter your email" className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-white w-full text-xs focus:outline-none focus:border-green-500" />
-              <button className="bg-green-500 hover:bg-green-400 text-slate-950 font-bold px-4 py-2 rounded-lg">Subscribe</button>
+              <button className="bg-green-500 hover:bg-green-400 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs">Subscribe</button>
             </div>
           </div>
 
@@ -587,6 +664,10 @@ function Homepage() {
           <div className="flex gap-6">
             <a href="#" className="hover:text-white">Privacy Policy</a>
             <a href="#" className="hover:text-white">Terms of Service</a>
+          </div>
+        </div>
+      </footer>
+    </div>" className="hover:text-white">Terms of Service</a>
           </div>
         </div>
       </footer>
