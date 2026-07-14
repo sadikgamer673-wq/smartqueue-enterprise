@@ -2406,7 +2406,6 @@ function WorkerDashboard() {
           <div className="flex flex-col gap-6">
             {/* Professional Employee Badge Card */}
             <div className="bg-gradient-to-br from-green-700 to-slate-900 rounded-3xl p-6 text-white shadow-lg relative overflow-hidden">
-              {/* Background watermark */}
               <div className="absolute right-0 bottom-0 text-white/5 font-black text-9xl pointer-events-none select-none translate-x-10 translate-y-10">
                 SQ
               </div>
@@ -2427,52 +2426,157 @@ function WorkerDashboard() {
               </div>
             </div>
 
-            {/* Grid of details */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Card 1: Shift & Station */}
-              <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-lg">💼</span>
-                  <h4 className="font-extrabold text-slate-800 text-sm">Station & Shift</h4>
-                </div>
-                <div className="flex flex-col gap-2.5 text-xs text-slate-600">
-                  <div className="flex justify-between border-b border-slate-100 pb-1.5">
-                    <span className="font-semibold">Station</span>
-                    <span className="font-bold text-slate-800">Exit Barrier 01</span>
-                  </div>
-                  <div className="flex justify-between border-b border-slate-100 pb-1.5">
-                    <span className="font-semibold">Store</span>
-                    <span className="font-bold text-slate-800">SmartQueue Main Store</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-semibold">Shift Hours</span>
-                    <span className="font-bold text-slate-800">09:00 AM - 06:00 PM</span>
-                  </div>
-                </div>
-              </div>
+            {/* Horizontal Sub-Navigation Tab Panel */}
+            {(() => {
+              const [subTab, setSubTab] = useState<'details' | 'addresses' | 'support' | 'security' | 'history'>('details');
 
-              {/* Card 2: Shift Metrics (Simulated Live Data) */}
-              <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-lg">📈</span>
-                  <h4 className="font-extrabold text-slate-800 text-sm">Today's Performance</h4>
+              return (
+                <div className="flex flex-col gap-5">
+                  <div className="flex border-b border-slate-200 overflow-x-auto gap-2 pb-px scrollbar-none">
+                    {[
+                      { id: 'details', label: '👤 Profile Details' },
+                      { id: 'addresses', label: '📍 Store Locations' },
+                      { id: 'security', label: '🛡️ Security' },
+                      { id: 'support', label: '📞 Help & Support' },
+                      { id: 'history', label: '📋 Shift Log' }
+                    ].map((tabInfo) => (
+                      <button
+                        key={tabInfo.id}
+                        onClick={() => setSubTab(tabInfo.id as any)}
+                        className={`px-4 py-2 text-xs font-bold whitespace-nowrap rounded-t-lg transition-all border-b-2 -mb-px ${
+                          subTab === tabInfo.id
+                            ? 'border-green-600 text-green-700 bg-green-50/50'
+                            : 'border-transparent text-slate-500 hover:text-slate-800'
+                        }`}
+                      >
+                        {tabInfo.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Tab Contents */}
+                  {subTab === 'details' && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="text-lg">💼</span>
+                          <h4 className="font-extrabold text-slate-800 text-sm">Station & Shift</h4>
+                        </div>
+                        <div className="flex flex-col gap-2.5 text-xs text-slate-600">
+                          <div className="flex justify-between border-b border-slate-100 pb-1.5">
+                            <span className="font-semibold">Station</span>
+                            <span className="font-bold text-slate-800">Exit Barrier 01</span>
+                          </div>
+                          <div className="flex justify-between border-b border-slate-100 pb-1.5">
+                            <span className="font-semibold">Store</span>
+                            <span className="font-bold text-slate-800">SmartQueue Main Store</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="font-semibold">Shift Hours</span>
+                            <span className="font-bold text-slate-800">09:00 AM - 06:00 PM</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="text-lg">📈</span>
+                          <h4 className="font-extrabold text-slate-800 text-sm">Today's Performance</h4>
+                        </div>
+                        <div className="flex flex-col gap-2.5 text-xs text-slate-600">
+                          <div className="flex justify-between border-b border-slate-100 pb-1.5">
+                            <span className="font-semibold">Scan Accuracy</span>
+                            <span className="font-bold text-green-600">99.8% (Excellent)</span>
+                          </div>
+                          <div className="flex justify-between border-b border-slate-100 pb-1.5">
+                            <span className="font-semibold">Avg. Verify Time</span>
+                            <span className="font-bold text-slate-800 font-mono">11.4s</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="font-semibold">Total Verified</span>
+                            <span className="font-bold text-slate-800">28 Shoppers</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {subTab === 'addresses' && (
+                    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col gap-4">
+                      <h4 className="font-extrabold text-slate-800 text-sm">🏪 Assigned Outlets & Stations</h4>
+                      <div className="flex flex-col gap-3">
+                        <div className="border border-green-600 bg-green-50/10 rounded-xl p-4 flex justify-between items-center">
+                          <div>
+                            <h5 className="font-extrabold text-slate-800 text-xs">SmartQueue Main Supermarket</h5>
+                            <p className="text-[10px] text-slate-500 mt-1">Exit Gate Barrier 01 (Assigned/On-duty)</p>
+                          </div>
+                          <span className="px-2 py-0.5 bg-green-100 text-green-700 text-[9px] font-black rounded-full">ACTIVE</span>
+                        </div>
+                        <div className="border border-slate-200 rounded-xl p-4 opacity-60">
+                          <h5 className="font-bold text-slate-700 text-xs">SmartQueue Downtown Express</h5>
+                          <p className="text-[10px] text-slate-500 mt-1">Self-Checkout Kiosk Area 02</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {subTab === 'security' && (
+                    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col gap-4">
+                      <h4 className="font-extrabold text-slate-800 text-sm">🛡️ Security & Credentials</h4>
+                      <div className="flex flex-col gap-3">
+                        <div className="flex justify-between items-center p-4 border border-slate-100 bg-slate-50 rounded-xl">
+                          <div>
+                            <h5 className="font-bold text-slate-800 text-xs">Biometric Gate Login</h5>
+                            <p className="text-[10px] text-slate-400 mt-0.5">Use face or fingerprint to unlock gate console.</p>
+                          </div>
+                          <span className="text-[10px] font-bold text-green-600 bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">ENABLED</span>
+                        </div>
+                        <div className="flex justify-between items-center p-4 border border-slate-100 bg-slate-50 rounded-xl">
+                          <div>
+                            <h5 className="font-bold text-slate-800 text-xs">Security Passcode Change</h5>
+                            <p className="text-[10px] text-slate-400 mt-0.5">Update terminal manager authorization PIN.</p>
+                          </div>
+                          <button onClick={() => alert('PIN change requested.')} className="text-[10px] font-bold text-green-600 bg-white border border-slate-200 px-3 py-1 rounded-lg">EDIT</button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {subTab === 'support' && (
+                    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col gap-4">
+                      <h4 className="font-extrabold text-slate-800 text-sm">📞 Support Desk & Emergency Contacts</h4>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                          <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">IT Helpdesk Line</p>
+                          <p className="text-xs font-black text-slate-800 mt-1">+91 80 4392 1010</p>
+                        </div>
+                        <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
+                          <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Store Manager PIN</p>
+                          <p className="text-xs font-black text-slate-800 mt-1">9845 021 283</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {subTab === 'history' && (
+                    <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col gap-3">
+                      <h4 className="font-extrabold text-slate-800 text-sm mb-1">📋 Live Activity Log</h4>
+                      <div className="flex flex-col gap-2 max-h-48 overflow-y-auto">
+                        {logs.slice(0, 5).map((log, i) => (
+                          <div key={i} className="flex gap-2 text-[11px] items-start border-b border-slate-50 pb-2">
+                            <span className="text-green-600">✓</span>
+                            <div className="flex-grow">
+                              <p className="font-medium text-slate-700">{log.message}</p>
+                              <span className="text-[9px] text-slate-400 font-mono mt-0.5 block">{log.timestamp}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div className="flex flex-col gap-2.5 text-xs text-slate-600">
-                  <div className="flex justify-between border-b border-slate-100 pb-1.5">
-                    <span className="font-semibold">Scan Accuracy</span>
-                    <span className="font-bold text-green-600">99.8% (Excellent)</span>
-                  </div>
-                  <div className="flex justify-between border-b border-slate-100 pb-1.5">
-                    <span className="font-semibold">Avg. Verify Time</span>
-                    <span className="font-bold text-slate-800 font-mono">11.4s</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-semibold">Total Verified</span>
-                    <span className="font-bold text-slate-800">28 Shoppers</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+              );
+            })()}
 
             {/* Logout Panel */}
             <div className="bg-red-50/50 border border-red-200/60 rounded-2xl p-5 flex flex-col sm:flex-row justify-between items-center gap-4">
