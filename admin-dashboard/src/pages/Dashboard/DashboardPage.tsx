@@ -32,7 +32,7 @@ export default function DashboardPage() {
         ]);
 
         setStatsData(stats);
-        setRecentOrders(orders?.items || orders || []);
+        setRecentOrders(orders?.orders || (Array.isArray(orders) ? orders : []));
         setInventoryAlerts(alerts || []);
         setRevenueChart(revChart || []);
       } catch (err) {
