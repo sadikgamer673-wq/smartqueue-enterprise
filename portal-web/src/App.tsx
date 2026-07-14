@@ -101,8 +101,42 @@ export default function App() {
 
 // --- HOMEPAGE / LANDING PAGE ---
 function Homepage() {
-  const navigate = useNavigate();
+  const [demoCart, setDemoCart] = useState([
+    { id: 1, name: 'Coca-Cola', price: 30, emoji: '🥤', qty: 2 },
+    { id: 2, name: 'Lays Classic', price: 20, emoji: '🥔', qty: 1 },
+    { id: 3, name: 'Amul Milk', price: 35, emoji: '🥛', qty: 1 },
+    { id: 4, name: 'Paneer Tikka', price: 48, emoji: '🍞', qty: 1 },
+  ]);
+  const [isDemoPaid, setIsDemoPaid] = useState(false);
+  const [demoOrderVal, setDemoOrderVal] = useState('SQ123456789');
   const [activeTestimonial, setActiveTestimonial] = useState(0);
+
+  const handleAddDemo = () => {
+    setDemoCart(prev => {
+      const exists = prev.find(item => item.name === 'Pepsi');
+      if (exists) {
+        return prev.map(item => item.name === 'Pepsi' ? { ...item, qty: item.qty + 1 } : item);
+      }
+      return [...prev, { id: Date.now(), name: 'Pepsi', price: 30, emoji: '🥤', qty: 1 }];
+    });
+  };
+
+  const handlePayDemo = () => {
+    setIsDemoPaid(true);
+    setDemoOrderVal('SQ' + Math.floor(100000000 + Math.random() * 900000000));
+  };
+
+  const handleResetDemo = () => {
+    setDemoCart([
+      { id: 1, name: 'Coca-Cola', price: 30, emoji: '🥤', qty: 2 },
+      { id: 2, name: 'Lays Classic', price: 20, emoji: '🥔', qty: 1 },
+      { id: 3, name: 'Amul Milk', price: 35, emoji: '🥛', qty: 1 },
+      { id: 4, name: 'Paneer Tikka', price: 48, emoji: '🍞', qty: 1 },
+    ]);
+    setIsDemoPaid(false);
+  };
+
+  const demoTotal = demoCart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
 
   const testimonials = [
     {
@@ -267,59 +301,31 @@ function Homepage() {
                   <div>
                     <div className="flex justify-between items-center mb-4 mt-2">
                       <span className="font-extrabold text-xs text-slate-900">My Cart</span>
-                      <span className="text-[#16C45B] font-bold text-[10px] cursor-pointer">+ Add</span>
+                      <span onClick={handleAddDemo} className="text-[#16C45B] hover:text-green-700 font-bold text-[10px] cursor-pointer transition-colors">+ Add</span>
                     </div>
 
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center bg-slate-50 p-2 rounded-xl border border-slate-100">
-                        <div className="flex items-center gap-2">
-                          <span className="text-base">🥤</span>
-                          <div>
-                            <p className="font-extrabold text-slate-900 text-[9px]">Coca-Cola</p>
-                            <p className="text-[8px] text-slate-400">₹30.00</p>
+                    <div className="space-y-2 max-h-[220px] overflow-y-auto">
+                      {demoCart.map(item => (
+                        <div key={item.id} className="flex justify-between items-center bg-slate-50 p-2 rounded-xl border border-slate-100 transition-all">
+                          <div className="flex items-center gap-2">
+                            <span className="text-base">{item.emoji}</span>
+                            <div>
+                              <p className="font-extrabold text-slate-900 text-[9px]">{item.name}</p>
+                              <p className="text-[8px] text-slate-400">₹{item.price.toFixed(2)}</p>
+                            </div>
                           </div>
+                          <span className="bg-slate-100 text-slate-600 font-bold px-1.5 py-0.5 rounded text-[8px]">{item.qty} ▾</span>
                         </div>
-                        <span className="bg-slate-100 text-slate-600 font-bold px-1.5 py-0.5 rounded text-[8px]">2 ▾</span>
-                      </div>
-                      <div className="flex justify-between items-center bg-slate-50 p-2 rounded-xl border border-slate-100">
-                        <div className="flex items-center gap-2">
-                          <span className="text-base">🥔</span>
-                          <div>
-                            <p className="font-extrabold text-slate-900 text-[9px]">Lays Classic</p>
-                            <p className="text-[8px] text-slate-400">₹20.00</p>
-                          </div>
-                        </div>
-                        <span className="bg-slate-100 text-slate-600 font-bold px-1.5 py-0.5 rounded text-[8px]">1 ▾</span>
-                      </div>
-                      <div className="flex justify-between items-center bg-slate-50 p-2 rounded-xl border border-slate-100">
-                        <div className="flex items-center gap-2">
-                          <span className="text-base">🥛</span>
-                          <div>
-                            <p className="font-extrabold text-slate-900 text-[9px]">Amul Milk</p>
-                            <p className="text-[8px] text-slate-400">₹35.00</p>
-                          </div>
-                        </div>
-                        <span className="bg-slate-100 text-slate-600 font-bold px-1.5 py-0.5 rounded text-[8px]">1 ▾</span>
-                      </div>
-                      <div className="flex justify-between items-center bg-slate-50 p-2 rounded-xl border border-slate-100">
-                        <div className="flex items-center gap-2">
-                          <span className="text-base">🍞</span>
-                          <div>
-                            <p className="font-extrabold text-slate-900 text-[9px]">Paneer Tikka</p>
-                            <p className="text-[8px] text-slate-400">₹48.00</p>
-                          </div>
-                        </div>
-                        <span className="bg-slate-100 text-slate-600 font-bold px-1.5 py-0.5 rounded text-[8px]">1 ▾</span>
-                      </div>
+                      ))}
                     </div>
                   </div>
 
                   <div>
                     <div className="flex justify-between font-bold text-slate-800 mb-2 pt-2 border-t border-slate-200 text-[10px]">
                       <span>Total Amount:</span>
-                      <span className="text-slate-900 font-black">₹148.00</span>
+                      <span className="text-slate-900 font-black">₹{demoTotal.toFixed(2)}</span>
                     </div>
-                    <button className="w-full py-2 bg-[#16C45B] hover:bg-[#12A04A] text-white font-extrabold rounded-lg text-center shadow-md text-[9px] transition-all">
+                    <button onClick={handlePayDemo} className="w-full py-2 bg-[#16C45B] hover:bg-[#12A04A] text-white font-extrabold rounded-lg text-center shadow-md text-[9px] transition-all">
                       Proceed to Pay
                     </button>
                     {/* Payment badges list */}
@@ -338,26 +344,33 @@ function Homepage() {
                 <div className="absolute top-0 inset-x-0 h-4 bg-slate-950 rounded-b-xl flex justify-center items-center z-20">
                   <div className="w-12 h-1 bg-slate-800 rounded-full"></div>
                 </div>
-                <div className="h-full bg-white rounded-[30px] p-4 flex flex-col items-center justify-between text-xs text-slate-800 text-center relative z-10">
-                  <div className="mt-2">
-                    <div className="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-base font-bold mb-1 mx-auto">✓</div>
-                    <h5 className="font-extrabold text-[10px] text-slate-900">Payment Successful</h5>
-                    <p className="text-[7px] text-slate-400">Show this QR code at each gate</p>
-                  </div>
-                  
-                  {/* Detailed QR Graphic */}
-                  <div className="w-28 h-28 bg-white rounded-xl p-2.5 flex items-center justify-center border border-slate-100 shadow-xs">
-                    <div className="w-full h-full bg-slate-900 rounded-lg flex flex-col items-center justify-center text-white font-extrabold text-[8px] gap-1">
-                      <QrCode size={20} className="text-[#16C45B] animate-pulse" />
-                      <span>EXIT PASS</span>
+                
+                {isDemoPaid ? (
+                  <div className="h-full bg-white rounded-[30px] p-4 flex flex-col items-center justify-between text-xs text-slate-800 text-center relative z-10">
+                    <div className="mt-2">
+                      <div className="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-base font-bold mb-1 mx-auto animate-bounce">✓</div>
+                      <h5 className="font-extrabold text-[10px] text-slate-900">Payment Successful</h5>
+                      <p className="text-[7px] text-slate-400">Show this QR code at exit gate</p>
+                    </div>
+                    
+                    <div className="w-28 h-28 bg-white rounded-xl p-2.5 flex items-center justify-center border border-slate-100 shadow-xs">
+                      <div className="w-full h-full bg-slate-900 rounded-lg flex flex-col items-center justify-center text-white font-extrabold text-[8px] gap-1">
+                        <QrCode size={20} className="text-[#16C45B] animate-pulse" />
+                        <span>EXIT PASS</span>
+                      </div>
+                    </div>
+
+                    <div className="w-full text-slate-500 text-[8px] leading-relaxed">
+                      <p className="font-extrabold text-slate-900 border-b border-slate-200 pb-1.5">Order ID: {demoOrderVal}</p>
+                      <button onClick={handleResetDemo} className="mt-1 text-[#16C45B] hover:text-green-700 font-extrabold uppercase tracking-wide text-[7px]">Reset / Shop Again</button>
                     </div>
                   </div>
-
-                  <div className="w-full text-slate-500 text-[8px] leading-relaxed">
-                    <p className="font-extrabold text-slate-900 border-b border-slate-200 pb-1.5">Order ID: SQ123456789</p>
-                    <p className="mt-1 text-[#16C45B] font-extrabold uppercase tracking-wide">Thank you for shopping!</p>
+                ) : (
+                  <div className="h-full bg-slate-950 rounded-[30px] p-4 flex flex-col items-center justify-center text-xs text-slate-400 text-center relative z-10">
+                    <span className="text-xl animate-pulse">💳</span>
+                    <p className="mt-2 text-[10px] font-bold text-slate-500">Awaiting Checkout</p>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* Mockup Floating Feature Cards */}
@@ -373,7 +386,6 @@ function Homepage() {
               <div className="absolute -top-8 left-10 bg-[#050C18]/80 backdrop-blur-md border border-[#16C45B]/30 px-3 py-1.5 rounded-lg shadow-lg text-[8px] font-bold text-white flex items-center gap-1.5 animate-float-mini" style={{ animationDelay: '2.4s' }}>
                 <span className="text-[#16C45B]">✓</span> Exit Approved
               </div>
-
             </div>
 
           </div>
