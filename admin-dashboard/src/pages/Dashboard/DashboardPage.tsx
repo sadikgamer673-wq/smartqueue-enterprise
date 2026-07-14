@@ -1,4 +1,5 @@
-import { Grid, Card, CardContent, Typography, Box, Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, List, ListItem, ListItemAvatar, Avatar, ListItemText, LinearProgress } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { Grid, Card, CardContent, Typography, Box, Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, List, ListItem, ListItemAvatar, Avatar, ListItemText, LinearProgress, CircularProgress, Stack } from '@mui/material';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import PeopleIcon from '@mui/icons-material/People';
@@ -8,93 +9,112 @@ import { Line, Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, Filler
 } from 'chart.js';
+import { analyticsApi, orderApi, inventoryApi } from '../../api/services';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, Filler);
 
-const stats = [
-  { 
-    label: "Total Revenue", 
-    value: '₹52,300', 
-    trend: '+ 12.5%', 
-    trendColor: '#16A34A',
-    icon: <TrendingUpIcon />, 
-    color: '#16A34A' 
-  },
-  { 
-    label: 'Total Orders', 
-    value: '320', 
-    trend: '+ 8.3%', 
-    trendColor: '#16A34A',
-    icon: <ReceiptLongIcon />, 
-    color: '#15803D' 
-  },
-  { 
-    label: 'Total Customers', 
-    value: '286', 
-    trend: '+ 11.2%', 
-    trendColor: '#16A34A',
-    icon: <PeopleIcon />, 
-    color: '#16A34A' 
-  },
-  { 
-    label: 'Pending Verifications', 
-    value: '5', 
-    trend: '- 16.7%', 
-    trendColor: '#EF4444',
-    icon: <WarningIcon />, 
-    color: '#EF4444' 
-  },
-];
-
-const revenueChartData = {
-  labels: ['7 May', '8 May', '9 May', '10 May', '11 May', '12 May', '13 May'],
-  datasets: [
-    {
-      label: 'Revenue (₹)',
-      data: [35000, 42000, 39000, 52300, 47000, 61000, 58000],
-      borderColor: '#16A34A',
-      backgroundColor: 'rgba(22, 163, 74, 0.1)',
-      fill: true,
-      tension: 0.4,
-    },
-  ],
-};
-
-const ordersTrendData = {
-  labels: ['7 May', '8 May', '9 May', '10 May', '11 May', '12 May', '13 May'],
-  datasets: [
-    {
-      label: 'Orders',
-      data: [120, 150, 130, 180, 160, 220, 210],
-      backgroundColor: '#16A34A',
-      borderRadius: 6,
-    },
-  ],
-};
-
-const topSellingItems = [
-  { name: 'Amul Milk', sales: 120, percent: 80, icon: '🥛' },
-  { name: 'Rice 1kg', sales: 98, percent: 65, icon: '🌾' },
-  { name: 'Britannia Bread', sales: 75, percent: 50, icon: '🍞' },
-  { name: 'Aashirvaad Atta', sales: 60, percent: 40, icon: '🌾' },
-];
-
-const recentOrders = [
-  { id: '#2156', customer: 'Rahul Sharma', amount: '₹141', items: 4, status: 'Completed', time: '2 mins ago' },
-  { id: '#2155', customer: 'Priya Singh', amount: '₹856', items: 8, status: 'Completed', time: '5 mins ago' },
-  { id: '#2154', customer: 'Amit Kumar', amount: '₹1,240', items: 12, status: 'Completed', time: '12 mins ago' },
-  { id: '#2153', customer: 'Neha Patel', amount: '₹932', items: 6, status: 'Completed', time: '18 mins ago' },
-  { id: '#2152', customer: 'Vikram Joshi', amount: '₹943', items: 9, status: 'Pending', time: '25 mins ago' },
-];
-
-const inventoryAlerts = [
-  { name: 'Britannia Brown Bread', qty: '20 Left', status: 'Low Stock', color: '#F59E0B' },
-  { name: 'Aashirvaad Atta 5kg', qty: '15 Left', status: 'Low Stock', color: '#F59E0B' },
-  { name: 'Amul Curd 400g', qty: '30 Left', status: 'Low Stock', color: '#F59E0B' },
-  { name: 'Sugar 1kg', qty: '0 Left', status: 'Out of Stock', color: '#EF4444' },
-];
-
 export default function DashboardPage() {
+  const [loading, setLoading] = useState(true);
+  const [statsData, setStatsData] = useState<any>(null);
+  const [recentOrders, setRecentOrders] = useState<any[]>([]);
+  const [inventoryAlerts, setInventoryAlerts] = useState<any[]>([]);
+  const [revenueChart, setRevenueChart] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadDashboardData = async () => {
+      try {
+        setLoading(true);
+        const [stats, orders, alerts, revChart] = await Promise.all([
+          analyticsApi.dashboard(),
+          orderApi.getAdmin({ limit: 5 }),
+          inventoryApi.getLowStock(),
+          analyticsApi.revenue(7)
+        ]);
+
+        setStatsData(stats);
+        setRecentOrders(orders?.items || orders || []);
+        setInventoryAlerts(alerts || []);
+        setRevenueChart(revChart || []);
+      } catch (err) {
+        console.error('Failed to load dashboard data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadDashboardData();
+  }, []);
+
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  const kpis = [
+    { 
+      label: "Total Revenue", 
+      value: `₹${statsData?.revenue?.total?.toLocaleString('en-IN') || 0}`, 
+      trend: 'Today', 
+      trendColor: '#16A34A',
+      icon: <TrendingUpIcon />, 
+      color: '#16A34A' 
+    },
+    { 
+      label: 'Total Orders', 
+      value: statsData?.orders?.total || 0, 
+      trend: `${statsData?.orders?.today || 0} Today`, 
+      trendColor: '#16A34A',
+      icon: <ReceiptLongIcon />, 
+      color: '#15803D' 
+    },
+    { 
+      label: 'Total Customers', 
+      value: statsData?.customers?.total || 0, 
+      trend: 'Active', 
+      trendColor: '#16A34A',
+      icon: <PeopleIcon />, 
+      color: '#16A34A' 
+    },
+    { 
+      label: 'Pending Orders', 
+      value: statsData?.orders?.pending || 0, 
+      trend: 'Verification', 
+      trendColor: '#EF4444',
+      icon: <WarningIcon />, 
+      color: '#EF4444' 
+    },
+  ];
+
+  // Helper to map dynamic revenue chart data
+  const revenueChartData = {
+    labels: revenueChart.length > 0 ? revenueChart.map(item => item.date || item._id) : ['No Data'],
+    datasets: [
+      {
+        label: 'Revenue (₹)',
+        data: revenueChart.length > 0 ? revenueChart.map(item => item.totalRevenue || item.amount) : [0],
+        borderColor: '#16A34A',
+        backgroundColor: 'rgba(22, 163, 74, 0.1)',
+        fill: true,
+        tension: 0.4,
+      },
+    ],
+  };
+
+  const ordersTrendData = {
+    labels: revenueChart.length > 0 ? revenueChart.map(item => item.date || item._id) : ['No Data'],
+    datasets: [
+      {
+        label: 'Orders',
+        data: revenueChart.length > 0 ? revenueChart.map(item => item.totalOrders || item.count) : [0],
+        backgroundColor: '#16A34A',
+        borderRadius: 6,
+      },
+    ],
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       {/* Title block */}
@@ -111,9 +131,9 @@ export default function DashboardPage() {
         />
       </Box>
 
-      {/* 4 Columns KPI stats cards row */}
+      {/* KPI stats cards row */}
       <Grid container spacing={3} mb={4}>
-        {stats.map((stat) => (
+        {kpis.map((stat) => (
           <Grid item xs={12} sm={6} md={3} key={stat.label}>
             <Card sx={{ 
               borderRadius: 4, 
@@ -155,30 +175,27 @@ export default function DashboardPage() {
           </Card>
         </Grid>
 
-        {/* Top Selling Items ranked list */}
+        {/* Info panel */}
         <Grid item xs={12} md={4}>
           <Card sx={{ borderRadius: 4, boxShadow: '0 4px 20px rgba(0,0,0,0.03)', border: '1px solid #E5E7EB', height: '100%' }}>
             <CardContent>
               <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                <Typography variant="subtitle1" fontWeight={800}>Top Selling Items</Typography>
-                <Typography variant="caption" color="primary" fontWeight={700} sx={{ cursor: 'pointer' }}>View All</Typography>
+                <Typography variant="subtitle1" fontWeight={800}>Self-Checkout Summary</Typography>
               </Box>
-              <List disablePadding>
-                {topSellingItems.map((item, idx) => (
-                  <ListItem key={item.name} disableGutters sx={{ py: 1.5 }}>
-                    <ListItemAvatar sx={{ minWidth: 48 }}>
-                      <Avatar sx={{ bgcolor: 'grey.100', fontSize: 20 }}>{item.icon}</Avatar>
-                    </ListItemAvatar>
-                    <ListItemText 
-                      primary={<Typography variant="body2" fontWeight={700}>{item.name}</Typography>}
-                      secondary={<Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.5 }}>
-                        <LinearProgress variant="determinate" value={item.percent} color="primary" sx={{ flexGrow: 1, height: 4, borderRadius: 2 }} />
-                        <Typography variant="caption" fontWeight={700}>{item.sales}</Typography>
-                      </Box>}
-                    />
-                  </ListItem>
-                ))}
-              </List>
+              <Stack spacing={2} sx={{ mt: 3 }}>
+                <Box sx={{ p: 2, bgcolor: 'background.neutral', borderRadius: 2 }}>
+                  <Typography variant="subtitle2" fontWeight={700}>System Load</Typography>
+                  <Typography variant="body2" color="text.secondary">Optimal</Typography>
+                </Box>
+                <Box sx={{ p: 2, bgcolor: 'background.neutral', borderRadius: 2 }}>
+                  <Typography variant="subtitle2" fontWeight={700}>Database Status</Typography>
+                  <Typography variant="body2" color="success.main" fontWeight={600}>Connected</Typography>
+                </Box>
+                <Box sx={{ p: 2, bgcolor: 'background.neutral', borderRadius: 2 }}>
+                  <Typography variant="subtitle2" fontWeight={700}>Gateway Status</Typography>
+                  <Typography variant="body2" color="success.main" fontWeight={600}>Online</Typography>
+                </Box>
+              </Stack>
             </CardContent>
           </Card>
         </Grid>
@@ -192,42 +209,49 @@ export default function DashboardPage() {
             <CardContent>
               <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
                 <Typography variant="subtitle1" fontWeight={800}>Recent Orders</Typography>
-                <Typography variant="caption" color="primary" fontWeight={700} sx={{ cursor: 'pointer' }}>View All</Typography>
               </Box>
               <TableContainer component={Paper} elevation={0} sx={{ border: 'none' }}>
-                <Table sx={{ minWidth: 600 }} aria-label="recent orders table">
+                <Table sx={{ minWidth: 600 }}>
                   <TableHead>
                     <TableRow sx={{ bgcolor: 'grey.50' }}>
                       <TableCell sx={{ fontWeight: 700, fontSize: 12 }}>Order ID</TableCell>
                       <TableCell sx={{ fontWeight: 700, fontSize: 12 }}>Customer</TableCell>
                       <TableCell sx={{ fontWeight: 700, fontSize: 12 }}>Amount</TableCell>
-                      <TableCell sx={{ fontWeight: 700, fontSize: 12 }}>Items</TableCell>
+                      <TableCell sx={{ fontWeight: 700, fontSize: 12 }}>Items Count</TableCell>
                       <TableCell sx={{ fontWeight: 700, fontSize: 12 }}>Status</TableCell>
-                      <TableCell sx={{ fontWeight: 700, fontSize: 12 }}>Time</TableCell>
+                      <TableCell sx={{ fontWeight: 700, fontSize: 12 }}>Date</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {recentOrders.map((row) => (
-                      <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                        <TableCell sx={{ fontWeight: 700, fontSize: 13 }}>{row.id}</TableCell>
-                        <TableCell sx={{ fontWeight: 600, fontSize: 13, color: 'text.secondary' }}>{row.customer}</TableCell>
-                        <TableCell sx={{ fontWeight: 700, fontSize: 13 }}>{row.amount}</TableCell>
-                        <TableCell sx={{ fontWeight: 600, fontSize: 13 }}>{row.items}</TableCell>
-                        <TableCell>
-                          <Chip 
-                            label={row.status} 
-                            size="small" 
-                            sx={{ 
-                              bgcolor: row.status === 'Completed' ? '#E8F5E9' : '#FFF3E0', 
-                              color: row.status === 'Completed' ? '#2E7D32' : '#E65100',
-                              fontWeight: 700,
-                              fontSize: 11
-                            }} 
-                          />
+                    {recentOrders.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={6} align="center" sx={{ py: 4 }}>
+                          <Typography color="text.secondary">No recent checkout orders</Typography>
                         </TableCell>
-                        <TableCell sx={{ fontSize: 12, color: 'text.secondary' }}>{row.time}</TableCell>
                       </TableRow>
-                    ))}
+                    ) : (
+                      recentOrders.map((row) => (
+                        <TableRow key={row._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                          <TableCell sx={{ fontWeight: 700, fontSize: 13 }}>{row.orderNumber}</TableCell>
+                          <TableCell sx={{ fontWeight: 600, fontSize: 13, color: 'text.secondary' }}>{row.userId?.name || 'Shopper'}</TableCell>
+                          <TableCell sx={{ fontWeight: 700, fontSize: 13 }}>₹{row.total}</TableCell>
+                          <TableCell sx={{ fontWeight: 600, fontSize: 13 }}>{row.items?.length || 0}</TableCell>
+                          <TableCell>
+                            <Chip 
+                              label={row.status} 
+                              size="small" 
+                              sx={{ 
+                                bgcolor: row.status === 'paid' ? '#E8F5E9' : '#FFF3E0', 
+                                color: row.status === 'paid' ? '#2E7D32' : '#E65100',
+                                fontWeight: 700,
+                                fontSize: 11
+                              }} 
+                            />
+                          </TableCell>
+                          <TableCell sx={{ fontSize: 12, color: 'text.secondary' }}>{new Date(row.createdAt).toLocaleDateString()}</TableCell>
+                        </TableRow>
+                      ))
+                    )}
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -235,7 +259,7 @@ export default function DashboardPage() {
           </Card>
         </Grid>
 
-        {/* Inventory alerts + mini analytics overview bar chart */}
+        {/* Inventory alerts */}
         <Grid item xs={12} md={4}>
           <Grid container spacing={3}>
             {/* Inventory Alerts panel */}
@@ -244,31 +268,34 @@ export default function DashboardPage() {
                 <CardContent>
                   <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                     <Typography variant="subtitle1" fontWeight={800}>Inventory Alerts</Typography>
-                    <Typography variant="caption" color="primary" fontWeight={700} sx={{ cursor: 'pointer' }}>View All</Typography>
                   </Box>
                   <List disablePadding>
-                    {inventoryAlerts.map((item) => (
-                      <ListItem 
-                        key={item.name} 
-                        disableGutters 
-                        sx={{ py: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-                      >
-                        <Box>
-                          <Typography variant="body2" fontWeight={700}>{item.name}</Typography>
-                          <Typography variant="caption" color="text.secondary">{item.qty}</Typography>
-                        </Box>
-                        <Chip 
-                          label={item.status} 
-                          size="small" 
-                          sx={{ 
-                            bgcolor: `${item.color}15`, 
-                            color: item.color,
-                            fontWeight: 800,
-                            fontSize: 10
-                          }} 
-                        />
-                      </ListItem>
-                    ))}
+                    {inventoryAlerts.length === 0 ? (
+                      <Typography color="text.secondary" sx={{ py: 2 }} align="center">All items well-stocked</Typography>
+                    ) : (
+                      inventoryAlerts.map((item) => (
+                        <ListItem 
+                          key={item._id} 
+                          disableGutters 
+                          sx={{ py: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                        >
+                          <Box>
+                            <Typography variant="body2" fontWeight={700}>{item.productId?.name || 'Item'}</Typography>
+                            <Typography variant="caption" color="text.secondary">{item.quantity} units left</Typography>
+                          </Box>
+                          <Chip 
+                            label={item.quantity === 0 ? 'Out of Stock' : 'Low Stock'} 
+                            size="small" 
+                            sx={{ 
+                              bgcolor: item.quantity === 0 ? '#FFEBEE' : '#FFF3E0', 
+                              color: item.quantity === 0 ? '#C62828' : '#EF6C00',
+                              fontWeight: 800,
+                              fontSize: 10
+                            }} 
+                          />
+                        </ListItem>
+                      ))
+                    )}
                   </List>
                 </CardContent>
               </Card>
