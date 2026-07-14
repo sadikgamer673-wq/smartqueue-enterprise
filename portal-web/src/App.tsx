@@ -2883,73 +2883,162 @@ function AdminPortal() {
 // --- ADMIN INNER VIEWS ---
 function AdminDashboardView() {
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-black text-slate-800">Store Operations</h2>
-        <span className="px-3 py-1 bg-green-50 border border-green-200 text-green-700 text-xs font-bold rounded-full">Live Sync Active</span>
-      </div>
-
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
-          <div className="flex justify-between items-start">
-            <div className="w-10 h-10 rounded-xl bg-green-50 text-green-700 flex items-center justify-center"><TrendingUp size={20} /></div>
-            <span className="text-[10px] font-bold text-green-700 bg-green-50 px-2 py-0.5 rounded-full">+12.5%</span>
-          </div>
-          <h5 className="text-slate-400 text-xs font-bold uppercase tracking-wider mt-4">Total Revenue</h5>
-          <h3 className="text-2xl font-extrabold text-slate-800 mt-1">₹52,300.00</h3>
-        </div>
-
-        <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
-          <div className="flex justify-between items-start">
-            <div className="w-10 h-10 rounded-xl bg-green-50 text-green-700 flex items-center justify-center"><FileText size={20} /></div>
-            <span className="text-[10px] font-bold text-green-700 bg-green-50 px-2 py-0.5 rounded-full">+8.3%</span>
-          </div>
-          <h5 className="text-slate-400 text-xs font-bold uppercase tracking-wider mt-4">Total Orders</h5>
-          <h3 className="text-2xl font-extrabold text-slate-800 mt-1">320</h3>
-        </div>
-
-        <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
-          <div className="flex justify-between items-start">
-            <div className="w-10 h-10 rounded-xl bg-green-50 text-green-700 flex items-center justify-center"><Users size={20} /></div>
-            <span className="text-[10px] font-bold text-green-700 bg-green-50 px-2 py-0.5 rounded-full">+11.2%</span>
-          </div>
-          <h5 className="text-slate-400 text-xs font-bold uppercase tracking-wider mt-4">Total Customers</h5>
-          <h3 className="text-2xl font-extrabold text-slate-800 mt-1">286</h3>
-        </div>
-
-        <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
-          <div className="flex justify-between items-start">
-            <div className="w-10 h-10 rounded-xl bg-red-50 text-red-700 flex items-center justify-center"><AlertTriangle size={20} /></div>
-            <span className="text-[10px] font-bold text-red-700 bg-red-50 px-2 py-0.5 rounded-full">-16.7%</span>
-          </div>
-          <h5 className="text-slate-400 text-xs font-bold uppercase tracking-wider mt-4">Pending Verifications</h5>
-          <h3 className="text-2xl font-extrabold text-slate-800 mt-1">5</h3>
-        </div>
-      </div>
-
-      {/* Main Charts area mockup */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm lg:col-span-2">
-          <h4 className="font-extrabold text-slate-800 mb-4">Revenue Trend Overview</h4>
-          <div className="h-64 bg-slate-50 border border-slate-200 border-dashed rounded-xl flex items-center justify-center text-slate-400 font-bold">
-            📈 Live Revenue Spline Chart Active
-          </div>
-        </div>
-
-        <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
-          <h4 className="font-extrabold text-slate-800 mb-4">Top Selling Items</h4>
-          <div className="flex flex-col gap-4">
-            {topSellingItems.map(item => (
-              <div key={item.name} className="flex justify-between items-center">
-                <div className="flex gap-2 items-center">
-                  <span className="text-sm font-bold text-slate-700">{item.name}</span>
-                </div>
-                <span className="text-xs font-bold text-slate-500">{item.sales} sold</span>
+    <div className="flex flex-col gap-6 font-sans">
+      {/* 3-Column main content layout matching screenshot */}
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+        
+        {/* Left Column: Overview + Chart + Top Selling (xl:col-span-6) */}
+        <div className="xl:col-span-6 flex flex-col gap-6">
+          <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
+            <h3 className="font-extrabold text-slate-800 text-sm mb-4">Overview</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-slate-50 rounded-xl p-4 border border-slate-100/50">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Today's Revenue</span>
+                <h4 className="text-2xl font-black text-slate-850 mt-1">₹52,300</h4>
+                <span className="text-[10px] font-bold text-green-600 flex items-center gap-0.5 mt-1">▲ 12.5%</span>
               </div>
-            ))}
+              <div className="bg-slate-50 rounded-xl p-4 border border-slate-100/50">
+                <span className="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Total Orders</span>
+                <h4 className="text-2xl font-black text-slate-850 mt-1">320</h4>
+                <span className="text-[10px] font-bold text-green-600 flex items-center gap-0.5 mt-1">▲ 8.3%</span>
+              </div>
+              <div className="bg-slate-50 rounded-xl p-4 border border-slate-100/50">
+                <span className="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Customers</span>
+                <h4 className="text-2xl font-black text-slate-850 mt-1">286</h4>
+                <span className="text-[10px] font-bold text-green-600 flex items-center gap-0.5 mt-1">▲ 11.2%</span>
+              </div>
+              <div className="bg-slate-50 rounded-xl p-4 border border-slate-100/50">
+                <span className="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Pending Verifications</span>
+                <h4 className="text-2xl font-black text-slate-850 mt-1">5</h4>
+                <span className="text-[10px] font-bold text-red-500 flex items-center gap-0.5 mt-1">▼ 16.7%</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Revenue 7-Days Chart */}
+          <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
+            <h3 className="font-extrabold text-slate-850 text-sm mb-4">Revenue (7 Days)</h3>
+            <div className="h-44 flex items-end justify-between px-2 pt-4 relative">
+              {/* Fake Spline Vector Line SVG */}
+              <svg className="absolute inset-0 w-full h-full p-2 overflow-visible" preserveAspectRatio="none" viewBox="0 0 100 100">
+                <defs>
+                  <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#16C45B" stopOpacity="0.25"/>
+                    <stop offset="100%" stopColor="#16C45B" stopOpacity="0.0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M 0,70 Q 15,35 30,55 T 60,25 T 80,48 T 100,20 L 100,100 L 0,100 Z" fill="url(#chartGrad)"/>
+                <path d="M 0,70 Q 15,35 30,55 T 60,25 T 80,48 T 100,20" fill="none" stroke="#16C45B" strokeWidth="2.5" strokeLinecap="round"/>
+                {/* Dots on line nodes */}
+                <circle cx="0" cy="70" r="3" fill="#16C45B" stroke="#fff" strokeWidth="1"/>
+                <circle cx="16" cy="45" r="3" fill="#16C45B" stroke="#fff" strokeWidth="1"/>
+                <circle cx="32" cy="54" r="3" fill="#16C45B" stroke="#fff" strokeWidth="1"/>
+                <circle cx="50" cy="30" r="3" fill="#16C45B" stroke="#fff" strokeWidth="1"/>
+                <circle cx="68" cy="27" r="3" fill="#16C45B" stroke="#fff" strokeWidth="1"/>
+                <circle cx="84" cy="45" r="3" fill="#16C45B" stroke="#fff" strokeWidth="1"/>
+                <circle cx="100" cy="20" r="3" fill="#16C45B" stroke="#fff" strokeWidth="1"/>
+              </svg>
+              {/* Y Axis ticks */}
+              <div className="absolute left-1 top-2 text-[9px] font-bold text-slate-400">30</div>
+              <div className="absolute left-1 top-20 text-[9px] font-bold text-slate-400">15</div>
+              <div className="absolute left-1 bottom-1 text-[9px] font-bold text-slate-400">0</div>
+            </div>
+            <div className="flex justify-between text-[9px] font-bold text-slate-400 mt-4 px-2">
+              <span>7 May</span>
+              <span>8 May</span>
+              <span>9 May</span>
+              <span>10 May</span>
+              <span>11 May</span>
+              <span>12 May</span>
+              <span>13 May</span>
+            </div>
+          </div>
+
+          {/* Top Selling Items */}
+          <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
+            <h3 className="font-extrabold text-slate-850 text-sm mb-4">Top Selling Items</h3>
+            <div className="flex flex-col gap-3.5">
+              {[
+                { name: 'Amul Milk', sales: 120, icon: '🥛', bg: 'bg-sky-50' },
+                { name: 'Rice 1kg', sales: 98, icon: '🍚', bg: 'bg-amber-50' },
+                { name: 'Britannia Bread', sales: 75, icon: '🍞', bg: 'bg-orange-50' },
+                { name: 'Aashirvaad Atta', sales: 60, icon: '🌾', bg: 'bg-emerald-50' }
+              ].map(item => (
+                <div key={item.name} className="flex justify-between items-center text-xs">
+                  <div className="flex items-center gap-3">
+                    <span className={`w-8 h-8 rounded-lg ${item.bg} flex items-center justify-center text-lg`}>{item.icon}</span>
+                    <span className="font-bold text-slate-700">{item.name}</span>
+                  </div>
+                  <span className="font-extrabold text-slate-500">{item.sales} sold</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
+
+        {/* Center Column: Recent Orders (xl:col-span-3) */}
+        <div className="xl:col-span-3 flex flex-col gap-6">
+          <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-extrabold text-slate-850 text-sm">Recent Orders</h3>
+              <Link to="/admin/orders" className="text-[11px] font-black text-green-600 hover:underline">View All</Link>
+            </div>
+            
+            <div className="flex flex-col gap-4">
+              {recentOrders.map(o => (
+                <div key={o.id} className="border-b border-slate-50 pb-3 last:border-0 last:pb-0 text-xs">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="font-extrabold text-slate-850">{o.id}</span>
+                    <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${
+                      o.status === 'Completed' ? 'bg-green-50 text-green-600' : 'bg-amber-50 text-amber-600'
+                    }`}>
+                      {o.status}
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-[11px] text-slate-500">
+                    <span>{o.customer}</span>
+                    <span className="font-extrabold text-slate-800">{o.amount}</span>
+                  </div>
+                  <div className="flex justify-between text-[9px] text-slate-400 mt-1">
+                    <span>{o.items}</span>
+                    <span>{o.time}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Inventory Alerts (xl:col-span-3) */}
+        <div className="xl:col-span-3 flex flex-col gap-6">
+          <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-extrabold text-slate-850 text-sm">Inventory Alerts</h3>
+              <Link to="/admin/inventory" className="text-[11px] font-black text-green-600 hover:underline">View All</Link>
+            </div>
+
+            <div className="flex flex-col gap-3.5">
+              {[
+                { name: 'Britannia Brown Bread', qty: '28 Left', status: 'Low Stock', icon: '🍞', color: 'text-orange-600', bg: 'bg-orange-50/50' },
+                { name: 'Aashirvaad Atta 1kg', qty: '15 Left', status: 'Low Stock', icon: '🌾', color: 'text-orange-600', bg: 'bg-orange-50/50' },
+                { name: 'Amul Curd 400g', qty: '30 Left', status: 'Low Stock', icon: '🍶', color: 'text-orange-600', bg: 'bg-orange-50/50' },
+                { name: 'Sugar 1kg', qty: '0 Left', status: 'Out of Stock', icon: '🍬', color: 'text-red-650', bg: 'bg-red-50' }
+              ].map((item, idx) => (
+                <div key={idx} className="flex justify-between items-center text-xs">
+                  <div className="flex items-center gap-3">
+                    <span className={`w-9 h-9 rounded-xl ${item.bg} flex items-center justify-center text-lg shadow-sm border border-slate-100`}>{item.icon}</span>
+                    <div>
+                      <h4 className="font-bold text-slate-800 leading-snug">{item.name}</h4>
+                      <p className={`text-[10px] font-bold mt-0.5 ${item.color}`}>{item.status}</p>
+                    </div>
+                  </div>
+                  <span className="font-black text-slate-600 text-[10px] whitespace-nowrap">{item.qty}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
