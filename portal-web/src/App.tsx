@@ -2417,50 +2417,52 @@ function WorkerDashboard() {
         ) : (
           <div className="flex flex-col gap-6">
             {/* Professional Employee Badge Card */}
-            <div className="bg-gradient-to-br from-green-700 to-slate-900 rounded-3xl p-6 text-white shadow-lg relative overflow-hidden">
+            {/* Professional Employee Badge Card */}
+            <div className="bg-gradient-to-r from-emerald-600 to-emerald-900 rounded-2xl p-6 text-white shadow-xl relative overflow-hidden">
               <div className="absolute right-0 bottom-0 text-white/5 font-black text-9xl pointer-events-none select-none translate-x-10 translate-y-10">
                 SQ
               </div>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
               
               <div className="flex flex-col sm:flex-row items-center gap-6 relative z-10">
-                <div className="w-20 h-20 rounded-full bg-white text-green-800 border-4 border-green-500/30 flex items-center justify-center text-3xl font-black shadow-md shrink-0">
+                <div className="w-20 h-20 rounded-full bg-white text-emerald-800 border-4 border-emerald-500/30 flex items-center justify-center text-3xl font-black shadow-md shrink-0">
                   {worker.name.charAt(0)}
                 </div>
                 {isEditing ? (
-                  <div className="flex-grow flex flex-col gap-2 w-full text-slate-800">
+                  <div className="flex-grow flex flex-col gap-2.5 w-full text-slate-800">
                     <input
                       type="text"
                       value={editName}
                       onChange={e => setEditName(e.target.value)}
                       placeholder="Name"
-                      className="px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-bold w-full bg-white focus:outline-none focus:border-green-600"
+                      className="px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-bold w-full bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent shadow-inner"
                     />
                     <input
                       type="text"
                       value={editRole}
                       onChange={e => setEditRole(e.target.value)}
                       placeholder="Role"
-                      className="px-3 py-1.5 rounded-lg border border-slate-300 text-xs font-bold w-full bg-white focus:outline-none focus:border-green-600"
+                      className="px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-bold w-full bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent shadow-inner"
                     />
                     <div className="flex gap-2 mt-1">
-                      <button onClick={saveProfile} className="px-4 py-1.5 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg text-[10px] uppercase tracking-wider transition">Save</button>
-                      <button onClick={() => { setIsEditing(false); setEditName(worker.name); setEditRole(worker.role || 'Gate Operations Specialist'); }} className="px-4 py-1.5 bg-slate-600 hover:bg-slate-700 text-white font-bold rounded-lg text-[10px] uppercase tracking-wider transition">Cancel</button>
+                      <button onClick={saveProfile} className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-xl text-[10px] uppercase tracking-wider transition shadow-md">Save Changes</button>
+                      <button onClick={() => { setIsEditing(false); setEditName(worker.name); setEditRole(worker.role || 'Gate Operations Specialist'); }} className="px-4 py-2 bg-slate-700 hover:bg-slate-800 text-white font-extrabold rounded-xl text-[10px] uppercase tracking-wider transition">Cancel</button>
                     </div>
                   </div>
                 ) : (
                   <div className="text-center sm:text-left flex-grow">
                     <div className="flex justify-between items-start">
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-500/20 border border-green-400/30 rounded-full text-xs font-bold text-green-300">
-                        <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/20 border border-emerald-400/30 rounded-full text-xs font-bold text-emerald-300">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                         ACTIVE STAFF · ON DUTY
                       </div>
-                      <button onClick={() => { setEditName(worker.name); setEditRole(worker.role || 'Gate Operations Specialist'); setIsEditing(true); }} className="text-[10px] font-bold text-slate-300 border border-slate-500 hover:border-white px-2 py-0.5 rounded transition">
+                      <button onClick={() => { setEditName(worker.name); setEditRole(worker.role || 'Gate Operations Specialist'); setIsEditing(true); }} className="text-[10px] font-extrabold text-white bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-1 rounded-xl transition uppercase tracking-wider">
                         EDIT PROFILE
                       </button>
                     </div>
-                    <h3 className="text-2xl font-black mt-2 tracking-tight">{worker.name}</h3>
-                    <p className="text-xs text-green-200 font-semibold mt-0.5">{worker.role || 'Gate Operations Specialist'}</p>
-                    <p className="text-xs text-slate-400 mt-2 font-mono">ID: {worker.employeeId || 'EMP001'}</p>
+                    <h3 className="text-2xl font-black mt-3 tracking-tight">{worker.name}</h3>
+                    <p className="text-xs text-emerald-200 font-semibold mt-1">{worker.role || 'Gate Operations Specialist'}</p>
+                    <p className="text-xs text-emerald-300/60 mt-2 font-mono">ID: {worker.employeeId || 'EMP001'}</p>
                   </div>
                 )}
               </div>
@@ -2479,9 +2481,9 @@ function WorkerDashboard() {
                   <button
                     key={tabInfo.id}
                     onClick={() => setSubTab(tabInfo.id as any)}
-                    className={`px-4 py-2 text-xs font-bold whitespace-nowrap rounded-t-lg transition-all border-b-2 -mb-px ${
+                    className={`px-4 py-2.5 text-xs font-extrabold whitespace-nowrap transition-all border-b-2 -mb-px ${
                       subTab === tabInfo.id
-                        ? 'border-green-600 text-green-700 bg-green-50/50'
+                        ? 'border-emerald-600 text-emerald-700 bg-emerald-50/40 rounded-t-xl'
                         : 'border-transparent text-slate-500 hover:text-slate-800'
                     }`}
                   >
