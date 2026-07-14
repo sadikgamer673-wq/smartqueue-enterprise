@@ -2833,41 +2833,61 @@ function AdminPortal() {
     navigate('/');
   };
 
+  const navItems = [
+    { to: '/admin/analytics', label: 'Dashboard', icon: <LayoutDashboard size={18} /> },
+    { to: '/admin/orders', label: 'Orders', icon: <FileText size={18} /> },
+    { to: '/admin/customers', label: 'Customers', icon: <Users size={18} /> },
+    { to: '/admin/inventory', label: 'Inventory', icon: <Package size={18} /> },
+    { to: '/admin/analytics-view', label: 'Analytics', icon: <Activity size={18} /> },
+    { to: '/admin/reports', label: 'Reports', icon: <FileText size={18} /> },
+    { to: '/admin/settings', label: 'Settings', icon: <Tag size={18} /> },
+  ];
+
   return (
     <div className="min-h-screen bg-slate-50 flex">
-      {/* Sidebar Layout */}
-      <aside className="w-64 bg-slate-950 text-slate-400 flex flex-col justify-between shrink-0">
+      {/* Sidebar Layout matching reference screenshot (white base, grey text, clean highlights) */}
+      <aside className="w-60 bg-white border-r border-slate-200/80 flex flex-col justify-between shrink-0 font-sans">
         <div>
-          <div className="h-16 px-6 flex items-center gap-2 border-b border-slate-800/60">
-            <span className="text-lg font-black text-green-500 tracking-tight">SmartQueue</span>
-            <span className="text-[10px] bg-slate-800 text-slate-300 font-bold px-1.5 py-0.5 rounded">Admin</span>
+          {/* Brand header */}
+          <div className="h-16 px-6 flex items-center gap-2 border-b border-slate-100">
+            <span className="text-xl">🛒</span>
+            <span className="text-lg font-black text-slate-800 tracking-tight">SmartQueue</span>
           </div>
 
-          <nav className="p-4 flex flex-col gap-1.5">
-            <Link to="/admin/analytics" className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-bold transition ${location.pathname === '/admin/analytics' ? 'bg-green-600 text-white' : 'hover:bg-slate-900 hover:text-white'}`}>
-              <LayoutDashboard size={18} /> Dashboard
-            </Link>
-            <Link to="/admin/orders" className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-bold transition ${location.pathname === '/admin/orders' ? 'bg-green-600 text-white' : 'hover:bg-slate-900 hover:text-white'}`}>
-              <FileText size={18} /> Orders
-            </Link>
-            <Link to="/admin/customers" className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-bold transition ${location.pathname === '/admin/customers' ? 'bg-green-600 text-white' : 'hover:bg-slate-900 hover:text-white'}`}>
-              <Users size={18} /> Customers
-            </Link>
-            <Link to="/admin/inventory" className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-bold transition ${location.pathname === '/admin/inventory' ? 'bg-green-600 text-white' : 'hover:bg-slate-900 hover:text-white'}`}>
-              <Package size={18} /> Inventory
-            </Link>
+          {/* Navigation Links */}
+          <nav className="p-4 flex flex-col gap-1">
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.to || (item.to === '/admin/analytics' && location.pathname === '/admin/');
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-150 ${
+                    isActive
+                      ? 'bg-green-600 text-white shadow-md shadow-green-600/10'
+                      : 'text-slate-500 hover:bg-slate-50 hover:text-slate-850'
+                  }`}
+                >
+                  {item.icon} {item.label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
 
-        <div className="p-4 border-t border-slate-800/60">
-          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-red-400 hover:bg-red-500/10 rounded-lg transition">
-            <LogOut size={18} /> Sign Out
+        {/* Footer actions */}
+        <div className="p-4 border-t border-slate-100">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-bold text-slate-500 hover:text-red-650 hover:bg-red-50 rounded-xl transition duration-150"
+          >
+            <LogOut size={16} /> Logout
           </button>
         </div>
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 p-6 md:p-8 overflow-y-auto">
+      <main className="flex-grow p-6 overflow-y-auto bg-slate-50/50">
         <Routes>
           <Route path="/" element={<AdminDashboardView />} />
           <Route path="analytics" element={<AdminDashboardView />} />
