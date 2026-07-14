@@ -130,48 +130,85 @@ function Homepage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50/50 text-slate-900 font-sans overflow-x-hidden selection:bg-green-500 selection:text-white">
-      {/* Styled Inline Keyframes for Premium Floating Effect */}
+    <div className="min-h-screen bg-slate-50/50 text-slate-900 font-sans overflow-x-hidden selection:bg-[#16C45B] selection:text-white scroll-smooth">
+      {/* Premium Custom Keyframes & Animators */}
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes float-slow {
           0%, 100% { transform: translateY(0px) rotate(0.5deg); }
-          50% { transform: translateY(-15px) rotate(-0.5deg); }
+          50% { transform: translateY(-18px) rotate(-0.5deg); }
         }
         @keyframes float-slower {
           0%, 100% { transform: translateY(0px) rotate(-0.5deg); }
-          50% { transform: translateY(-20px) rotate(0.5deg); }
+          50% { transform: translateY(-24px) rotate(0.5deg); }
         }
-        .animate-float-slow { animation: float-slow 7s ease-in-out infinite; }
-        .animate-float-slower { animation: float-slower 9s ease-in-out infinite; }
+        @keyframes float-mini {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-6px); }
+        }
+        @keyframes shine {
+          0% { left: -100%; }
+          100% { left: 100%; }
+        }
+        @keyframes fade-in-up {
+          0% { opacity: 0; transform: translateY(20px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse-slow {
+          0%, 100% { opacity: 0.2; transform: scale(1); }
+          50% { opacity: 0.4; transform: scale(1.08); }
+        }
+        @keyframes grid-move {
+          0% { background-position: 0 0; }
+          100% { background-position: 40px 40px; }
+        }
+        .animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
+        .animate-float-slower { animation: float-slower 10s ease-in-out infinite; }
+        .animate-float-mini { animation: float-mini 4s ease-in-out infinite; }
+        .animate-pulse-slow { animation: pulse-slow 6s ease-in-out infinite; }
+        .animate-fade-up { animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .grid-bg {
+          background-image: linear-gradient(to right, rgba(22, 196, 91, 0.05) 1px, transparent 1px),
+                            linear-gradient(to bottom, rgba(22, 196, 91, 0.05) 1px, transparent 1px);
+          background-size: 40px 40px;
+          animation: grid-move 20s linear infinite;
+        }
+        .btn-shine-hover:hover::after {
+          content: '';
+          position: absolute;
+          top: 0; left: 0; width: 200%; height: 100%;
+          background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+          transform: skewX(-20deg);
+          animation: shine 1.2s infinite;
+        }
       `}} />
 
-      {/* Navigation Header */}
-      <nav className="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-xs">
+      {/* Navigation Header - Blur Glassmorphism */}
+      <nav className="bg-white/80 backdrop-blur-md border-b border-slate-100 sticky top-0 z-50 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20 items-center">
             {/* Logo */}
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              <div className="w-10 h-10 rounded-xl bg-green-600 flex items-center justify-center text-white text-xl font-bold shadow-md">🛒</div>
+              <div className="w-10 h-10 rounded-xl bg-[#16C45B] flex items-center justify-center text-white text-xl font-bold shadow-[0_4px_15px_rgba(22,196,91,0.3)]">🛒</div>
               <div>
                 <span className="text-xl font-black text-slate-900 tracking-tight">SmartQueue</span>
-                <p className="text-[9px] text-green-600 font-black -mt-1.5 tracking-wider uppercase">Enterprise Ecosystem</p>
+                <p className="text-[9px] text-[#16C45B] font-black -mt-1.5 tracking-wider uppercase">Enterprise Ecosystem</p>
               </div>
             </div>
 
             {/* Menu Links */}
             <div className="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-600">
-              <a href="#home" className="text-green-600">Home</a>
-              <a href="#features" className="hover:text-green-600 transition-colors">Features</a>
-              <a href="#how-it-works" className="hover:text-green-600 transition-colors">How It Works</a>
-              <a href="#portals" className="hover:text-green-600 transition-colors">Solutions</a>
-              <a href="#why-choose-us" className="hover:text-green-600 transition-colors">About Us</a>
-              <a href="#" className="hover:text-green-600 transition-colors flex items-center gap-1">Resources <span className="text-[10px]">▼</span></a>
-              <a href="#" className="hover:text-green-600 transition-colors">Contact</a>
+              <a href="#home" className="text-[#16C45B] hover:text-[#16C45B] transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-[#16C45B]">Home</a>
+              <a href="#features" className="hover:text-[#16C45B] transition-colors relative group">Features<span className="absolute bottom-[-4px] left-0 w-0 h-[2px] bg-[#16C45B] group-hover:w-full transition-all duration-300"></span></a>
+              <a href="#how-it-works" className="hover:text-[#16C45B] transition-colors relative group">How It Works<span className="absolute bottom-[-4px] left-0 w-0 h-[2px] bg-[#16C45B] group-hover:w-full transition-all duration-300"></span></a>
+              <a href="#portals" className="hover:text-[#16C45B] transition-colors relative group">Solutions<span className="absolute bottom-[-4px] left-0 w-0 h-[2px] bg-[#16C45B] group-hover:w-full transition-all duration-300"></span></a>
+              <a href="#why-choose-us" className="hover:text-[#16C45B] transition-colors relative group">About Us<span className="absolute bottom-[-4px] left-0 w-0 h-[2px] bg-[#16C45B] group-hover:w-full transition-all duration-300"></span></a>
+              <a href="#" className="hover:text-[#16C45B] transition-colors flex items-center gap-1">Resources <span className="text-[10px]">▼</span></a>
+              <a href="#" className="hover:text-[#16C45B] transition-colors">Contact</a>
             </div>
             
             {/* Access Portals button */}
             <div className="flex items-center gap-4">
-              <a href="#portals" className="px-5 py-2.5 text-xs font-bold text-white bg-green-600 hover:bg-green-700 rounded-lg shadow-sm flex items-center gap-2 transition-all">
+              <a href="#portals" className="px-5 py-2.5 text-xs font-bold text-white bg-[#16C45B] hover:bg-[#12A04A] rounded-lg shadow-sm flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98] btn-shine-hover relative overflow-hidden">
                 Access Portals <span className="text-sm">▦</span>
               </a>
             </div>
@@ -179,29 +216,33 @@ function Homepage() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <header id="home" className="relative bg-slate-950 text-white pt-20 pb-28 border-b border-slate-900 overflow-hidden">
-        {/* Glow Highlights */}
-        <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-green-500/10 rounded-full blur-[100px] pointer-events-none animate-pulse"></div>
-        <div className="absolute bottom-12 right-1/4 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[130px] pointer-events-none"></div>
+      {/* Hero Section - Dark Futuristic Stripe-like Background */}
+      <header id="home" className="relative bg-[#0B1220] text-white pt-20 pb-28 border-b border-slate-900 overflow-hidden min-h-[90vh] flex items-center">
+        {/* Animated Moving Grid */}
+        <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none"></div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Slow Pulsing Gradient Orbs */}
+        <div className="absolute top-10 left-10 w-[500px] h-[500px] bg-[#16C45B]/15 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+        <div className="absolute bottom-10 right-10 w-[600px] h-[600px] bg-[#0B3D2E]/40 rounded-full blur-[140px] pointer-events-none"></div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
-            {/* Left Description */}
-            <div className="lg:col-span-6 flex flex-col items-start text-left">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black bg-green-500/15 text-green-400 border border-green-500/20 mb-6 uppercase tracking-wider">
-                🟢 AI-Powered Self-Checkout Platform
+            {/* Left Hero Description */}
+            <div className="lg:col-span-6 flex flex-col items-start text-left animate-fade-up">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[10px] font-black bg-[#16C45B]/10 text-[#16C45B] border border-[#16C45B]/20 mb-6 uppercase tracking-wider">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#16C45B] animate-ping"></span>
+                AI-Powered Self-Checkout Platform
               </div>
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.08] text-white">
-                The Future of Shopping is <span className="text-green-500">Queue-Free</span>
+                The Future of Shopping is <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#16C45B] via-emerald-400 to-[#16C45B]">Queue-Free</span>
               </h1>
               <p className="mt-6 text-sm md:text-base text-slate-400 leading-relaxed max-w-lg">
-                SmartQueue Enterprise empowers retailers with a smart self-checkout ecosystem. Shoppers scan, pay, and exit seamlessly with instant verification.
+                SmartQueue Enterprise empowers retailers with an intelligent self-checkout ecosystem. Shoppers scan barcodes on their own browsers, make secure payments, and exit instantly through automated QR verification.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-4 items-center">
-                <a href="#portals" className="px-7 py-3.5 text-xs font-extrabold text-white bg-green-600 hover:bg-green-700 rounded-lg shadow-md transition-all">
+                <a href="#portals" className="px-7 py-3.5 text-xs font-extrabold text-white bg-[#16C45B] hover:bg-[#12A04A] rounded-lg shadow-md transition-all hover:translate-y-[-2px] active:translate-y-0 relative btn-shine-hover overflow-hidden">
                   Explore Platform →
                 </a>
                 <a href="http://localhost:5000/api/v1/docs" target="_blank" rel="noreferrer" className="px-6 py-3.5 text-xs font-bold text-white bg-transparent border border-slate-700 hover:border-slate-500 rounded-lg flex items-center gap-2 transition-all">
@@ -217,7 +258,7 @@ function Homepage() {
                   <img className="w-8 h-8 rounded-full border-2 border-slate-950" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=80" alt="Avatar" />
                 </div>
                 <div className="text-xs">
-                  <div className="flex text-amber-400 font-bold">⭐⭐⭐⭐⭐</div>
+                  <div className="flex text-amber-400 font-bold">★★★★★</div>
                   <p className="text-slate-400 font-semibold mt-0.5">Trusted by 500+ Retail Stores</p>
                 </div>
               </div>
@@ -235,7 +276,7 @@ function Homepage() {
                   <div>
                     <div className="flex justify-between items-center mb-4 mt-2">
                       <span className="font-black text-sm text-slate-900">My Cart</span>
-                      <span className="text-green-600 font-bold">+ Add</span>
+                      <span className="text-[#16C45B] font-bold">+ Add</span>
                     </div>
 
                     <div className="space-y-2">
@@ -277,7 +318,7 @@ function Homepage() {
                       <span>Total Amount:</span>
                       <span className="text-slate-900 font-extrabold">₹115.00</span>
                     </div>
-                    <button className="w-full py-2.5 bg-green-600 hover:bg-green-700 text-white font-extrabold rounded-xl text-center shadow-md text-[10px] transition-all">
+                    <button className="w-full py-2.5 bg-[#16C45B] hover:bg-[#12A04A] text-white font-extrabold rounded-xl text-center shadow-md text-[10px] transition-all">
                       Proceed to Pay
                     </button>
                     {/* Mock Payment Badges */}
@@ -306,16 +347,27 @@ function Homepage() {
                   {/* Detailed QR Graphic */}
                   <div className="w-32 h-32 bg-white rounded-2xl p-3 flex items-center justify-center border border-slate-100 shadow-sm">
                     <div className="w-full h-full bg-slate-900 rounded-lg flex flex-col items-center justify-center text-white font-extrabold text-[9px] gap-1">
-                      <QrCode size={24} className="text-green-500 animate-pulse" />
+                      <QrCode size={24} className="text-[#16C45B] animate-pulse" />
                       <span>EXIT PASS</span>
                     </div>
                   </div>
 
                   <div className="w-full text-slate-500 text-[9px] leading-relaxed">
                     <p className="font-extrabold text-slate-900 border-b border-slate-200 pb-2">Order ID: SQ123456789</p>
-                    <p className="mt-2 text-green-600 font-extrabold uppercase tracking-wide">Thank you for shopping!</p>
+                    <p className="mt-2 text-[#16C45B] font-extrabold uppercase tracking-wide">Thank you for shopping!</p>
                   </div>
                 </div>
+              </div>
+
+              {/* Floating Feature Cards */}
+              <div className="absolute -top-6 -right-6 bg-white/10 backdrop-blur-md border border-white/20 px-3 py-1.5 rounded-xl shadow-lg text-[9px] font-bold text-white flex items-center gap-1.5 animate-float-mini">
+                <span>✓</span> Secure Payment
+              </div>
+              <div className="absolute top-1/2 -left-12 bg-white/10 backdrop-blur-md border border-white/20 px-3 py-1.5 rounded-xl shadow-lg text-[9px] font-bold text-white flex items-center gap-1.5 animate-float-mini" style={{ animationDelay: '1s' }}>
+                <span>✓</span> QR Generated
+              </div>
+              <div className="absolute bottom-6 -right-4 bg-white/10 backdrop-blur-md border border-white/20 px-3 py-1.5 rounded-xl shadow-lg text-[9px] font-bold text-white flex items-center gap-1.5 animate-float-mini" style={{ animationDelay: '2s' }}>
+                <span>✓</span> AI Verification
               </div>
 
             </div>
@@ -324,45 +376,45 @@ function Homepage() {
         </div>
       </header>
 
-      {/* Features Row */}
-      <section id="features" className="bg-white py-16 border-b border-slate-100">
+      {/* Feature Strip - Large Floating White Glass Card */}
+      <section id="features" className="bg-slate-50/50 py-16 border-b border-slate-100 relative z-20 -mt-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+          <div className="bg-white/70 backdrop-blur-lg border border-white rounded-[24px] shadow-[0_10px_35px_rgba(0,0,0,0.03)] p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
             
-            <div className="bg-slate-50/50 border border-slate-100 p-6 rounded-2xl text-left shadow-xs flex flex-col items-start gap-3">
-              <span className="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl font-bold">⚡</span>
+            <div className="p-4 hover:translate-y-[-4px] hover:shadow-md transition-all duration-300 rounded-xl border border-transparent hover:border-green-500/10 flex flex-col items-start gap-3">
+              <span className="w-10 h-10 rounded-xl bg-green-50 text-[#16C45B] flex items-center justify-center text-xl font-bold">⚡</span>
               <div>
                 <h4 className="font-extrabold text-sm text-slate-900">Instant Verification</h4>
                 <p className="text-xs text-slate-500 mt-1 leading-relaxed">Real-time socket.io updates for exit gates.</p>
               </div>
             </div>
 
-            <div className="bg-slate-50/50 border border-slate-100 p-6 rounded-2xl text-left shadow-xs flex flex-col items-start gap-3">
-              <span className="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl font-bold">🛡️</span>
+            <div className="p-4 hover:translate-y-[-4px] hover:shadow-md transition-all duration-300 rounded-xl border border-transparent hover:border-green-500/10 flex flex-col items-start gap-3">
+              <span className="w-10 h-10 rounded-xl bg-green-50 text-[#16C45B] flex items-center justify-center text-xl font-bold">🔒</span>
               <div>
                 <h4 className="font-extrabold text-sm text-slate-900">Secure Payments</h4>
                 <p className="text-xs text-slate-500 mt-1 leading-relaxed">Multiple payment options with enterprise security.</p>
               </div>
             </div>
 
-            <div className="bg-slate-50/50 border border-slate-100 p-6 rounded-2xl text-left shadow-xs flex flex-col items-start gap-3">
-              <span className="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl font-bold">🔳</span>
+            <div className="p-4 hover:translate-y-[-4px] hover:shadow-md transition-all duration-300 rounded-xl border border-transparent hover:border-green-500/10 flex flex-col items-start gap-3">
+              <span className="w-10 h-10 rounded-xl bg-green-50 text-[#16C45B] flex items-center justify-center text-xl font-bold">📱</span>
               <div>
                 <h4 className="font-extrabold text-sm text-slate-900">QR Exit Gate</h4>
                 <p className="text-xs text-slate-500 mt-1 leading-relaxed">Instant QR code generation and verification.</p>
               </div>
             </div>
 
-            <div className="bg-slate-50/50 border border-slate-100 p-6 rounded-2xl text-left shadow-xs flex flex-col items-start gap-3">
-              <span className="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl font-bold">🔄</span>
+            <div className="p-4 hover:translate-y-[-4px] hover:shadow-md transition-all duration-300 rounded-xl border border-transparent hover:border-green-500/10 flex flex-col items-start gap-3">
+              <span className="w-10 h-10 rounded-xl bg-green-50 text-[#16C45B] flex items-center justify-center text-xl font-bold">🔄</span>
               <div>
                 <h4 className="font-extrabold text-sm text-slate-900">Real-time Sync</h4>
                 <p className="text-xs text-slate-500 mt-1 leading-relaxed">Live updates across all devices and dashboards.</p>
               </div>
             </div>
 
-            <div className="bg-slate-50/50 border border-slate-100 p-6 rounded-2xl text-left shadow-xs flex flex-col items-start gap-3 sm:col-span-2 lg:col-span-1">
-              <span className="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl font-bold">⚙️</span>
+            <div className="p-4 hover:translate-y-[-4px] hover:shadow-md transition-all duration-300 rounded-xl border border-transparent hover:border-green-500/10 flex flex-col items-start gap-3 sm:col-span-2 lg:col-span-1">
+              <span className="w-10 h-10 rounded-xl bg-green-50 text-[#16C45B] flex items-center justify-center text-xl font-bold">🛡️</span>
               <div>
                 <h4 className="font-extrabold text-sm text-slate-900">Enterprise Grade</h4>
                 <p className="text-xs text-slate-500 mt-1 leading-relaxed">Scalable, reliable & production ready.</p>
@@ -373,9 +425,9 @@ function Homepage() {
         </div>
       </section>
 
-      {/* How SmartQueue Works */}
+      {/* How SmartQueue Works - Dotted arrows */}
       <section id="how-it-works" className="bg-white py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center border-b border-slate-100">
-        <h2 className="text-3xl font-black text-slate-950">How <span className="text-green-600">SmartQueue</span> Works</h2>
+        <h2 className="text-3xl font-black text-slate-950">How <span className="text-[#16C45B]">SmartQueue</span> Works</h2>
         <p className="text-slate-500 text-sm mt-2 mb-16">A simple 4-step process for a smarter shopping experience</p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative">
@@ -388,10 +440,9 @@ function Homepage() {
               Open the app and scan product barcodes using your device camera.
             </p>
             <div className="w-full h-32 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 group-hover:bg-green-50/50 transition-colors relative overflow-hidden">
-              {/* Phone scanning graphic */}
               <div className="w-20 h-28 bg-slate-800 rounded-xl border-4 border-slate-700 flex flex-col justify-between p-2">
-                <div className="w-full h-1 bg-green-500 animate-bounce"></div>
-                <div className="w-full h-6 bg-slate-900 rounded flex items-center justify-center text-[7px] text-white">SCAN</div>
+                <div className="w-full h-1 bg-[#16C45B] animate-bounce"></div>
+                <div className="w-full h-6 bg-slate-900 rounded flex items-center justify-center text-[7px] text-white font-black">SCANNING</div>
               </div>
             </div>
           </div>
@@ -404,13 +455,12 @@ function Homepage() {
               Review your cart and make secure payment using UPI, cards or wallets.
             </p>
             <div className="w-full h-32 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 group-hover:bg-green-50/50 transition-colors relative overflow-hidden">
-              {/* Card billing payment mockup graphic */}
               <div className="w-20 h-28 bg-slate-800 rounded-xl border-4 border-slate-700 p-2 flex flex-col justify-between text-white text-[7px]">
                 <div>
                   <p className="font-bold border-b border-slate-700 pb-1">Checkout</p>
                   <p className="mt-2 text-green-400 font-bold">₹115.00</p>
                 </div>
-                <button className="w-full py-1 bg-green-500 rounded text-slate-950 font-bold">PAY NOW</button>
+                <button className="w-full py-1 bg-[#16C45B] rounded text-slate-950 font-bold text-[6px]">PAY NOW</button>
               </div>
             </div>
           </div>
@@ -418,14 +468,13 @@ function Homepage() {
           {/* Step 3 */}
           <div className="bg-white border border-slate-100 p-6 rounded-2xl flex flex-col items-center gap-4 text-center shadow-xs relative group">
             <span className="w-8 h-8 rounded-full bg-green-600 text-white font-extrabold flex items-center justify-center text-xs shadow-md">3</span>
-            <h4 className="font-extrabold text-slate-900 text-sm">Get QR Code</h4>
+            <h4 className="font-extrabold text-slate-900 text-sm">Receive QR</h4>
             <p className="text-xs text-slate-500 leading-relaxed max-w-[200px]">
               Receive instant QR code after successful payment confirmation.
             </p>
             <div className="w-full h-32 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 group-hover:bg-green-50/50 transition-colors relative overflow-hidden">
-              {/* QR Mockup inside phone */}
               <div className="w-20 h-28 bg-slate-800 rounded-xl border-4 border-slate-700 p-2 flex flex-col items-center justify-center">
-                <QrCode size={24} className="text-green-400" />
+                <QrCode size={24} className="text-green-400 animate-pulse" />
                 <span className="text-[6px] text-slate-400 mt-2 font-mono">SQ123456</span>
               </div>
             </div>
@@ -434,15 +483,14 @@ function Homepage() {
           {/* Step 4 */}
           <div className="bg-white border border-slate-100 p-6 rounded-2xl flex flex-col items-center gap-4 text-center shadow-xs relative group">
             <span className="w-8 h-8 rounded-full bg-green-600 text-white font-extrabold flex items-center justify-center text-xs shadow-md">4</span>
-            <h4 className="font-extrabold text-slate-900 text-sm">Exit Seamlessly</h4>
+            <h4 className="font-extrabold text-slate-950 text-sm">Exit Seamlessly</h4>
             <p className="text-xs text-slate-500 leading-relaxed max-w-[200px]">
               Show QR code at the exit gate for instant verification and you're good to go!
             </p>
             <div className="w-full h-32 bg-slate-50 rounded-xl mt-2 flex items-center justify-center text-slate-400 group-hover:bg-green-50/50 transition-colors relative overflow-hidden">
-              {/* Exit Gate Illustration mockup */}
               <div className="w-24 h-20 bg-slate-800 rounded border-2 border-slate-700 flex items-center justify-between p-2">
                 <span className="text-xl">🚪</span>
-                <span className="text-[8px] text-green-400 font-bold animate-pulse">GATE OPEN</span>
+                <span className="text-[8px] text-green-400 font-bold">GATE OPEN</span>
                 <span className="text-xl">🚶</span>
               </div>
             </div>
@@ -453,77 +501,77 @@ function Homepage() {
 
       {/* Access SmartQueue Portals */}
       <section id="portals" className="bg-white py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center border-b border-slate-100">
-        <h2 className="text-3xl font-black text-slate-950">Access <span className="text-green-600">SmartQueue</span> Portals</h2>
+        <h2 className="text-3xl font-black text-slate-950">Access <span className="text-[#16C45B]">SmartQueue</span> Portals</h2>
         <p className="text-slate-500 text-sm mt-2 mb-16">Choose the portal that matches your role and access the right tools instantly</p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           
           {/* Customer Portal */}
-          <div className="bg-slate-50 border border-slate-100 rounded-3xl p-8 flex justify-between hover:border-green-500/20 hover:bg-white hover:shadow-md transition-all text-left relative overflow-hidden group">
+          <div className="bg-slate-50 border border-slate-100 rounded-3xl p-8 flex justify-between hover:border-green-500/20 hover:bg-white hover:shadow-md hover:translate-y-[-4px] transition-all duration-300 text-left relative overflow-hidden group">
             <div className="flex-1 flex flex-col justify-between">
               <div>
                 <div className="w-12 h-12 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-xl mb-6 font-bold shadow-sm">📱</div>
                 <h3 className="text-lg font-black text-slate-900">Customer Portal</h3>
                 <p className="text-slate-500 text-xs mt-2.5 leading-relaxed max-w-[180px]">
-                  Scan products, add to cart, make payments and get QR code for exit.
+                  Scan products, add to cart, make payments and get QR code for exit pass.
                 </p>
               </div>
-              <button onClick={() => navigate('/customer/login')} className="w-36 mt-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl text-center text-xs transition-all shadow-xs">
+              <button onClick={() => navigate('/customer/login')} className="w-36 mt-8 py-3 bg-[#16C45B] hover:bg-[#12A04A] text-white font-bold rounded-xl text-center text-xs transition-all shadow-xs btn-shine-hover relative overflow-hidden">
                 Enter Customer Portal →
               </button>
             </div>
-            {/* Right Graphic: Phone mockup inside card */}
+            {/* Right Graphic: Phone mockup */}
             <div className="w-24 h-40 bg-slate-900 border-[3px] border-slate-800 rounded-3xl p-1.5 shadow-md flex flex-col justify-between shrink-0 select-none ml-2">
               <div className="h-full bg-slate-50 rounded-2xl p-1.5 flex flex-col justify-between text-[7px] text-slate-800">
                 <span className="font-extrabold text-[8px]">My Cart</span>
                 <div className="bg-white p-1 rounded-md border border-slate-100 shadow-xs mb-1">Amul Milk x1</div>
-                <div className="py-1 bg-green-600 text-white text-center font-bold rounded-md text-[6px]">PAY</div>
+                <div className="py-1 bg-[#16C45B] text-white text-center font-bold rounded-md text-[6px]">PAY</div>
               </div>
             </div>
           </div>
 
           {/* Worker Portal */}
-          <div className="bg-slate-50 border border-slate-100 rounded-3xl p-8 flex justify-between hover:border-blue-500/20 hover:bg-white hover:shadow-md transition-all text-left relative overflow-hidden group">
+          <div className="bg-slate-50 border border-slate-100 rounded-3xl p-8 flex justify-between hover:border-blue-500/20 hover:bg-white hover:shadow-md hover:translate-y-[-4px] transition-all duration-300 text-left relative overflow-hidden group">
             <div className="flex-1 flex flex-col justify-between">
               <div>
                 <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl mb-6 font-bold shadow-sm">👷</div>
                 <h3 className="text-lg font-black text-slate-900">Worker Portal</h3>
                 <p className="text-slate-500 text-xs mt-2.5 leading-relaxed max-w-[180px]">
-                  Verify customer QR codes, check orders and manage exit gates.
+                  Verify customer QR codes, check receipts list and approve store exits.
                 </p>
               </div>
               <button onClick={() => navigate('/worker/login')} className="w-36 mt-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-center text-xs transition-all shadow-xs">
                 Enter Worker Portal →
               </button>
             </div>
-            {/* Right Graphic: Scan phone mockup inside card */}
+            {/* Right Graphic: QR scan mockup */}
             <div className="w-24 h-40 bg-slate-900 border-[3px] border-slate-800 rounded-3xl p-1.5 shadow-md flex flex-col items-center justify-center shrink-0 select-none ml-2">
               <QrCode size={32} className="text-blue-400" />
-              <span className="text-[6px] text-slate-500 mt-2 font-mono">SCAN PASS</span>
+              <span className="text-[6px] text-slate-500 mt-2 font-mono font-bold">SCAN RECEIPT</span>
             </div>
           </div>
 
           {/* Admin Dashboard */}
-          <div className="bg-slate-50 border border-slate-100 rounded-3xl p-8 flex justify-between hover:border-indigo-500/20 hover:bg-white hover:shadow-md transition-all text-left relative overflow-hidden group">
+          <div className="bg-slate-50 border border-slate-100 rounded-3xl p-8 flex justify-between hover:border-indigo-500/20 hover:bg-white hover:shadow-md hover:translate-y-[-4px] transition-all duration-300 text-left relative overflow-hidden group">
             <div className="flex-1 flex flex-col justify-between">
               <div>
                 <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl mb-6 font-bold shadow-sm">📊</div>
                 <h3 className="text-lg font-black text-slate-900">Admin Dashboard</h3>
                 <p className="text-slate-500 text-xs mt-2.5 leading-relaxed max-w-[180px]">
-                  Manage products, users, orders, analytics and system operations.
+                  Manage supermarket products, track active sales charts, check analytics, and administer low stock alerts.
                 </p>
               </div>
               <button onClick={() => navigate('/admin')} className="w-36 mt-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-center text-xs transition-all shadow-xs">
                 Enter Admin Dashboard →
               </button>
             </div>
-            {/* Right Graphic: Laptop mockup screen */}
+            {/* Right Graphic: Laptop mockup */}
             <div className="w-28 h-20 bg-slate-900 rounded-lg p-1 shadow-md border-2 border-slate-800 flex flex-col justify-between shrink-0 select-none ml-1 mt-4">
               <div className="h-full bg-slate-950 rounded flex flex-col justify-between p-1.5 text-[6px] text-white">
                 <span className="font-extrabold text-green-400">Total Sales</span>
                 <span className="font-black text-[8px]">₹12,450</span>
                 <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
-                  <div className="w-3/4 h-full bg-green-500"></div>
+                  <div className="w-3/4 h-full bg-[#16C45B]"></div>
                 </div>
               </div>
             </div>
@@ -532,87 +580,92 @@ function Homepage() {
         </div>
       </section>
 
-      {/* KPI Numerical Stats Row */}
-      <section className="bg-slate-950 text-white py-16 border-y border-slate-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-6 gap-8 text-center">
+      {/* Statistics Section - Dark Gradient Strip */}
+      <section className="bg-[#0B1220] text-white py-20 border-y border-slate-900 relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0B3D2E]/20 to-transparent pointer-events-none"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-6 gap-8 text-center relative z-10">
           <div className="flex flex-col items-center gap-1.5">
             <span className="text-xl">🛒</span>
-            <h3 className="text-2xl font-black text-white">10,000+</h3>
+            <h3 className="text-3xl font-black text-[#16C45B] tracking-tight">10,000+</h3>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Orders Processed</p>
           </div>
           <div className="flex flex-col items-center gap-1.5">
             <span className="text-xl">🏪</span>
-            <h3 className="text-2xl font-black text-white">500+</h3>
+            <h3 className="text-3xl font-black text-[#16C45B] tracking-tight">500+</h3>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Stores Connected</p>
           </div>
           <div className="flex flex-col items-center gap-1.5">
             <span className="text-xl">👥</span>
-            <h3 className="text-2xl font-black text-white">50,000+</h3>
+            <h3 className="text-3xl font-black text-[#16C45B] tracking-tight">50,000+</h3>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Happy Customers</p>
           </div>
           <div className="flex flex-col items-center gap-1.5">
             <span className="text-xl">🛡️</span>
-            <h3 className="text-2xl font-black text-white">99.99%</h3>
+            <h3 className="text-3xl font-black text-[#16C45B] tracking-tight">99.99%</h3>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">System Uptime</p>
           </div>
           <div className="flex flex-col items-center gap-1.5">
             <span className="text-xl">⚡</span>
-            <h3 className="text-2xl font-black text-white">&lt; 500ms</h3>
+            <h3 className="text-3xl font-black text-[#16C45B] tracking-tight">&lt; 500ms</h3>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Real-time Sync</p>
           </div>
           <div className="flex flex-col items-center gap-1.5">
             <span className="text-xl">🎧</span>
-            <h3 className="text-2xl font-black text-white">24/7</h3>
+            <h3 className="text-3xl font-black text-[#16C45B] tracking-tight">24/7</h3>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Support Available</p>
           </div>
         </div>
       </section>
 
-      {/* Why Choose us & Testimonials */}
+      {/* Why Choose SmartQueue & Testimonials */}
       <section id="why-choose-us" className="bg-white py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-slate-100">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           
-          {/* Left Values */}
+          {/* Left Values Checklist */}
           <div className="lg:col-span-6 text-left">
-            <h2 className="text-3xl font-black text-slate-950">Why Choose <span className="text-green-600">SmartQueue</span>?</h2>
+            <h2 className="text-3xl font-black text-slate-950">Why Choose <span className="text-[#16C45B]">SmartQueue</span>?</h2>
             <div className="mt-8 space-y-4">
               <div className="flex items-center gap-3">
-                <span className="w-5 h-5 rounded-full bg-green-50 text-green-600 flex items-center justify-center font-bold text-[10px]">✓</span>
-                <span className="text-xs text-slate-600 font-medium">Reduce long billing queues instantly</span>
+                <span className="w-5 h-5 rounded-full bg-green-50 text-[#16C45B] flex items-center justify-center font-bold text-[10px]">✓</span>
+                <span className="text-xs text-slate-600 font-bold">Reduce billing queues by up to 85%</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="w-5 h-5 rounded-full bg-green-50 text-green-600 flex items-center justify-center font-bold text-[10px]">✓</span>
-                <span className="text-xs text-slate-600 font-medium">Improve customer check-out experience</span>
+                <span className="w-5 h-5 rounded-full bg-green-50 text-[#16C45B] flex items-center justify-center font-bold text-[10px]">✓</span>
+                <span className="text-xs text-slate-600 font-bold">Implement fully contactless customer checkouts</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="w-5 h-5 rounded-full bg-green-50 text-green-600 flex items-center justify-center font-bold text-[10px]">✓</span>
-                <span className="text-xs text-slate-600 font-medium">Secure & contactless payment protocols</span>
+                <span className="w-5 h-5 rounded-full bg-green-50 text-[#16C45B] flex items-center justify-center font-bold text-[10px]">✓</span>
+                <span className="text-xs text-slate-600 font-bold">Highly secure payment gateway integrations</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="w-5 h-5 rounded-full bg-green-50 text-green-600 flex items-center justify-center font-bold text-[10px]">✓</span>
-                <span className="text-xs text-slate-600 font-medium">Real-time verification & sync triggers</span>
+                <span className="w-5 h-5 rounded-full bg-green-50 text-[#16C45B] flex items-center justify-center font-bold text-[10px]">✓</span>
+                <span className="text-xs text-slate-600 font-bold">Real-time receipt check and verification status</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="w-5 h-5 rounded-full bg-green-50 text-green-600 flex items-center justify-center font-bold text-[10px]">✓</span>
-                <span className="text-xs text-slate-600 font-medium">Easy to use and integrate across any store layouts</span>
+                <span className="w-5 h-5 rounded-full bg-green-50 text-[#16C45B] flex items-center justify-center font-bold text-[10px]">✓</span>
+                <span className="text-xs text-slate-600 font-bold">Supercharger speed shopping for high volume stores</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="w-5 h-5 rounded-full bg-green-50 text-[#16C45B] flex items-center justify-center font-bold text-[10px]">✓</span>
+                <span className="text-xs text-slate-600 font-bold">Enterprise ready SaaS dashboard reporting tools</span>
               </div>
             </div>
 
-            {/* Video Placeholder */}
-            <div className="w-full h-48 bg-slate-100 rounded-2xl border border-slate-200 mt-8 flex flex-col items-center justify-center text-slate-400 relative overflow-hidden group cursor-pointer">
-              <img className="absolute inset-0 w-full h-full object-cover opacity-60 filter blur-xs group-hover:scale-105 transition-transform animate-pulse" src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&auto=format&fit=crop&q=80" alt="Supermarket Aisle" />
-              <div className="w-12 h-12 rounded-full bg-white/90 shadow-md flex items-center justify-center text-green-600 text-xl font-bold relative z-10 hover:scale-110 transition-transform">▶</div>
+            {/* Video Preview */}
+            <div className="w-full h-48 bg-slate-100 rounded-2xl border border-slate-200 mt-8 flex flex-col items-center justify-center text-slate-400 relative overflow-hidden group cursor-pointer shadow-sm">
+              <img className="absolute inset-0 w-full h-full object-cover opacity-60 filter blur-xs group-hover:scale-[1.03] transition-transform duration-500 animate-pulse" src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&auto=format&fit=crop&q=80" alt="Supermarket Aisle" />
+              <div className="w-12 h-12 rounded-full bg-white/95 shadow-md flex items-center justify-center text-[#16C45B] text-xl font-bold relative z-10 hover:scale-110 transition-transform">▶</div>
               <span className="text-slate-900 font-extrabold text-xs mt-3 relative z-10">See SmartQueue in Action</span>
               <span className="text-[10px] text-slate-700 font-bold mt-0.5 relative z-10">01 / 03</span>
             </div>
           </div>
 
-          {/* Right Testimonials */}
+          {/* Right Testimonials Carousel */}
           <div id="testimonials" className="lg:col-span-6 flex flex-col gap-8">
             <h3 className="text-xl font-black text-slate-900 text-left">Loved by Retailers</h3>
             
-            <div className="bg-slate-50 border border-slate-100 rounded-3xl p-8 text-left relative overflow-hidden">
-              <span className="text-4xl text-green-500/10 absolute top-4 left-4 font-serif">“</span>
+            <div className="bg-slate-50 border border-slate-100 rounded-[20px] p-8 text-left relative overflow-hidden shadow-xs">
+              <span className="text-4xl text-[#16C45B]/10 absolute top-4 left-4 font-serif">“</span>
               <p className="text-slate-600 text-sm leading-relaxed mt-4 italic relative z-10">
                 {testimonials[activeTestimonial].text}
               </p>
@@ -631,7 +684,7 @@ function Homepage() {
                   <button 
                     key={idx} 
                     onClick={() => setActiveTestimonial(idx)}
-                    className={`w-2 h-2 rounded-full transition-all ${activeTestimonial === idx ? 'bg-green-600 w-4' : 'bg-slate-300'}`}
+                    className={`w-2 h-2 rounded-full transition-all ${activeTestimonial === idx ? 'bg-[#16C45B] w-4' : 'bg-slate-300'}`}
                   />
                 ))}
               </div>
@@ -641,39 +694,39 @@ function Homepage() {
         </div>
       </section>
 
-      {/* Brands Logos */}
+      {/* Trusted by Retailers - Logo Wall */}
       <section className="bg-white py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <p className="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest mb-8">Trusted by Leading Retailers</p>
-        <div className="flex flex-wrap justify-center items-center gap-10 opacity-50 grayscale hover:grayscale-0 hover:opacity-85 transition-all text-xs font-black text-slate-500">
-          <span>🍏 FreshMart</span>
-          <span>🛒 DailyNeeds</span>
-          <span>💎 ValuePlus</span>
-          <span>🌾 GreenBasket</span>
-          <span>🏬 UrbanStore</span>
-          <span>⚡ QuickBuy</span>
-          <span>📦 MegaMart</span>
+        <div className="flex flex-wrap justify-center items-center gap-10 text-xs font-black text-slate-400 select-none">
+          <span className="hover:text-[#16C45B] transition-colors cursor-pointer">🍏 FreshMart</span>
+          <span className="hover:text-[#16C45B] transition-colors cursor-pointer">🛒 DailyNeeds</span>
+          <span className="hover:text-[#16C45B] transition-colors cursor-pointer">💎 ValuePlus</span>
+          <span className="hover:text-[#16C45B] transition-colors cursor-pointer">🌾 GreenBasket</span>
+          <span className="hover:text-[#16C45B] transition-colors cursor-pointer">🏬 UrbanStore</span>
+          <span className="hover:text-[#16C45B] transition-colors cursor-pointer">⚡ QuickBuy</span>
+          <span className="hover:text-[#16C45B] transition-colors cursor-pointer">📦 MegaMart</span>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-950 border-t border-slate-900 py-16 text-slate-400 text-xs relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12 text-left mb-12">
+      <footer className="bg-[#0B1220] border-t border-slate-900 py-16 text-slate-400 text-xs relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12 text-left mb-12 relative z-10">
           
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-green-500 flex items-center justify-center text-slate-950 text-base font-bold">🛒</div>
+              <div className="w-8 h-8 rounded-xl bg-[#16C45B] flex items-center justify-center text-slate-950 text-base font-bold">🛒</div>
               <span className="text-base font-black text-white tracking-tight">SmartQueue</span>
             </div>
             <p className="text-slate-500 mt-2 leading-relaxed">
-              AI-powered self-checkout ecosystem that makes retail smarter, faster and queue-free.
+              World-class SaaS platform powering next-generation self-checkout ecosystems for supermarkets and retailers.
             </p>
-            {/* Social media icons rows */}
+            {/* Social media icons */}
             <div className="flex items-center gap-3 mt-4 text-slate-500">
-              <span className="w-7 h-7 rounded-full bg-slate-900 border border-slate-800 hover:border-slate-700 hover:text-white flex items-center justify-center text-[10px] font-bold cursor-pointer">FB</span>
-              <span className="w-7 h-7 rounded-full bg-slate-900 border border-slate-800 hover:border-slate-700 hover:text-white flex items-center justify-center text-[10px] font-bold cursor-pointer">TW</span>
-              <span className="w-7 h-7 rounded-full bg-slate-900 border border-slate-800 hover:border-slate-700 hover:text-white flex items-center justify-center text-[10px] font-bold cursor-pointer">LN</span>
-              <span className="w-7 h-7 rounded-full bg-slate-900 border border-slate-800 hover:border-slate-700 hover:text-white flex items-center justify-center text-[10px] font-bold cursor-pointer">YT</span>
-              <span className="w-7 h-7 rounded-full bg-slate-900 border border-slate-800 hover:border-slate-700 hover:text-white flex items-center justify-center text-[10px] font-bold cursor-pointer">IG</span>
+              <span className="w-7 h-7 rounded-full bg-slate-900 border border-slate-800 hover:border-[#16C45B] hover:text-white flex items-center justify-center text-[10px] font-bold cursor-pointer transition-colors">FB</span>
+              <span className="w-7 h-7 rounded-full bg-slate-900 border border-slate-800 hover:border-[#16C45B] hover:text-white flex items-center justify-center text-[10px] font-bold cursor-pointer transition-colors">TW</span>
+              <span className="w-7 h-7 rounded-full bg-slate-900 border border-slate-800 hover:border-[#16C45B] hover:text-white flex items-center justify-center text-[10px] font-bold cursor-pointer transition-colors">LN</span>
+              <span className="w-7 h-7 rounded-full bg-slate-900 border border-slate-800 hover:border-[#16C45B] hover:text-white flex items-center justify-center text-[10px] font-bold cursor-pointer transition-colors">YT</span>
+              <span className="w-7 h-7 rounded-full bg-slate-900 border border-slate-800 hover:border-[#16C45B] hover:text-white flex items-center justify-center text-[10px] font-bold cursor-pointer transition-colors">IG</span>
             </div>
           </div>
 
@@ -692,7 +745,7 @@ function Homepage() {
             <div className="flex flex-col gap-2">
               <a href="#" className="hover:text-green-400">User Guide</a>
               <a href="#" className="hover:text-green-400">FAQs</a>
-              <a href="#" className="hover:text-green-400">Blog</a>
+              <a href="#" className="hover:text-green-400">Support</a>
               <a href="#" className="hover:text-green-400">Help Center</a>
             </div>
           </div>
@@ -701,21 +754,21 @@ function Homepage() {
             <h4 className="font-extrabold text-white text-xs mb-4 uppercase tracking-wider">Stay Updated</h4>
             <p className="text-slate-500 mb-3">Subscribe to get the latest updates and product news.</p>
             <div className="flex gap-2">
-              <input type="text" placeholder="Enter your email" className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-white w-full text-xs focus:outline-none focus:border-green-500" />
-              <button className="bg-green-500 hover:bg-green-400 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs">Subscribe</button>
+              <input type="text" placeholder="Enter your email" className="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-white w-full text-xs focus:outline-none focus:border-[#16C45B]" />
+              <button className="bg-[#16C45B] hover:bg-[#12A04A] text-slate-950 font-bold px-4 py-2 rounded-lg text-xs transition-colors">Subscribe</button>
             </div>
           </div>
 
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-900 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 relative">
-          <p>© 2026 SmartQueue Enterprise. All rights reserved.</p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-900 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10">
+          <p>© 2025 SmartQueue Enterprise. All rights reserved.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-white">Privacy Policy</a>
             <a href="#" className="hover:text-white">Terms of Service</a>
           </div>
           {/* Back to top circular button */}
-          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="absolute right-8 -top-8 w-10 h-10 rounded-full bg-green-500 hover:bg-green-400 text-slate-950 flex items-center justify-center text-sm font-bold shadow-md cursor-pointer transition-transform hover:scale-105 active:scale-95">
+          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="absolute right-8 -top-8 w-10 h-10 rounded-full bg-[#16C45B] hover:bg-[#12A04A] text-slate-950 flex items-center justify-center text-sm font-bold shadow-md cursor-pointer transition-transform hover:scale-105 active:scale-95">
             ▲
           </button>
         </div>
