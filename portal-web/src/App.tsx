@@ -2701,17 +2701,31 @@ function WorkerVerify() {
   const [scannedItems, setScannedItems] = useState<Record<string, boolean>>({});
 
   // Real-time synchronization: Worker pulls customer's exit pass order from localStorage!
-  const order = getLocalStorage('pass_order', {
-    orderNumber: '#2156',
-    total: 141,
-    items: [
-      { productId: '1', name: 'Amul Full Cream Milk 1L', quantity: 1 },
-      { productId: '2', name: 'Britannia Good Day Cookies 200g', quantity: 1 }
-    ]
-  });
+  const order = getLocalStorage<any>('pass_order', null);
 
   const [manualCode, setManualCode] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+
+  // If there are no pending customer checkouts to verify, show empty gate queue state
+  if (!order || !order.items || order.items.length === 0) {
+    return (
+      <div className="min-h-screen bg-slate-900 text-white flex flex-col justify-between font-sans">
+        <div className="bg-slate-950 border-b border-slate-800 px-4 py-4 flex items-center justify-between">
+          <button onClick={() => navigate('/worker/dashboard')} className="text-slate-400 font-bold">← Dashboard</button>
+          <span className="font-extrabold text-sm text-slate-300">Terminal Gate Terminal</span>
+          <div className="w-10"></div>
+        </div>
+
+        <div className="flex-1 flex flex-col items-center justify-center p-6 text-center max-w-sm mx-auto">
+          <span className="text-5xl animate-pulse">🚦</span>
+          <h3 className="text-lg font-black mt-6 text-slate-100">Gate Verification Queue Empty</h3>
+          <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+            There are currently no checkout exit passes submitted by customers. Once a shopper pays, their cart will appear here automatically.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const handleQRScanned = () => {
     setErrorMsg('');
