@@ -1522,7 +1522,7 @@ function CustomerPayment() {
   const navigate = useNavigate();
   const location = useLocation();
   const total = location.state?.total || 141.00;
-  const [method, setMethod] = useState<'upi' | 'card' | 'wallet'>('upi');
+  const [method, setMethod] = useState<'upi' | 'card' | 'wallet' | 'cash'>('upi');
   const [loading, setLoading] = useState(false);
 
   const handlePay = () => {
@@ -1541,8 +1541,15 @@ function CustomerPayment() {
       .catch((err) => console.error('Failed to deduct backend stock:', err))
       .finally(() => {
         setTimeout(() => {
-          const orderNum = '#' + Math.floor(2000 + Math.random() * 9000);
-          const newOrder = { orderNumber: orderNum, total, items: cart, date: new Date().toLocaleDateString(), status: 'Completed' };
+          const orderNum = '#' + Math.floor(2000 + Math.random() * 9500);
+          const newOrder = { 
+            orderNumber: orderNum, 
+            total, 
+            items: cart, 
+            date: new Date().toLocaleDateString(), 
+            status: 'Completed',
+            paymentMethod: method 
+          };
           
           // Store in orders database
           const orders = getLocalStorage<any[]>('customer_orders', []);
@@ -1554,7 +1561,11 @@ function CustomerPayment() {
           setLocalStorage('cart_items', []);
           
           const user = getLocalStorage('customer_user', { name: 'Shopper' });
-          addActivityLog('PAYMENT_COMPLETED', `Payment of ₹${total.toFixed(2)} successful for Order ${orderNum} by ${user.name}. Awaiting gate verification.`);
+          if (method === 'cash') {
+            addActivityLog('PAYMENT_COMPLETED', `Order ${orderNum} placed by ${user.name} via CASH payment. Awaiting cash collection and verification at exit gate.`);
+          } else {
+            addActivityLog('PAYMENT_COMPLETED', `Payment of ₹${total.toFixed(2)} successful for Order ${orderNum} by ${user.name}. Awaiting gate verification.`);
+          }
           
           setLoading(false);
           navigate('/customer/pass');
@@ -1613,6 +1624,17 @@ function CustomerPayment() {
             </div>
             <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${method === 'wallet' ? 'border-green-600' : 'border-slate-300'}`}>
               {method === 'wallet' && <div className="w-2.5 h-2.5 rounded-full bg-green-600"></div>}
+            </div>
+          </button>
+
+          <button onClick={() => setMethod('cash')} className={`p-4 rounded-xl border flex items-center gap-4 transition text-left ${method === 'cash' ? 'border-green-600 bg-green-50/30' : 'border-slate-200 bg-white'}`}>
+            <span className="text-2xl">💵</span>
+            <div className="flex-grow">
+              <h4 className="font-bold text-slate-800 text-sm">Pay with Cash</h4>
+              <p className="text-xs text-slate-500 mt-0.5">Hand cash directly to the gate clerk at exit</p>
+            </div>
+            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${method === 'cash' ? 'border-green-600' : 'border-slate-300'}`}>
+              {method === 'cash' && <div className="w-2.5 h-2.5 rounded-full bg-green-600"></div>}
             </div>
           </button>
         </div>
@@ -2756,9 +2778,15 @@ function WorkerVerify() {
         </div>
 
         <div className="flex-grow max-w-4xl w-full mx-auto p-6 flex flex-col gap-6">
-          <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+          <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm flex flex-col gap-2">
             <h4 className="font-extrabold text-slate-800">Order ID: {order.orderNumber}</h4>
-            <p className="text-xs text-slate-500 mt-1">{order.items.length} items total</p>
+            <p className="text-xs text-slate-500">{order.items.length} items total</p>
+            {order.paymentMethod === 'cash' && (
+              <div className="mt-2 p-3 bg-amber-550/10 border border-amber-500/20 text-amber-800 rounded-lg flex flex-col gap-1">
+                <span className="text-xs font-black uppercase tracking-wider flex items-center gap-1.5">💵 Collect Cash Payment</span>
+                <span className="text-sm font-extrabold">Please collect ₹{order.total?.toFixed(2)} in Cash before approving.</span>
+              </div>
+            )}
           </div>
 
           <h5 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Checkoff list (Verify All Items)</h5>
