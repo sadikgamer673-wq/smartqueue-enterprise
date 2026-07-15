@@ -3150,7 +3150,12 @@ function AdminInventoryView() {
       { id: '2', barcode: '456', name: 'Britannia Bread', price: 38, qty: 15, emoji: '🍞' },
       { id: '3', barcode: '789', name: 'Rice 1kg', price: 66, qty: 120, emoji: '🍚' },
       { id: '4', barcode: '101', name: 'Aashirvaad Atta 1kg', price: 75, qty: 10, emoji: '🌾' },
-      { id: '5', barcode: '202', name: 'Amul Curd 400g', price: 41, qty: 45, emoji: '🍶' }
+      { id: '5', barcode: '202', name: 'Amul Curd 400g', price: 41, qty: 45, emoji: '🍶' },
+      { id: '6', barcode: '8901764100078', name: 'Amul Full Cream Milk 1L', price: 62, qty: 95, emoji: '🥛' },
+      { id: '7', barcode: '8901063007277', name: 'Britannia Good Day Cookies 200g', price: 35, qty: 70, emoji: '🍪' },
+      { id: '8', barcode: '8901012038032', name: 'Pepsi 500ml', price: 30, qty: 150, emoji: '🥤' },
+      { id: '9', barcode: '8901058000020', name: 'Maggi 2-Minute Noodles 70g', price: 14, qty: 210, emoji: '🍜' },
+      { id: '10', barcode: '8901058810013', name: 'Tata Salt 1kg', price: 20, qty: 80, emoji: '🧂' }
     ];
     localStorage.setItem('inventory_items', JSON.stringify(defaults));
     return defaults;
