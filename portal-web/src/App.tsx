@@ -1637,22 +1637,29 @@ function CustomerPayment() {
 function CustomerPass() {
   const navigate = useNavigate();
   const order = getLocalStorage('pass_order', { orderNumber: '#2156', total: 141, items: [{ name: 'Amul Full Cream Milk 1L', quantity: 1 }] });
-  const [timeLeft, setTimeLeft] = useState(105);
+  const [timeLeft, setTimeLeft] = useState(120);
   const [verified, setVerified] = useState(false);
 
   useEffect(() => {
     const t = setInterval(() => setTimeLeft(c => c > 0 ? c - 1 : 0), 1000);
     
-    // Simulate exit verification approval after 8s
-    const timeout = setTimeout(() => {
-      setVerified(true);
-    }, 8000);
+    // Poll localStorage every 1.5 seconds to see if the worker has approved this order
+    const pollApproval = setInterval(() => {
+      const logs = getLocalStorage<any[]>('activity_logs', []);
+      const isApproved = logs.some(log => 
+        log.type === 'GATE_CLEARED' && log.message.includes(order.orderNumber)
+      );
+      if (isApproved) {
+        setVerified(true);
+        clearInterval(pollApproval);
+      }
+    }, 1500);
 
     return () => {
       clearInterval(t);
-      clearTimeout(timeout);
+      clearInterval(pollApproval);
     };
-  }, []);
+  }, [order.orderNumber]);
 
   const formatTime = (s: number) => {
     const mins = Math.floor(s / 60).toString().padStart(2, '0');
