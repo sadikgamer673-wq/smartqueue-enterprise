@@ -2710,10 +2710,28 @@ function WorkerVerify() {
     ]
   });
 
+  const [manualCode, setManualCode] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+
   const handleQRScanned = () => {
+    setErrorMsg('');
     setStep('checklist');
     setVerifiedCount(0);
     setScannedItems({});
+  };
+
+  const handleManualCodeSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!manualCode.trim()) return;
+
+    // Normalize input matching (e.g. prefix # symbol or ignore spacing)
+    const normalizedInput = manualCode.trim().startsWith('#') ? manualCode.trim() : `#${manualCode.trim()}`;
+    
+    if (normalizedInput === order.orderNumber) {
+      handleQRScanned();
+    } else {
+      setErrorMsg(`Order number "${normalizedInput}" not found in current exit requests database.`);
+    }
   };
 
   const toggleCheck = (id: string) => {
@@ -2744,23 +2762,61 @@ function WorkerVerify() {
 
   if (step === 'scan') {
     return (
-      <div className="min-h-screen bg-black text-white flex flex-col justify-between">
+      <div className="min-h-screen bg-black text-white flex flex-col justify-between font-sans">
+        {/* Header */}
         <div className="bg-zinc-900 border-b border-zinc-800 px-4 py-4 flex items-center justify-between">
           <button onClick={() => navigate('/worker/dashboard')} className="text-zinc-400 font-bold">← Cancel</button>
-          <span className="font-extrabold">Scan Customer QR</span>
+          <span className="font-extrabold text-sm">Gate Exit Verification</span>
           <div className="w-10"></div>
         </div>
 
-        <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
-          <div className="w-64 h-64 border-2 border-green-600 rounded-2xl flex flex-col items-center justify-center bg-zinc-950/50 mb-6 relative">
-            <Camera size={44} className="text-green-500 mb-2" />
-            <p className="text-xs text-zinc-400">Position barcode inside frame</p>
-            <div className="absolute inset-0 border-[4px] border-green-500 m-8 rounded-lg animate-pulse"></div>
+        {/* Dynamic Dual Mode Panel */}
+        <div className="flex-1 flex flex-col items-center justify-center p-6 text-center max-w-md mx-auto w-full gap-6">
+          {errorMsg && (
+            <div className="w-full bg-red-900/40 border border-red-500 text-red-200 text-xs font-semibold p-3.5 rounded-xl">
+              ⚠️ {errorMsg}
+            </div>
+          )}
+
+          {/* Option 1: QR Scan Viewfinder */}
+          <div className="w-full bg-zinc-950 p-6 rounded-2xl border border-zinc-800 flex flex-col items-center gap-4">
+            <h4 className="text-[10px] font-bold text-green-500 uppercase tracking-widest">Option 1: Optical Scan</h4>
+            <div className="w-48 h-48 border-2 border-green-600 rounded-2xl flex flex-col items-center justify-center bg-zinc-900/35 relative overflow-hidden">
+              <Camera size={36} className="text-green-500 mb-2" />
+              <p className="text-[10px] text-zinc-500">Viewfinder active</p>
+              <div className="absolute inset-0 border-[4px] border-green-500 m-6 rounded-lg animate-pulse"></div>
+            </div>
+            <button onClick={handleQRScanned} className="w-full h-11 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl text-xs transition uppercase tracking-wider">
+              Simulate Scan ({order.orderNumber})
+            </button>
           </div>
 
-          <button onClick={handleQRScanned} className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition">
-            Simulate Scan (Order {order.orderNumber})
-          </button>
+          <div className="flex items-center w-full my-1">
+            <div className="flex-grow h-[1px] bg-zinc-800"></div>
+            <span className="px-4 text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Or</span>
+            <div className="flex-grow h-[1px] bg-zinc-800"></div>
+          </div>
+
+          {/* Option 2: Manual Code Entry */}
+          <div className="w-full bg-zinc-950 p-6 rounded-2xl border border-zinc-800 flex flex-col gap-4 text-left">
+            <h4 className="text-[10px] font-bold text-green-500 uppercase tracking-widest">Option 2: Manual Entry</h4>
+            <form onSubmit={handleManualCodeSubmit} className="flex flex-col gap-3">
+              <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Enter Order ID Code</label>
+              <div className="flex gap-2">
+                <input 
+                  type="text" 
+                  value={manualCode} 
+                  onChange={e => setManualCode(e.target.value)} 
+                  placeholder="e.g. 6751" 
+                  className="flex-grow h-11 px-4 rounded-xl bg-zinc-900 border border-zinc-800 text-white focus:outline-none focus:border-green-650 text-xs font-semibold" 
+                />
+                <button type="submit" className="px-5 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold rounded-xl transition">
+                  Verify
+                </button>
+              </div>
+            </form>
+          </div>
+
         </div>
       </div>
     );
