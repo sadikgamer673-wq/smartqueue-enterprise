@@ -2817,6 +2817,36 @@ function WorkerVerify() {
             </form>
           </div>
 
+          <div className="flex items-center w-full my-1">
+            <div className="flex-grow h-[1px] bg-zinc-800"></div>
+            <span className="px-4 text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Or</span>
+            <div className="flex-grow h-[1px] bg-zinc-800"></div>
+          </div>
+
+          {/* Option 3: Supervisor Bypass */}
+          <div className="w-full bg-zinc-950 p-6 rounded-2xl border border-zinc-800 flex flex-col gap-4 text-left">
+            <h4 className="text-[10px] font-bold text-green-500 uppercase tracking-widest">Option 3: Emergency Override</h4>
+            <div className="flex flex-col gap-2">
+              <p className="text-[10px] text-zinc-400">Clear the current exit request immediately without auditing items.</p>
+              <button 
+                onClick={() => {
+                  setStep('checklist');
+                  // Mark all items as checked off automatically
+                  const preChecked: Record<string, boolean> = {};
+                  order.items.forEach((_, idx) => {
+                    preChecked[idx.toString()] = true;
+                  });
+                  setScannedItems(preChecked);
+                  setVerifiedCount(order.items.length);
+                  setStep('success');
+                }} 
+                className="w-full h-11 border border-red-650 hover:bg-red-950/20 text-red-500 font-bold rounded-xl text-xs transition uppercase tracking-wider"
+              >
+                Instant Supervisor Bypass
+              </button>
+            </div>
+          </div>
+
         </div>
       </div>
     );
